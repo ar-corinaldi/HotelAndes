@@ -971,8 +971,9 @@ public class PersistenciaHotelAndes
 		}
 		catch (Exception e)
 		{
-			//        	e.printStackTrace();
+			e.printStackTrace();
 			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			System.out.println("fin");
 			return null;
 		}
 		finally
