@@ -47,6 +47,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import uniandes.isis2304.parranderos.negocio.HotelAndes;
+import uniandes.isis2304.parranderos.negocio.VOUsuario;
 
 /**
  * Clase principal de la interfaz
@@ -238,8 +239,48 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	/* ****************************************************************
 	 * 			CRUD de TipoBebida
 	 *****************************************************************/
-    
+    /**
+     * Adiciona un tipo de bebida con la información dada por el usuario
+     * Se crea una nueva tupla de tipoBebida en la base de datos, si un tipo de bebida con ese nombre no existía
+     */
+    public void adicionarUsuario( )
+	{
+		try 
+		{
+			//(long num_identidad, String tipo_documento, String nombre, String apellido, String correo, long tipo_usuario, long id_reserva, long id_hotel) 
+			JOptionPane.showConfirmDialog(this, "Antes recuerda que hay 5 tipos de usuario:\n1. gerente\n2.administrador\n3. recepcionista\n4. empleado\n5.cliente", "Adicionar cliente",JOptionPane.INFORMATION_MESSAGE);
+			String num_identidad = JOptionPane.showInputDialog (this, "id?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
+			String tipo_documento = JOptionPane.showInputDialog (this, "tipo doc?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
+			String nombre = JOptionPane.showInputDialog (this, "Nombre?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
+			String apellido = JOptionPane.showInputDialog (this, "Apellido?", "AAdicionar cliente", JOptionPane.QUESTION_MESSAGE);
+			String correo = JOptionPane.showInputDialog (this, "correo?", "Adicionar tipo de bebida", JOptionPane.QUESTION_MESSAGE);
+			String tipo_usuario = JOptionPane.showInputDialog (this, "tipo usuario?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
+			String id_reserva = JOptionPane.showInputDialog (this, "id reserva?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
+			String id_hotel = JOptionPane.showInputDialog (this, "id hotel", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
 
+			if (num_identidad != null)
+			{
+				VOUsuario user = parranderos.adicionarUsuario(Long.valueOf(num_identidad), tipo_documento, nombre, apellido, correo, Long.valueOf(tipo_usuario), Long.valueOf(id_reserva), Long.valueOf(id_hotel));
+				System.out.println("hola");
+				if (user == null)
+				{
+					throw new Exception ("No se pudo crear un tipo de bebida con nombre: " + nombre);
+				}
+				String resultado = "En adicionarTipoBebida\n\n";
+				resultado += "Tipo de bebida adicionado exitosamente: " + user;
+				resultado += "\n Operaci�n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
+			}
+		} 
+		catch (Exception e) 
+		{
+			//e.printStackTrace();
+		}
+	}
 
 	/* ****************************************************************
 	 * 			Métodos administrativos

@@ -200,7 +200,7 @@ public class HotelAndes
 	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, String correo, long tipo_usuario, long id_reserva, long id_hotel)
 	{
 		Usuario usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, correo, tipo_usuario, id_reserva, id_hotel);		
-		//        pp.adicionarReserva(id_reserva, 1, new Timestamp(0), new Timestamp(0), pc, h);
+		//pp.adicionarReserva(id_reserva, 1, new Timestamp(0), new Timestamp(0), pc, h);
 		return usuario;
 	}
 
