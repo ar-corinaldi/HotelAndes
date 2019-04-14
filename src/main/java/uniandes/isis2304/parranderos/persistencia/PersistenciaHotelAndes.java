@@ -62,7 +62,7 @@ public class PersistenciaHotelAndes
 	 * Logger para escribir la traza de la ejecución
 	 */
 	private static Logger log = Logger.getLogger(PersistenciaHotelAndes.class.getName());
-	
+
 	/**
 	 * Cadena para indicar el tipo de sentencias que se va a utilizar en una consulta
 	 */
@@ -75,18 +75,18 @@ public class PersistenciaHotelAndes
 	 * Atributo privado que es el único objeto de la clase - Patrón SINGLETON
 	 */
 	private static PersistenciaHotelAndes instance;
-	
+
 	/**
 	 * Fábrica de Manejadores de persistencia, para el manejo correcto de las transacciones
 	 */
 	private PersistenceManagerFactory pmf;
-	
+
 	/**
 	 * Arreglo de cadenas con los nombres de las tablas de la base de datos, en su orden:
 	 * Secuenciador, tipoBebida, bebida, bar, bebedor, gustan, sirven y visitan
 	 */
 	private List <String> tablas;
-	
+
 	/**
 	 * Atributo para el acceso a la tabla Catalogo de la base de datos
 	 */
@@ -147,6 +147,11 @@ public class PersistenciaHotelAndes
 	 * Atributo para el acceso a la tabla Usuario de la base de datos
 	 */
 	private SQLUsuario sqlUsuario;
+	
+	/**
+	 * Atributo para el acceso a la tabla convencion de la base de datos
+	 */
+	private SQLConvencion sqlConvencion;
 
 	/**
 	 * Atributo para el acceso a las sentencias SQL propias a PersistenciaHotelAndes
@@ -157,7 +162,9 @@ public class PersistenciaHotelAndes
 	 * Atributo para el acceso a la tabla check de la base de datos
 	 */
 	private SQLCheck sqlCheck;
+
 	
+
 	/* ****************************************************************
 	 * 			Métodos del MANEJADOR DE PERSISTENCIA
 	 *****************************************************************/
@@ -169,7 +176,7 @@ public class PersistenciaHotelAndes
 	{
 		pmf = JDOHelper.getPersistenceManagerFactory("Parranderos");		
 		crearClasesSQL ();
-		
+
 		// Define los nombres por defecto de las tablas de la base de datos
 		tablas = new LinkedList<String> ();
 		tablas.add ("Hotel_sequence"); //No se que poner
@@ -187,7 +194,8 @@ public class PersistenciaHotelAndes
 		tablas.add ("TIPO_USUARIOS");
 		tablas.add ("USUARIOS");
 		tablas.add("CHECK");
-}
+		tablas.add("Convencion");
+	}
 
 	/**
 	 * Constructor privado, que recibe los nombres de las tablas en un objeto Json - Patrón SINGLETON
@@ -197,7 +205,7 @@ public class PersistenciaHotelAndes
 	{
 		crearClasesSQL ();
 		tablas = leerNombresTablas (tableConfig);
-		
+
 		String unidadPersistencia = tableConfig.get ("unidadPersistencia").getAsString ();
 		log.trace ("Accediendo unidad de persistencia: " + unidadPersistencia);
 		pmf = JDOHelper.getPersistenceManagerFactory (unidadPersistencia);
@@ -214,7 +222,7 @@ public class PersistenciaHotelAndes
 		}
 		return instance;
 	}
-	
+
 	/**
 	 * Constructor que toma los nombres de las tablas de la base de datos del objeto tableConfig
 	 * @param tableConfig - El objeto JSON con los nombres de las tablas
@@ -237,7 +245,7 @@ public class PersistenciaHotelAndes
 		pmf.close ();
 		instance = null;
 	}
-	
+
 	/**
 	 * Genera una lista con los nombres de las tablas de la base de datos
 	 * @param tableConfig - El objeto Json con los nombres de las tablas
@@ -252,10 +260,10 @@ public class PersistenciaHotelAndes
 		{
 			resp.add (nom.getAsString ());
 		}
-		
+
 		return resp;
 	}
-	
+
 	/**
 	 * Crea los atributos de clases de apoyo SQL
 	 */
@@ -274,6 +282,7 @@ public class PersistenciaHotelAndes
 		sqlUsuario = new SQLUsuario(this);
 		sqlCatalogo = new SQLCatalogo(this);
 		sqlCheck = new SQLCheck(this);
+		sqlConvencion = new SQLConvencion(this);
 
 		sqlUtil = new SQLUtil(this);
 	}
@@ -377,14 +386,18 @@ public class PersistenciaHotelAndes
 	public String darTablaUsuario() {
 		return tablas.get(13);
 	}
-	
+
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla de Check de Hotelandes
 	 */
 	public String darTablaCheck() {
 		return tablas.get(14);
 	}
-	
+
+	public String darTablaConvencion() {
+		return tablas.get(15);
+	}
+
 	/**
 	 * Transacción para el generador de secuencia de Parranderos
 	 * Adiciona entradas al log de la aplicación
@@ -392,11 +405,11 @@ public class PersistenciaHotelAndes
 	 */
 	private long nextval ()
 	{
-        long resp = sqlUtil.nextval (pmf.getPersistenceManager());
-        log.trace ("Generando secuencia: " + resp);
-        return resp;
-    }
-	
+		long resp = sqlUtil.nextval (pmf.getPersistenceManager());
+		log.trace ("Generando secuencia: " + resp);
+		return resp;
+	}
+
 	/**
 	 * Extrae el mensaje de la exception JDODataStoreException embebido en la Exception e, que da el detalle específico del problema encontrado
 	 * @param e - La excepción que ocurrio
@@ -413,7 +426,7 @@ public class PersistenciaHotelAndes
 		return resp;
 	}
 
-		
+
 	/**
 	 * Método que inserta, de manera transaccional, una tupla en la tabla GUSTAN
 	 * Adiciona entradas al log de la aplicación
@@ -424,31 +437,31 @@ public class PersistenciaHotelAndes
 	public TipoHabitacion adicionarTipoHabitacion(long id, String nombre, double costo, int capacidad) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long tuplasInsertadas = sqlTipoHabitacion.adicionarTipoHabitacion(pm, id, nombre, costo, capacidad);
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long tuplasInsertadas = sqlTipoHabitacion.adicionarTipoHabitacion(pm, id, nombre, costo, capacidad);
+			tx.commit();
 
-            return new TipoHabitacion(id, nombre, costo, capacidad);
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-        	return null;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return new TipoHabitacion(id, nombre, costo, capacidad);
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
+
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla GUSTAN, dados los identificadores de bebedor y bebida
 	 * @param idBebedor - El identificador del bebedor
@@ -458,36 +471,36 @@ public class PersistenciaHotelAndes
 	public long eliminarTipoHabitacion(long id) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlTipoHabitacion.eliminarTipoHabitacionPorId(pm, id)  ;      
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlTipoHabitacion.eliminarTipoHabitacionPorId(pm, id)  ;      
+			tx.commit();
 
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-        	return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
-	
+
+
 	public TipoHabitacion darTipoHabitacion(long idTipo) {
 		return sqlTipoHabitacion.darTipoHabitacionPorId(pmf.getPersistenceManager(), idTipo);
 	}
-	
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla GUSTAN
 	 * @return La lista de objetos GUSTAN, construidos con base en las tuplas de la tabla GUSTAN
@@ -496,7 +509,7 @@ public class PersistenciaHotelAndes
 	{
 		return sqlTipoHabitacion.darTiposHabitacion(pmf.getPersistenceManager());
 	}
-	
+
 	/* ****************************************************************
 	 * 			Métodos para manejar los TIPO_PLAN_CONSUMO
 	 *****************************************************************/
@@ -510,31 +523,31 @@ public class PersistenciaHotelAndes
 	public TipoPlanConsumo adicionarTipoPlanConsumo(long id, String nombre) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long tuplasInsertadas = sqlTipoPlanConsumo.adicionarTipoPlanConsumo(pm, id, nombre);
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long tuplasInsertadas = sqlTipoPlanConsumo.adicionarTipoPlanConsumo(pm, id, nombre);
+			tx.commit();
 
-            return new TipoPlanConsumo(id, nombre);
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-        	return null;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return new TipoPlanConsumo(id, nombre);
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
+
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla GUSTAN, dados los identificadores de bebedor y bebida
 	 * @param idBebedor - El identificador del bebedor
@@ -544,31 +557,31 @@ public class PersistenciaHotelAndes
 	public long eliminarTipoPlanConsumo(long id) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlTipoPlanConsumo.eliminarTipoPlanConsumoPorId(pm, id)  ;      
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlTipoPlanConsumo.eliminarTipoPlanConsumoPorId(pm, id)  ;      
+			tx.commit();
 
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-        	return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla GUSTAN
 	 * @return La lista de objetos GUSTAN, construidos con base en las tuplas de la tabla GUSTAN
@@ -577,7 +590,7 @@ public class PersistenciaHotelAndes
 	{
 		return sqlTipoPlanConsumo.darTiposPlanConsumo(pmf.getPersistenceManager());
 	}
-	
+
 	/* ****************************************************************
 	 * 			Métodos para manejar los TIPO_SERVICIO
 	 *****************************************************************/
@@ -591,31 +604,31 @@ public class PersistenciaHotelAndes
 	public TipoServicio adicionarTipoServicio(long id, String nombre) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long tuplasInsertadas = sqlTipoServicio.adicionarTipoServicio(pm, id, nombre);
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long tuplasInsertadas = sqlTipoServicio.adicionarTipoServicio(pm, id, nombre);
+			tx.commit();
 
-            return new TipoServicio(id, nombre);
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-        	return null;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return new TipoServicio(id, nombre);
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
+
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla GUSTAN, dados los identificadores de bebedor y bebida
 	 * @param idBebedor - El identificador del bebedor
@@ -625,31 +638,31 @@ public class PersistenciaHotelAndes
 	public long eliminarTipoServicio(long id) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlTipoServicio.eliminarTipoServicioPorId(pm, id)  ;      
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlTipoServicio.eliminarTipoServicioPorId(pm, id)  ;      
+			tx.commit();
 
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-        	return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla GUSTAN
 	 * @return La lista de objetos GUSTAN, construidos con base en las tuplas de la tabla GUSTAN
@@ -658,11 +671,11 @@ public class PersistenciaHotelAndes
 	{
 		return sqlTipoServicio.darTiposServicio(pmf.getPersistenceManager());
 	}
-	
+
 	/* ****************************************************************
 	 * 			Métodos para manejar los TIPO_USUARIO
 	 *****************************************************************/
-	
+
 	/**
 	 * Método que inserta, de manera transaccional, una tupla en la tabla GUSTAN
 	 * Adiciona entradas al log de la aplicación
@@ -673,31 +686,31 @@ public class PersistenciaHotelAndes
 	public TipoUsuario adicionarTipoUsuario(long id, String nombre) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long tuplasInsertadas = sqlTipoUsuario.adicionarTipoUsuario(pm, id, nombre);
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long tuplasInsertadas = sqlTipoUsuario.adicionarTipoUsuario(pm, id, nombre);
+			tx.commit();
 
-            return new TipoUsuario(id, nombre);
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-        	return null;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return new TipoUsuario(id, nombre);
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
+
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla GUSTAN, dados los identificadores de bebedor y bebida
 	 * @param idBebedor - El identificador del bebedor
@@ -707,31 +720,31 @@ public class PersistenciaHotelAndes
 	public long eliminarTipoUsuario (long id) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlTipoUsuario .eliminarTipoUsuarioPorId(pm, id)  ;      
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlTipoUsuario .eliminarTipoUsuarioPorId(pm, id)  ;      
+			tx.commit();
 
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-        	return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla GUSTAN
 	 * @return La lista de objetos GUSTAN, construidos con base en las tuplas de la tabla GUSTAN
@@ -740,11 +753,11 @@ public class PersistenciaHotelAndes
 	{
 		return sqlTipoUsuario.darTiposUsuario(pmf.getPersistenceManager());
 	}
-	
+
 	/* ****************************************************************
 	 * 			Métodos para manejar los HABITACIONES
 	 *****************************************************************/
-	
+
 	/**
 	 * M�todo que inserta, de manera transaccional, una tupla en la tabla Bebida
 	 * Adiciona entradas al log de la aplicaci�n
@@ -772,7 +785,7 @@ public class PersistenciaHotelAndes
 
 			log.trace ("insercionconsumo: " + id + ": " + tuplasInsertadas + " tuplas insertadas");
 			Habitacion habitacion = sqlHabitacion.darHabitacionPorId(pm, id);
-			
+
 			return  new Habitacion(tipo_habitacion, cuenta_habitacion, id);
 		}
 		catch (Exception e)
@@ -790,7 +803,7 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 	}
-	
+
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla Bebida, dado el identificador de la bebida
 	 * Adiciona entradas al log de la aplicación
@@ -800,31 +813,31 @@ public class PersistenciaHotelAndes
 	public long eliminarHabitacionPorId (long idHabitacion) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlHabitacion.eliminarHabitacionPorId (pm, idHabitacion);
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlHabitacion.eliminarHabitacionPorId (pm, idHabitacion);
+			tx.commit();
 
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-            return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
- 
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla Bebida
 	 * @return La lista de objetos Bebida, construidos con base en las tuplas de la tabla BEBIDA
@@ -833,10 +846,10 @@ public class PersistenciaHotelAndes
 	{
 		return sqlHabitacion.darHabitaciones(pmf.getPersistenceManager());
 	}
-	
-	
 
-	
+
+
+
 
 	/* ****************************************************************
 	 * 			M�todos para manejar los CONSUMOS
@@ -884,7 +897,7 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 	}
-	
+
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla Bebida, dado el identificador de la bebida
 	 * Adiciona entradas al log de la aplicación
@@ -894,31 +907,31 @@ public class PersistenciaHotelAndes
 	public long eliminarConsumoPorId (long idConsumo) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlConsumo.eliminarConsumoPorId (pm, idConsumo);
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlConsumo.eliminarConsumoPorId (pm, idConsumo);
+			tx.commit();
 
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-            return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
- 
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla Bebida
 	 * @return La lista de objetos Bebida, construidos con base en las tuplas de la tabla BEBIDA
@@ -927,8 +940,8 @@ public class PersistenciaHotelAndes
 	{
 		return sqlConsumo.darConsumos(pmf.getPersistenceManager());
 	}
-	
-	
+
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla Consuom con un identificador dado
 	 * @param idTipoBebida - El identificador del tipo de bebida
@@ -938,7 +951,7 @@ public class PersistenciaHotelAndes
 	{
 		return sqlConsumo.darConsumoPorId (pmf.getPersistenceManager(), idConsumo);
 	}
-	
+
 	/* ****************************************************************
 	 * 			Métodos para manejar los USUARIOS
 	 *****************************************************************/
@@ -995,29 +1008,29 @@ public class PersistenciaHotelAndes
 	public long eliminarUsuarioPorId (long id, String tipoDoc) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlUsuario.eliminarUsuarioPorId (pm, id, tipoDoc);
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlUsuario.eliminarUsuarioPorId (pm, id, tipoDoc);
+			tx.commit();
 
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-            return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 
 	/**
@@ -1040,7 +1053,7 @@ public class PersistenciaHotelAndes
 		return sqlUsuario.darUsuarioPorId (pmf.getPersistenceManager(), id, tipoDoc);
 	}
 
-	
+
 	/* ****************************************************************
 	 * 			M�todos para manejar los RESERVAS
 	 *****************************************************************/
@@ -1067,7 +1080,7 @@ public class PersistenciaHotelAndes
 			tx.begin();            
 			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, id, numPersonas, entrada, salida, pc.getId(), h.getId());
 			tx.commit();
- 
+
 			return new Reserva(id, entrada, salida, numPersonas);
 		}
 		catch (Exception e)
@@ -1085,7 +1098,7 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 	}
-	
+
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla Bebida, dado el identificador de la bebida
 	 * Adiciona entradas al log de la aplicación
@@ -1095,31 +1108,31 @@ public class PersistenciaHotelAndes
 	public long eliminarReservaPorId (long id) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlReserva.eliminarReservaPorId (pm, id);
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlReserva.eliminarReservaPorId (pm, id);
+			tx.commit();
 
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-            return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
- 
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla Bebida
 	 * @return La lista de objetos Bebida, construidos con base en las tuplas de la tabla BEBIDA
@@ -1128,8 +1141,8 @@ public class PersistenciaHotelAndes
 	{
 		return sqlReserva.darReservas(pmf.getPersistenceManager());
 	}
-	
-	
+
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla Consuom con un identificador dado
 	 * @param idTipoBebida - El identificador del tipo de bebida
@@ -1139,11 +1152,11 @@ public class PersistenciaHotelAndes
 	{
 		return sqlReserva.darReservaPorId (pmf.getPersistenceManager(), id);
 	}
-	
+
 	/* ****************************************************************
 	 * 			M�todos para manejar los SERVICIOS
 	 *****************************************************************/
-	
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla Bebida
 	 * @return La lista de objetos Bebida, construidos con base en las tuplas de la tabla BEBIDA
@@ -1152,8 +1165,8 @@ public class PersistenciaHotelAndes
 	{
 		return sqlServicio.darServicios(pmf.getPersistenceManager());
 	}
-	
-	
+
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla Consuom con un identificador dado
 	 * @param idTipoBebida - El identificador del tipo de bebida
@@ -1163,15 +1176,15 @@ public class PersistenciaHotelAndes
 	{
 		return sqlServicio.darServicioPorId (pmf.getPersistenceManager(), id);
 	}
-	
-	
+
+
 	public List<Object []> darReservaPorUsuario(long idUser)
 	{
 		return sqlReserva.darReservaUsuarios(pmf.getPersistenceManager(), idUser);
 	}
-	
-	
-	
+
+
+
 	/* ****************************************************************
 	 * 			M�todos para manejar los Check
 	 *****************************************************************/
@@ -1218,7 +1231,7 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 	}
-	
+
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla Bebida, dado el identificador de la bebida
 	 * Adiciona entradas al log de la aplicación
@@ -1228,31 +1241,31 @@ public class PersistenciaHotelAndes
 	public long eliminarCheckPorId (long idCheck) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlCheck.eliminarCheckPorId (pm, idCheck);
-            tx.commit();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlCheck.eliminarCheckPorId (pm, idCheck);
+			tx.commit();
 
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-            return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
- 
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla Bebida
 	 * @return La lista de objetos Bebida, construidos con base en las tuplas de la tabla BEBIDA
@@ -1261,8 +1274,8 @@ public class PersistenciaHotelAndes
 	{
 		return sqlCheck.darChecks(pmf.getPersistenceManager());
 	}
-	
-	
+
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla Consuom con un identificador dado
 	 * @param idTipoBebida - El identificador del tipo de bebida
@@ -1282,31 +1295,33 @@ public class PersistenciaHotelAndes
 	public long [] limpiarParranderos ()
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long [] resp = sqlUtil.limpiarHotelAndes(pm);
-            tx.commit ();
-            log.info ("Borrada la base de datos");
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-        	return new long[] {-1, -1, -1, -1, -1, -1, -1};
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
-		
-	}
-	
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long [] resp = sqlUtil.limpiarHotelAndes(pm);
+			tx.commit ();
+			log.info ("Borrada la base de datos");
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return new long[] {-1, -1, -1, -1, -1, -1, -1};
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 
- }
+	}
+
+
+
+
+}
