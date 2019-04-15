@@ -23,8 +23,7 @@ CREATE TABLE HABITACIONES
   num_hab NUMBER NOT NULL,
   ocupada NUMBER NOT NULL,
   cuenta_habitacion NUMBER NOT NULL,
-  tipo_habitacion NUMBER NOT NULL,
-  id_hotel NUMBER NOT NULL
+  tipo_habitacion NUMBER NOT NULL
 );
 
 CREATE TABLE HOTELES
@@ -45,8 +44,7 @@ CREATE TABLE PLANES_DE_CONSUMO
   fecha_inicio TIMESTAMP,
   fecha_final TIMESTAMP,
   tipo_plan_consumo NUMBER NOT NULL,
-  id_reserva NUMBER NOT NULL,
-  id_hotel NUMBER NOT NULL
+  id_reserva NUMBER NOT NULL
 );
 
 CREATE TABLE PRODUCTOS
@@ -61,7 +59,7 @@ CREATE TABLE PRODUCTOS
 CREATE TABLE RESERVAS
 ( 
   id NUMBER NOT NULL,
-  num_personas VARCHAR2(50) NOT NULL,
+  num_personas NUMBER NOT NULL,
   entrada TIMESTAMP NOT NULL,
   salida TIMESTAMP NOT NULL,
   check_in TIMESTAMP,
@@ -69,6 +67,16 @@ CREATE TABLE RESERVAS
   id_usuario NUMBER NOT NULL,
   tipo_documento_usuario VARCHAR(50) NOT NULL,
   id_habitacion NUMBER NOT NULL
+);
+
+CREATE TABLE RESERVAS_SERVICIOS
+( 
+  id NUMBER NOT NULL,
+  fecha_inicial TIMESTAMP NOT NULL,
+  fecha_final TIMESTAMP NOT NULL,
+  id_usuario NUMBER NOT NULL,
+  tipo_documento_usuario VARCHAR(50) NOT NULL,
+  id_servicio NUMBER NOT NULL
 );
 
 CREATE TABLE SERVICIOS
@@ -118,6 +126,5 @@ CREATE TABLE USUARIOS
   tipo_documento VARCHAR2(50) NOT NULL,
   nombre VARCHAR2(50) NOT NULL,
   apellido VARCHAR2(50) NOT NULL,
-  tipo_usuario NUMBER NOT NULL,
-  id_hotel NUMBER NOT NULL
+  tipo_usuario NUMBER NOT NULL
 );

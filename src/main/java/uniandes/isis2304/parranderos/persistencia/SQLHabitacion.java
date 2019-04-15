@@ -1,6 +1,5 @@
 package uniandes.isis2304.parranderos.persistencia;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -54,11 +53,11 @@ public class SQLHabitacion
 	 * @param idHotel - El identificador del hotel
 	 * @return El n�mero de tuplas insertadas
 	 */
-	public long adicionarHabitacion(PersistenceManager pm, int numHab, int ocupada, double cuenta_habitacion, long tipo_habitacion, long id_hotel)
+	public long adicionarHabitacion(PersistenceManager pm, int numHab, int ocupada, double cuenta_habitacion, long tipo_habitacion)
 	{
 		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaHabitacion() + "(num_hab, ocupada, cuenta_habitacion, "
-				+ "tipo_habitacion, id_hotel) values(?, ?, ?,?, ?)");
-		q.setParameters(numHab, ocupada,cuenta_habitacion, tipo_habitacion, id_hotel);
+				+ "tipo_habitacion) values(?, ?, ?, ?)");
+		q.setParameters(numHab, ocupada,cuenta_habitacion, tipo_habitacion);
 		return (long)q.executeUnique();
 	}
 	

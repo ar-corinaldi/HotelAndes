@@ -51,10 +51,10 @@ public class SQLUsuario {
 	 * @return El número de tuplas insertadas
 	 */
 	public long adicionarUsuario (PersistenceManager pm, long num_identidad,  String tipo_documento,
-			String nombre, String apellido, long tipo_usuario, long id_hotel) 
+			String nombre, String apellido, long tipo_usuario) 
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaUsuario() + "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_hotel) values (?, ?, ?, ?, ?, ?)");
-        q.setParameters(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_hotel);
+        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaUsuario() + "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario) values (?, ?, ?, ?, ?)");
+        q.setParameters(num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
         return (long) q.executeUnique();
 	}
 	

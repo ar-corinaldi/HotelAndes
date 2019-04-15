@@ -54,10 +54,10 @@ public class SQLPlanConsumo {
 	 * @return El número de tuplas insertadas
 	 */
 	public long adicionarPlanConsumo (PersistenceManager pm, long id,	String descripcion, double descuento,	Date fecha_inicio,
-			Date fecha_final, long tipo_plan_consumo, long id_reserva, long id_hotel) 
+			Date fecha_final, long tipo_plan_consumo, long id_reserva ) 
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaPlanConsumo() + "(id, descripcion, descuento, fecha_inicio, fecha_final, tipo_plan_consumo, id_reserva, id_hotel) values (?, ?, ?, ?, ?, ?, ?, ?)");
-        q.setParameters(id,	descripcion, descuento,	fecha_inicio, fecha_final, tipo_plan_consumo, id_reserva, id_hotel);
+        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaPlanConsumo() + "(id, descripcion, descuento, fecha_inicio, fecha_final, tipo_plan_consumo, id_reserva) values (?, ?, ?, ?, ?, ?, ?)");
+        q.setParameters(id,	descripcion, descuento,	fecha_inicio, fecha_final, tipo_plan_consumo, id_reserva);
         return (long) q.executeUnique();
 	}
 	

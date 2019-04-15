@@ -252,11 +252,12 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			String numPersonas = JOptionPane.showInputDialog (this, "tipo doc?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
 			String entrada = JOptionPane.showInputDialog (this, "fecha entrada?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
 			String salida = JOptionPane.showInputDialog (this, "fecha salida?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-			String pc = JOptionPane.showInputDialog (this, "plan consumo id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-			String idHab = JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+			String idUsuario = JOptionPane.showInputDialog (this, "usuario id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+			String tipoDoc = JOptionPane.showInputDialog(this, "tipo documento de usuario?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+			String numHab = JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
 			if (id != null)
 			{
-				VOReserva user = parranderos.adicionarReserva(Long.valueOf(id), Integer.valueOf(numPersonas), Timestamp.valueOf(entrada), Timestamp.valueOf(salida), null, idHab);
+				VOReserva reserva = parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, idUsuario, tipoDoc, numHab);
 				if (user == null)
 				{
 					throw new Exception ("No se pudo crear un tipo de bebida con nombre: " + id);

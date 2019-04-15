@@ -60,10 +60,10 @@ public class SQLServicio {
 	 */
 	public long adicionarServicio (PersistenceManager pm, long id, String nombre, String descripcion, 
 			double costo, int cargadoHabitacion,  int capacidad, int reservado, Timestamp fechaInicial,
-			Timestamp fechaFinal, long idHotel, long tipoServicio) 
+			Timestamp fechaFinal, long tipoServicio) 
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaServicio() + "(id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicios, id_hotel) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		q.setParameters(id, nombre, descripcion, costo, cargadoHabitacion, capacidad, reservado, fechaInicial, fechaFinal, idHotel, tipoServicio );
+		Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaServicio() + "(id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicios) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		q.setParameters(id, nombre, descripcion, costo, cargadoHabitacion, capacidad, reservado, fechaInicial, fechaFinal, tipoServicio );
 		return (long) q.executeUnique();
 	}
 
