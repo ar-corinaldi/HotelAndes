@@ -1,0 +1,6 @@
+SELECT ser.id, ser.nombre,COUNT(*)
+FROM Servicios ser 
+INNER JOIN Consumos con ON ser.id = con.id_servicio
+WHERE con.fecha BETWEEN '' AND ''
+GROUP BY ser.id, ser.nombre
+FETCH FIRST 20 ROW ONLY;

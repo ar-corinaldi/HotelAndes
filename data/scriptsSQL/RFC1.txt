@@ -1,0 +1,6 @@
+SELECT hab.id, SUM(ser.costo)
+FROM Servicios ser 
+INNER JOIN Consumos con ON ser.id = con.id_servicio
+INNER JOIN Habitaciones hab ON hab.id = con.id_habitacion
+WHERE con.fecha BETWEEN '20190101 00:00:00' AND '20191230 00:00:00'
+GROUP BY hab.id;

@@ -1,0 +1,49 @@
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (1, 'piscina');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (2, 'gimnasio');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (3, 'internet');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (4, 'bar');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (5, 'restaurante');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (6, 'supermercado');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (7, 'tienda');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (8, 'spa');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (9, 'lavado/planchado/embolada');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (10, 'utensilio');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (11, 'salon reunion');
+INSERT INTO TIPO_SERVICIOS (id, nombre) VALUES (12, 'salon conferencia');
+
+
+
+
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (1, 'piscina para ninios', 'piscina de los ninios, profundidad 1 mt', 0, 0, 100, 0, null, null, 1, 1);
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (2, 'Area 51', 'Construyendo maquinas, 10 maquinas', 0, 0, 100, 0, null, null, 2, 1);
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (3, 'Recepcion-WIFI', null, 0, 0, 50, 0, null, null, 3, 1);
+
+--Productos para un bar--
+INSERT INTO PRODUCTOS (id,  nombre, descripcion, precio) VALUES (1, 'chocolate jet', null, 3);
+INSERT INTO PRODUCTOS (id,  nombre, descripcion, precio) VALUES (2, 'corona', null, 10);
+INSERT INTO PRODUCTOS (id,  nombre, descripcion, precio) VALUES (3, 'guaro', null, 40);
+--Bar--
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (4, 'Clandestino', null, 0, 0, 100, 0, null, null, 4, 1);
+--Productos en el bar--
+INSERT INTO CATALOGO (id_servicio, id_producto) VALUES (4, 1);
+INSERT INTO CATALOGO (id_servicio, id_producto) VALUES (4, 2);
+INSERT INTO CATALOGO (id_servicio, id_producto) VALUES (4, 3);
+
+--Productos para un restaurante--
+INSERT INTO PRODUCTOS (id,  nombre, descripcion, precio) VALUES (4, 'Cocacola', null, 3);
+INSERT INTO PRODUCTOS (id,  nombre, descripcion, precio) VALUES (5, 'sopa', null, 10);
+INSERT INTO PRODUCTOS (id,  nombre, descripcion, precio) VALUES (6, 'pato a la naranja', null, 40);
+--Restaurante--
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (5, 'Andres Carne de Res', null, 0, 0, 50, 0, null, null, 5, 1);
+--Productos en el bar--
+INSERT INTO CATALOGO (id_servicio, id_producto) VALUES (5, 4);
+INSERT INTO CATALOGO (id_servicio, id_producto) VALUES (5, 5);
+INSERT INTO CATALOGO (id_servicio, id_producto) VALUES (5, 6);
+
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (6, 'Supermercado Los Montes', null, 0, 0, 50, 0, null, null, 6, 1);
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (7, 'HUGO BOS', null, 0, 0, 50, 0, null, null, 7, 1);
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (8, 'SPA MASAJES', null, 0, 0, 50, 0, null, null, 8, 1);
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (9, 'LAVADO TODO A MIL', 0, 0, 10, 0, null, null, 9, 1);
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (10, 'UTENCILIOS', null, 0, 0, 50, 0, null, null, 10, 1);
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (11, 'SALAS DE CONFERENCIA', null, 0, 0, 50, 0, null, null, 11, 1);
+INSERT INTO SERVICIOS (id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicio, id_hotel) VALUES (12, 'SALAS DE REUNION', null, 0, 0, 50, 0, null, null, 12, 1);
