@@ -10,14 +10,14 @@ public class Convencion {
 	private int numPersonas;
 	private String nombre;
 	
-	private Usuario organizador;
+	private Usuarios organizador;
 	
-	private ArrayList<Usuario> clientes;
+	private ArrayList<Usuarios> clientes;
 	
 	private PlanConsumo plan;
 
 	
-	public Convencion(int id, int numPersonas, String nombre, Usuario organizador, ArrayList<Usuario> clientes, PlanConsumo plan) {
+	public Convencion(int id, int numPersonas, String nombre, Usuarios organizador, ArrayList<Usuarios> clientes, PlanConsumo plan) {
 		this.id = id;
 		this.numPersonas = numPersonas;
 		this.nombre = nombre;
@@ -42,11 +42,11 @@ public class Convencion {
 		return numPersonas;
 	}
 
-	public Usuario getOrganizador() {
+	public Usuarios getOrganizador() {
 		return organizador;
 	}
 
-	public ArrayList<Usuario> getClientes() {
+	public ArrayList<Usuarios> getClientes() {
 		return clientes;
 	}
 

@@ -5,7 +5,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import uniandes.isis2304.parranderos.negocio.Usuario;
+import uniandes.isis2304.parranderos.negocio.Usuarios;
 
 public class SQLUsuario {
 	/* ****************************************************************
@@ -78,17 +78,21 @@ public class SQLUsuario {
 	 * @param num_identidad - El numero de identidad del usuario	 
 	 * @return El objeto Usuario que tiene el identificador dado
 	 */
-	public Usuario darUsuarioPorId (PersistenceManager pm, long num_identidad, String tipoDoc) 
+	public Usuarios darUsuarioPorId (PersistenceManager pm, long num_identidad, String tipo_documento) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaUsuario () + " WHERE num_identidad = ? AND tipo_documento = ?");
-		q.setResultClass(Usuario.class);
-		q.setParameters(num_identidad, tipoDoc);
-		return (Usuario) q.executeUnique();
+		System.out.println(num_identidad);
+		System.out.println(tipo_documento);
+		System.out.println();
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "USUARIOS" + " WHERE num_identidad = ? AND tipo_documento = ?");
+		
+		q.setResultClass(Usuarios.class);
+		q.setParameters(num_identidad, tipo_documento);
+		return (Usuarios) q.executeUnique();
 	}
 	
-	public List<Usuario> darUsuarios(PersistenceManager pm){
+	public List<Usuarios> darUsuarios(PersistenceManager pm){
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaUsuario());
-		q.setResultClass(Usuario.class);
-		return (List<Usuario>) q.executeList();
+		q.setResultClass(Usuarios.class);
+		return (List<Usuarios>) q.executeList();
 	}
 }

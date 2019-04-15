@@ -23,7 +23,7 @@ public class Reserva implements VOReserva{
 	
 	private int numPersonas;
 
-	private Usuario usuario;
+	private Usuarios usuario;
 
 	private Habitacion habitacion;
 	
@@ -34,7 +34,7 @@ public class Reserva implements VOReserva{
 	public Reserva() {
 		salida = new Timestamp(0);
 		entrada = new Timestamp(0);
-		usuario = new Usuario();
+		usuario = new Usuarios();
 		habitacion= new Habitacion();
 		setNumPersonas(0);
 		id = 0;
@@ -43,7 +43,7 @@ public class Reserva implements VOReserva{
 		
 	}
 
-	public Reserva(long id, int numPersonas,Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuario pUsuario, Habitacion pHabitacion) {
+	public Reserva(long id, int numPersonas,Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuarios pUsuario, Habitacion pHabitacion) {
 		super();
 		this.id = id;
 		this.entrada = entrada;
@@ -77,11 +77,11 @@ public class Reserva implements VOReserva{
 
 	
 
-	public Usuario getUsuarios() {
+	public Usuarios getUsuarios() {
 		return usuario;
 	}
 
-	public void setIdCliente(Usuario usuarios) {
+	public void setIdCliente(Usuarios usuarios) {
 		this.usuario = usuarios;
 	}
 

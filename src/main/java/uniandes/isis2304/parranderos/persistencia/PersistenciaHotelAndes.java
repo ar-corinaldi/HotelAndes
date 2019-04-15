@@ -36,7 +36,7 @@ import uniandes.isis2304.parranderos.negocio.TipoHabitacion;
 import uniandes.isis2304.parranderos.negocio.TipoPlanConsumo;
 import uniandes.isis2304.parranderos.negocio.TipoServicio;
 import uniandes.isis2304.parranderos.negocio.TipoUsuario;
-import uniandes.isis2304.parranderos.negocio.Usuario;
+import uniandes.isis2304.parranderos.negocio.Usuarios;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -961,7 +961,7 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario) 
+	public Usuarios adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
@@ -971,7 +971,7 @@ public class PersistenciaHotelAndes
 			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
 			tx.commit();
 
-			return new Usuario(tipo_documento, num_identidad, nombre, apellido, tipo_usuario);
+			return new Usuarios(tipo_documento, num_identidad, nombre, apellido, tipo_usuario);
 			}
 		catch (Exception e)
 		{
@@ -1028,7 +1028,7 @@ public class PersistenciaHotelAndes
 	 * Método que consulta todas las tuplas en la tabla Bebida
 	 * @return La lista de objetos Bebida, construidos con base en las tuplas de la tabla BEBIDA
 	 */
-	public List<Usuario> darUsuarios ()
+	public List<Usuarios> darUsuarios ()
 	{
 		return sqlUsuario.darUsuarios(pmf.getPersistenceManager());
 	}
@@ -1039,9 +1039,11 @@ public class PersistenciaHotelAndes
 	 * @param idTipoBebida - El identificador del tipo de bebida
 	 * @return El objeto TipoBebida, construido con base en las tuplas de la tabla TIPOBEBIDA con el identificador dado
 	 */
-	public Usuario darUsuarioPorId (long id, String tipoDoc)
+	public Usuarios darUsuarioPorId (long id, String tipoDoc)
 	{
-		return sqlUsuario.darUsuarioPorId (pmf.getPersistenceManager(), id, tipoDoc);
+		Usuarios usuario = sqlUsuario.darUsuarioPorId (pmf.getPersistenceManager(), id, tipoDoc);
+		System.out.println(usuario);
+		return usuario;
 	}
 
 
@@ -1062,7 +1064,7 @@ public class PersistenciaHotelAndes
 	 * @param gradoAlcohol - El grado de alcohol de la bebida (mayor que 0)
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuario user, Habitacion hab) 
+	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuarios user, Habitacion hab) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();

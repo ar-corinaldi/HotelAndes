@@ -58,7 +58,7 @@ public class HotelAndes
 
 	private String ciudad;
 
-	private List<Usuario> usuarios;
+	private List<Usuarios> usuarios;
 
 	private List<Habitacion> habitaciones;
 
@@ -130,11 +130,11 @@ public class HotelAndes
 		this.ciudad = ciudad;
 	}
 
-	public List<Usuario> getUsuarios() {
+	public List<Usuarios> getUsuarios() {
 		return usuarios;
 	}
 
-	public void setUsuarios(List<Usuario> usuarios) {
+	public void setUsuarios(List<Usuarios> usuarios) {
 		this.usuarios = usuarios;
 	}
 
@@ -171,11 +171,22 @@ public class HotelAndes
 				+ servicios + "]";
 	}
 
+	/* ****************************************************************
+	 * 			RESERVA
+	 *****************************************************************/
+	
+	
+	
+	
+	
+	/* ****************************************************************
+	 * 			Atributos
+	 *****************************************************************/
 	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long id_servicio, long id_habitacion) throws Exception
 	{
 		//TODO revisar
 		Consumo con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, id_servicio, id_habitacion);
-		Usuario user = pp.darUsuarioPorId(id_habitacion,tipo_documento_usuario);
+		Usuarios user = pp.darUsuarioPorId(id_habitacion,tipo_documento_usuario);
 		Servicio ser = pp.darServicioPorId(id_servicio);
 		if( user != null /**&& ser.isReservado()**/ ){
 			user.getConsumos().add(con);
@@ -188,11 +199,13 @@ public class HotelAndes
 		return con;
 	}
 	
-	public Usuario darUsuario(long id, String tipoDoc) throws Exception{
-		if( !(tipoDoc == Usuario.CEDULA || tipoDoc == Usuario.PASAPORTE) ){
+	public Usuarios darUsuario(long id, String tipoDoc) throws Exception{
+		if( tipoDoc == Usuarios.CEDULA || tipoDoc == Usuarios.PASAPORTE ){
 			throw new Exception("No existe tal tipo de documento "+tipoDoc);
 		}
-		return pp.darUsuarioPorId(id, tipoDoc);
+		Usuarios usuario = pp.darUsuarioPorId(id, tipoDoc);
+		System.out.println(usuario);
+		return usuario;
 	}
 
 	/**
@@ -201,18 +214,18 @@ public class HotelAndes
 	 * @param nombre - El nombre del tipo de bebida
 	 * @return El objeto TipoBebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario)
+	public Usuarios adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario)
 	{
-		Usuario usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
+		Usuarios usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
 		return usuario;
 	}
 
 	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab) throws Exception{
 		Habitacion habitacion = pp.darHabitacionPorId(numHab);
 		if( habitacion.isOcupada() ){
-			throw new Exception( "Habitacion " + habitacion.getNumHabitacion() +"ya esta ocupada" );
+			throw new Exception( "Habitacion " + habitacion.getNumHabitacion() +" ya esta ocupada" );
 		}
-		Usuario user = pp.darUsuarioPorId(idUsuario, tipoDoc);
+		Usuarios user = pp.darUsuarioPorId(idUsuario, tipoDoc);
 		
 		Reserva reserva = pp.adicionarReserva(idUsuario, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion);
 		return reserva;
@@ -241,6 +254,7 @@ public class HotelAndes
 	public Servicio darServicio(long idServicio) {
 		return pp.darServicioPorId(idServicio);
 	}
+	
 
 	/* ****************************************************************
 	 * 			Métodos para administración

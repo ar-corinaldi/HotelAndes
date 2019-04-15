@@ -49,7 +49,7 @@ import com.google.gson.stream.JsonReader;
 
 import uniandes.isis2304.parranderos.negocio.Habitacion;
 import uniandes.isis2304.parranderos.negocio.HotelAndes;
-import uniandes.isis2304.parranderos.negocio.Usuario;
+import uniandes.isis2304.parranderos.negocio.Usuarios;
 import uniandes.isis2304.parranderos.negocio.VOReserva;
 import uniandes.isis2304.parranderos.negocio.VOUsuario;
 
@@ -79,11 +79,11 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	 */
 	private static final String CONFIG_TABLAS = "./src/main/resources/config/TablasBD_A.json"; 
 	
-	public static final int RECEPCIONISTA = 3;
+	public static final long RECEPCIONISTA = 3;
 	
-	public static final int EMPLEADO = 4;
+	public static final long EMPLEADO = 4;
 
-	public static final int CLIENTE = 5;
+	public static final long CLIENTE = 5;
 
 	
 	/* ****************************************************************
@@ -296,14 +296,20 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
     
     public void adicionarReserva(){
     	System.out.println("Adivionar Reserva");
-    	String id = JOptionPane.showInputDialog (this, "id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-		String numPersonas = JOptionPane.showInputDialog (this, "tipo doc?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-		String entrada = JOptionPane.showInputDialog (this, "fecha entrada?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-		String salida = JOptionPane.showInputDialog (this, "fecha salida?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-		String idUsuario = JOptionPane.showInputDialog (this, "usuario id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-		String tipoDoc = JOptionPane.showInputDialog(this, "tipo documento de usuario?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-		String numHab = JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+    	Usuarios user = verificarUsuario(CLIENTE);
     	
+//    	long id = Long.valueOf(JOptionPane.showInputDialog (this, "id?", "Adicionar reserva", JOptionPane.OK_OPTION));
+//		String numPersonas = JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION);
+//		String entrada = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2016-11-16 06:00:00.00)", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+//		String salida = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2016-13-16 12:00:00.00)", "Adicionar reserva", JOptionPane.OK_OPTION);
+//		String idUsuario = JOptionPane.showInputDialog (this, "usuario id?", "Adicionar reserva", JOptionPane.OK_OPTION);
+//		String tipoDoc = JOptionPane.showInputDialog(this, "tipo documento de usuario?", "Adicionar reserva", JOptionPane.OK_OPTION);
+//		String numHab = JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.OK_OPTION);
+//		try {
+//			//parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, idUsuario, tipoDoc, numHab);
+//		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+//		}
     }
     
     public void adicionarServicio(){
@@ -312,28 +318,30 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
     
     public void registrarLlegadaCliente(){
     	System.out.println("Registrar Llegada Cliente");
-    	verificarUsuario(RECEPCIONISTA);
+    	Usuarios recepcionista = verificarUsuario(RECEPCIONISTA);
+    	Usuarios cliente = verificarUsuario(CLIENTE);
+    	
     }
 
     public void registrarConsumoCliente(){
     	System.out.println("Registrar Consumo Cliente");
     }
     
-    public boolean verificarUsuario( int tipoUsuario ){
-    	boolean sePuede = false;
-		String numIden = JOptionPane.showInputDialog (this, "numero identificacion?", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
-		String tipoDoc = JOptionPane.showInputDialog (this, "tipo documento?\ncedula\npasaporte", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
+    public Usuarios verificarUsuario( long tipoUsuario ){
+    	Usuarios user =null;
+		String numIden = JOptionPane.showInputDialog (this, "numero identificacion?", "Verificacion Usuario", JOptionPane.OK_OPTION);
+		String tipoDoc = JOptionPane.showInputDialog (this, "tipo documento?\ncedula\npasaporte", "Verificacion Usuario", JOptionPane.OK_OPTION);
 		try {
-			Usuario user = parranderos.darUsuario(Integer.valueOf(numIden), tipoDoc);
-			if( user != null && user.getTipoUsuario() == RECEPCIONISTA ){
-				sePuede=true;
+			user = parranderos.darUsuario(Integer.valueOf(numIden), tipoDoc);
+			if( user == null && user.getTipoUsuario() == tipoUsuario){
+				JOptionPane.showMessageDialog(this, "Error solo los recepcionistas tienen acceso o no esta registrado en la base de datos");
 			}
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 		}
-    	return sePuede;
+    	return user;
     }
 	/* ****************************************************************
 	 * 			Métodos administrativos
@@ -578,7 +586,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		String evento = pEvento.getActionCommand( );		
         try 
         {
-			Method req = InterfazHotelAndesApp.class.getMethod ( evento );			
+			Method req = InterfazHotelAndesApp.class.getMethod ( evento );	
+			System.out.println(evento);
 			req.invoke ( this );
 		} 
         catch (Exception e) 

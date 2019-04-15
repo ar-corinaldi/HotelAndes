@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Usuario implements VOUsuario{
+public class Usuarios implements VOUsuario{
 	
 	/******************************************************************************
 	 * CONSTANTES
@@ -38,7 +38,7 @@ public class Usuario implements VOUsuario{
 	 * CONSTRUCTOR
 	 ******************************************************************************/
 
-	public Usuario() {
+	public Usuarios() {
 		tipoDoc = "";
 		numeroDoc = 0;
 		nombre = "";
@@ -47,7 +47,7 @@ public class Usuario implements VOUsuario{
 		setConsumos(new ArrayList<>());
 	}
 	
-	public Usuario(String tipoDoc, Long numeroDoc, String nombre, String apellido, long tipoUsuario) {
+	public Usuarios(String tipoDoc, Long numeroDoc, String nombre, String apellido, long tipoUsuario) {
 		super();
 		this.tipoDoc = tipoDoc;
 		this.numeroDoc = numeroDoc;

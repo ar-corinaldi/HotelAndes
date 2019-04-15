@@ -13,7 +13,7 @@ public interface VOReserva {
 	
 	public int getNumPersonas();
 	
-	public Usuario getUsuarios();
+	public Usuarios getUsuarios();
 	
 	public Habitacion getHabitacion();
 	
