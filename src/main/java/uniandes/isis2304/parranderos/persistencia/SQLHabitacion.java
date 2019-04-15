@@ -67,7 +67,7 @@ public class SQLHabitacion
 	 * @param idHotel - El identificador del hotel
 	 * @return EL n�mero de tuplas eliminadas
 	 */
-	public long eliminarHabitacionPorId (PersistenceManager pm, int num_hab)
+	public long eliminarHabitacionPorId (PersistenceManager pm, long num_hab)
 	{
        Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaHabitacion() + " WHERE num_hab = ?");
        q.setParameters(num_hab);

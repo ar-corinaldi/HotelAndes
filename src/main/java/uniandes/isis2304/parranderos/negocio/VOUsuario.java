@@ -3,14 +3,14 @@ package uniandes.isis2304.parranderos.negocio;
 
 public interface VOUsuario {
 
-	public String getTipoDoc();
+	public String getTipo_documento();
 	
-	public Long getNumeroDoc();
+	public Long getNum_identidad();
 	
 	public String getNombre();
 	
 	public String getApellido();
 	
-	public Long getTipoUsuario();
+	public Long getTipo_usuario();
 	
 }

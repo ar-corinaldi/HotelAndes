@@ -91,8 +91,7 @@ public class SQLUsuario {
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + "USUARIOS" + " WHERE num_identidad = "+num_identidad 
 				+ " AND tipo_documento = '"+tipo_documento+"'");
 		q.setResultClass(Usuarios.class);
-		Object o = q.execute();
-		System.out.println(o);
+		Object o = q.executeUnique();
 		return (Usuarios) o;
 	}
 

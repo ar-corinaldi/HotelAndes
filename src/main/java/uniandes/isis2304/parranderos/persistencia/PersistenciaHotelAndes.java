@@ -788,14 +788,18 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 	}
-
+	
+	public void ocuparHabitacion( Habitacion pHab ){
+		
+	}
+	
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla Bebida, dado el identificador de la bebida
 	 * Adiciona entradas al log de la aplicación
 	 * @param idBebida - El identificador de la bebida
 	 * @return El número de tuplas eliminadas. -1 si ocurre alguna Excepción
 	 */
-	public long eliminarHabitacionPorId (int idHabitacion) 
+	public long eliminarHabitacionPorId (long idHabitacion) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
@@ -972,7 +976,7 @@ public class PersistenciaHotelAndes
 			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
 			System.out.println(tuplasInsertadas);
 			tx.commit();
-			Usuarios usuario = new Usuarios(tipo_documento, num_identidad, nombre, apellido, tipo_usuario);
+			Usuarios usuario = new Usuarios(num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
 			System.out.println(usuario);
 			return usuario;
 		}
@@ -1073,7 +1077,7 @@ public class PersistenciaHotelAndes
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, id, numPersonas, entrada, salida, checkIn, checkOut, user.getNumeroDoc(), user.getTipoDoc(), hab.getNumHabitacion());
+			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, id, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab());
 			tx.commit();
 
 			return new Reserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, hab);

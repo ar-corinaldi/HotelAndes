@@ -22,15 +22,15 @@ public class Usuarios implements VOUsuario{
 	/**
 	 * (Cedula, Pasaporte)
 	 */
-	private String tipoDoc;
+	private String tipo_documento;
 
-	private long numeroDoc;
+	private long num_identidad;
 
 	private String nombre;
 
 	private String apellido;
 	
-	private long tipoUsuario;
+	private long tipo_usuario;
 	
 	private List<Consumo> consumos;
 
@@ -39,21 +39,21 @@ public class Usuarios implements VOUsuario{
 	 ******************************************************************************/
 
 	public Usuarios() {
-		tipoDoc = "";
-		numeroDoc = 0;
+		tipo_documento = "";
+		num_identidad = 0;
 		nombre = "";
 		apellido="";
-		tipoUsuario = 0;
+		tipo_usuario = 0;
 		setConsumos(new ArrayList<>());
 	}
 	
-	public Usuarios(String tipoDoc, Long numeroDoc, String nombre, String apellido, long tipoUsuario) {
+	public Usuarios(Long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario) {
 		super();
-		this.tipoDoc = tipoDoc;
-		this.numeroDoc = numeroDoc;
+		this.tipo_documento = tipo_documento;
+		this.num_identidad = num_identidad;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.tipoUsuario = tipoUsuario;
+		this.tipo_usuario = tipo_usuario;
 		setConsumos(new ArrayList<>());
 	}
 
@@ -61,20 +61,20 @@ public class Usuarios implements VOUsuario{
 	 * METODOS
 	 ******************************************************************************/
 
-	public String getTipoDoc() {
-		return tipoDoc;
+	public String getTipo_documento() {
+		return tipo_documento;
 	}
 
-	public void setTipoDoc(String tipoDoc) {
-		this.tipoDoc = tipoDoc;
+	public void setTipo_documento(String tipo_documento) {
+		this.tipo_documento = tipo_documento;
 	}
 
-	public Long getNumeroDoc() {
-		return numeroDoc;
+	public Long getNum_identidad() {
+		return num_identidad;
 	}
 
-	public void setNumeroDoc(Long numeroDoc) {
-		this.numeroDoc = numeroDoc;
+	public void setNum_identidad(Long num_identidad) {
+		this.num_identidad = num_identidad;
 	}
 
 	public String getNombre() {
@@ -95,7 +95,7 @@ public class Usuarios implements VOUsuario{
 
 	@Override
 	public String toString() {
-		return "Usuario [tipoDoc=" + tipoDoc + ", numeroDoc=" + numeroDoc
+		return "Usuario [tipo_documento=" + tipo_documento + ", num_identidad=" + num_identidad
 				+ ", nombre=" + nombre + ", apellido=" + apellido
 				+ ", consumos=" + consumos + "]";
 	}
@@ -108,12 +108,12 @@ public class Usuarios implements VOUsuario{
 		this.consumos = consumos;
 	}
 
-	public Long getTipoUsuario() {
-		return tipoUsuario;
+	public Long getTipo_usuario() {
+		return tipo_usuario;
 	}
 
-	public void setTipoUsuario(long tipoUsuario) {
-		this.tipoUsuario = tipoUsuario;
+	public void setTipo_usuario(long tipo_usuario) {
+		this.tipo_usuario = tipo_usuario;
 	}
 	
 	

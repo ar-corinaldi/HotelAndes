@@ -223,10 +223,10 @@ public class HotelAndes
 	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab) throws Exception{
 		Habitacion habitacion = pp.darHabitacionPorId(numHab);
 		if( habitacion.isOcupada() ){
-			throw new Exception( "Habitacion " + habitacion.getNumHabitacion() +" ya esta ocupada" );
+			throw new Exception( "Habitacion " + habitacion.getNum_hab() +" ya esta ocupada" );
 		}
 		Usuarios user = pp.darUsuarioPorId(idUsuario, tipoDoc);
-		
+		pp.ocuparHabitacion(habitacion);
 		Reserva reserva = pp.adicionarReserva(idUsuario, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion);
 		return reserva;
 	}

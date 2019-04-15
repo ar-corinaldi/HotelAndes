@@ -294,14 +294,14 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		Usuarios user = verificarUsuario(CLIENTE);
 
 		    	long id = Long.valueOf(JOptionPane.showInputDialog (this, "id?", "Adicionar reserva", JOptionPane.OK_OPTION));
-				String numPersonas = JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION);
-				String entrada = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2016-11-16 06:00:00.00)", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-				String salida = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2016-13-16 12:00:00.00)", "Adicionar reserva", JOptionPane.OK_OPTION);
-				String idUsuario = JOptionPane.showInputDialog (this, "usuario id?", "Adicionar reserva", JOptionPane.OK_OPTION);
-				String tipoDoc = JOptionPane.showInputDialog(this, "tipo documento de usuario?", "Adicionar reserva", JOptionPane.OK_OPTION);
-				String numHab = JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.OK_OPTION);
+				int numPersonas = Integer.valueOf(JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION));
+				String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+				String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 20169-09-15)", "Adicionar reserva", JOptionPane.OK_OPTION);
+				long numHab = Long.valueOf(JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.OK_OPTION));
 				try {
-					//parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, idUsuario, tipoDoc, numHab);
+					Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
+					Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
+					parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, user.getNum_identidad(), user.getTipo_documento(), numHab);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 				}
@@ -328,7 +328,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		String tipoDoc = JOptionPane.showInputDialog (this, "tipo documento?\ncedula\npasaporte", "Verificacion Usuario", JOptionPane.OK_OPTION);
 		try {
 			user = parranderos.darUsuario(Integer.valueOf(numIden), tipoDoc);
-			if( user == null && user.getTipoUsuario() == tipoUsuario){
+			if( user == null && user.getTipo_usuario() == tipoUsuario){
 				JOptionPane.showMessageDialog(this, "Error solo los recepcionistas tienen acceso o no esta registrado en la base de datos");
 			}
 		} catch (NumberFormatException e) {

@@ -8,13 +8,13 @@ public class Habitacion implements VOHabitacion{
 						
 
 	
-	private long tipoHabitacion;
+	private long tipo_habitacion;
 
-	private double cuentaHab;
+	private double cuenta_habitacion;
 	
 	private boolean ocupada;
 	
-	private long numHabitacion;
+	private long num_hab;
 
 	
 
@@ -23,47 +23,22 @@ public class Habitacion implements VOHabitacion{
 	 ******************************************************************************/
 	
 	public Habitacion() {
-		tipoHabitacion = 0;
-		cuentaHab = 0.0;
-		numHabitacion = 0;
+		tipo_habitacion = 0;
+		cuenta_habitacion = 0.0;
+		num_hab = 0;
 		setOcupada(false);
 	}
 	
 	public Habitacion( long id, long tipoHabitacion,  double cuentaHab) {
-		this.tipoHabitacion = tipoHabitacion;
-		this.cuentaHab = cuentaHab;
-		this.numHabitacion = id;
+		this.tipo_habitacion = tipoHabitacion;
+		this.cuenta_habitacion = cuentaHab;
+		this.num_hab = id;
 		setOcupada(false);
 	}
 
 	/******************************************************************************
 	 * METODOS
 	 ******************************************************************************/
-
-	@Override
-	public double getCuentaHab() {
-		return cuentaHab;
-	}
-
-	public void setCuentaHab(double cuentaHab) {
-		this.cuentaHab = cuentaHab;
-	}
-
-	public long getTipoHabitacion() {
-		return tipoHabitacion;
-	}
-
-	public void setTipoHabitacion(long tipoHabitacion) {
-		this.tipoHabitacion = tipoHabitacion;
-	}
-
-	public long getNumHabitacion(){
-		return numHabitacion;
-	}
-
-	public void setNumHabitacion( long id ){
-		this.numHabitacion = id;
-	}
 
 	public boolean isOcupada() {
 		return ocupada;
@@ -73,9 +48,28 @@ public class Habitacion implements VOHabitacion{
 		this.ocupada = ocupada;
 	}
 
-	@Override
-	public String toString() {
-		return "Habitacion [tipoHabitacion=" + tipoHabitacion + ", cuentaHab=" + cuentaHab + ", numHabitacion=" + numHabitacion + "]";
+	public long getTipo_habitacion() {
+		return tipo_habitacion;
+	}
+
+	public void setTipo_habitacion(long tipo_habitacion) {
+		this.tipo_habitacion = tipo_habitacion;
+	}
+
+	public double getCuenta_habitacion() {
+		return cuenta_habitacion;
+	}
+
+	public void setCuenta_habitacion(double cuenta_habitacion) {
+		this.cuenta_habitacion = cuenta_habitacion;
+	}
+
+	public long getNum_hab() {
+		return num_hab;
+	}
+
+	public void setNum_hab(long num_hab) {
+		this.num_hab = num_hab;
 	}
 
 }
