@@ -60,7 +60,7 @@ public class HotelAndes
 
 	private List<Usuarios> usuarios;
 
-	private List<Habitacion> habitaciones;
+	private List<Habitaciones> habitaciones;
 
 	private List<PlanConsumo> planesConsumo;
 
@@ -138,11 +138,11 @@ public class HotelAndes
 		this.usuarios = usuarios;
 	}
 
-	public List<Habitacion> getHabitaciones() {
+	public List<Habitaciones> getHabitaciones() {
 		return habitaciones;
 	}
 
-	public void setHabitaciones(List<Habitacion> habitaciones) {
+	public void setHabitaciones(List<Habitaciones> habitaciones) {
 		this.habitaciones = habitaciones;
 	}
 
@@ -174,7 +174,26 @@ public class HotelAndes
 	/* ****************************************************************
 	 * 			RESERVA
 	 *****************************************************************/
-	
+	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user) throws Exception{
+		Habitaciones habitacion = pp.darHabitacionPorId(numHab);
+		//TipoHabitacion tipoHab = pp.darTipoHabitacion(habitacion.getTipo_habitacion());
+		if( habitacion.getOcupada() == Habitaciones.SE_OCUPA )
+			throw new Exception( "Habitacion " + habitacion.getNum_hab() +" ya esta ocupada" );
+//		else if(numPersonas >  tipoHab.getCapacidad())
+//			throw new Exception("Es mayor la cantidad de personas en la reserva que en la habitacion");
+		else
+			habitacion.setOcupada(Habitaciones.SE_OCUPA);
+			
+		System.out.println("Habitacion desocupada");
+		pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, habitacion.getNum_hab());
+		System.out.println("Habitacion ocupada");
+		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion);
+		System.out.print("Crea la reserva: ");
+		System.out.println(reserva);
+		
+		//System.out.println(pp.darReservaPorId(1));
+		return reserva;
+	}
 	
 	
 	
@@ -220,19 +239,10 @@ public class HotelAndes
 		return usuario;
 	}
 
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab) throws Exception{
-		Habitacion habitacion = pp.darHabitacionPorId(numHab);
-		if( habitacion.isOcupada() ){
-			throw new Exception( "Habitacion " + habitacion.getNum_hab() +" ya esta ocupada" );
-		}
-		Usuarios user = pp.darUsuarioPorId(idUsuario, tipoDoc);
-		pp.ocuparHabitacion(habitacion);
-		Reserva reserva = pp.adicionarReserva(idUsuario, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion);
-		return reserva;
-	}
+	
 
-	public Habitacion adicionarHabitacion(int numHab , boolean ocupada, double cuenta_habitacion, long tipo_habitacion){
-		Habitacion h = pp.adicionarHabitacion(numHab, ocupada, cuenta_habitacion, tipo_habitacion);		
+	public Habitaciones adicionarHabitacion(int numHab , boolean ocupada, double cuenta_habitacion, long tipo_habitacion){
+		Habitaciones h = pp.adicionarHabitacion(numHab, ocupada, tipo_habitacion, cuenta_habitacion);		
 		return h;
 	}
 

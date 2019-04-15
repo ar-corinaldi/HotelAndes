@@ -55,8 +55,20 @@ public class SQLReserva {
 	 */
 	public long adicionarReserva (PersistenceManager pm, long id, int numPersonas,Timestamp entrada,Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long id_habitacion) 
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaReserva () + "(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        q.setParameters(id, numPersonas, entrada, salida, checkIn, checkOut, idUsuario, tipoDoc, id_habitacion);
+		// TO_TIMESTAMP('2019-09-19 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF')
+		String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+
+        Query q = pm.newQuery(SQL, "INSERT INTO " + "RESERVAS" + "(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion) values ("+id +", "
+        		+ numPersonas+", "
+        		+ entradaTS+", "
+        		+ salidaTS+", "
+        		+ checkIn+", "
+        		+ checkOut+", "
+        		+ idUsuario+", '"
+        		+ tipoDoc+"', "
+        		+ id_habitacion+")");
+        
         return (long) q.executeUnique();
 	}
 	
@@ -82,9 +94,8 @@ public class SQLReserva {
 	 */
 	public Reserva darReservaPorId (PersistenceManager pm, long idReserva) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaReserva () + " WHERE id = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "RESERVAS" + " WHERE id = "+idReserva);
 		q.setResultClass(Reserva.class);
-		q.setParameters(idReserva);
 		return (Reserva) q.executeUnique();
 	}
 	

@@ -47,7 +47,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
-import uniandes.isis2304.parranderos.negocio.Habitacion;
+import uniandes.isis2304.parranderos.negocio.Habitaciones;
 import uniandes.isis2304.parranderos.negocio.HotelAndes;
 import uniandes.isis2304.parranderos.negocio.Usuarios;
 import uniandes.isis2304.parranderos.negocio.VOReserva;
@@ -296,12 +296,12 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		    	long id = Long.valueOf(JOptionPane.showInputDialog (this, "id?", "Adicionar reserva", JOptionPane.OK_OPTION));
 				int numPersonas = Integer.valueOf(JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION));
 				String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-				String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 20169-09-15)", "Adicionar reserva", JOptionPane.OK_OPTION);
+				String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2019-09-23)", "Adicionar reserva", JOptionPane.OK_OPTION);
 				long numHab = Long.valueOf(JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.OK_OPTION));
 				try {
 					Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
 					Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
-					parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, user.getNum_identidad(), user.getTipo_documento(), numHab);
+					parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, user.getNum_identidad(), user.getTipo_documento(), numHab, user);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 				}

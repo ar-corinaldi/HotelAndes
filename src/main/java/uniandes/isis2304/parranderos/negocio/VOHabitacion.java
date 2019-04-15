@@ -9,5 +9,5 @@ public interface VOHabitacion {
 	
 	public long getNum_hab();
 	
-	public boolean isOcupada();
+	public int getOcupada();
 }

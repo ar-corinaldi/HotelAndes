@@ -5,7 +5,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import uniandes.isis2304.parranderos.negocio.Habitacion;
+import uniandes.isis2304.parranderos.negocio.Habitaciones;
 
 
 public class SQLHabitacion 
@@ -20,7 +20,7 @@ public class SQLHabitacion
 	 * Se renombra ac� para facilitar la escritura de las sentencias
 	 */
 	private final static String SQL = PersistenciaHotelAndes.SQL;
-
+	
 	/* ****************************************************************
 	 * 			Atributos
 	 *****************************************************************/
@@ -82,17 +82,24 @@ public class SQLHabitacion
 	 * @param idHabitacion - El identificador de la Habitacion
 	 * @return El objeto Habitacion que tiene el identificador dado
 	 */
-	public Habitacion darHabitacionPorId (PersistenceManager pm, long num_hab) 
+	public Habitaciones darHabitacionPorId (PersistenceManager pm, long num_hab) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaHabitacion() + " WHERE num_hab = ?");
-		q.setResultClass(Habitacion.class);
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "HABITACIONES" + " WHERE num_hab = ?");
+		q.setResultClass(Habitaciones.class);
 		q.setParameters(num_hab);
-		return (Habitacion) q.executeUnique();
+		return (Habitaciones) q.executeUnique();
 	}
 	
-	public List<Habitacion> darHabitaciones(PersistenceManager pm){
+	public List<Habitaciones> darHabitaciones(PersistenceManager pm){
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaHabitacion());
-		q.setResultClass(Habitacion.class);
-		return (List<Habitacion>) q.executeList();
+		q.setResultClass(Habitaciones.class);
+		return (List<Habitaciones>) q.executeList();
 	}
+
+
+	public long ocuparHabitacionPorId(PersistenceManager pm, int ocupada, long num_hab) {
+	       Query q = pm.newQuery(SQL, "UPDATE " + "HABITACIONES" + " SET ocupada= "+ ocupada 
+	    		   +" WHERE num_hab = "+num_hab);
+	       return (long) q.executeUnique();
+		}
 }

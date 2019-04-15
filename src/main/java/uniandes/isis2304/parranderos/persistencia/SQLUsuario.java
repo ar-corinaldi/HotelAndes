@@ -55,14 +55,12 @@ public class SQLUsuario {
 	public long adicionarUsuario (PersistenceManager pm, long num_identidad,  String tipo_documento,
 			String nombre, String apellido, long tipo_usuario) throws Exception
 	{
-		System.out.println();
 		Query q = pm.newQuery(SQL, "INSERT INTO " + "USUARIOS"+ "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario) values ("+ num_identidad +", '"+tipo_documento +"', '"
 				+ nombre 	+ "', '"
 				+ apellido 	+ "', "
 				+ tipo_usuario + ")");
 		Object o = null;
 		o = q.executeUnique();
-		System.out.println(o);
 		return (long) o;
 	}
 

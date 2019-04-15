@@ -14,6 +14,6 @@ public interface VOConsumo {
 	
 	public long getIdServicio();
 	
-	public Habitacion getHabitacion();
+	public Habitaciones getHabitacion();
 	
 }

@@ -80,9 +80,8 @@ public class SQLTipoHabitacion {
 	 */
 	public TipoHabitacion darTipoHabitacionPorId (PersistenceManager pm, long id) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaTipoHabitacion () + " WHERE id = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "TIPO_HABITACIONES" + " WHERE id = "+id);
 		q.setResultClass(TipoHabitacion.class);
-		q.setParameters(id);
 		return (TipoHabitacion) q.executeUnique();
 	}
 

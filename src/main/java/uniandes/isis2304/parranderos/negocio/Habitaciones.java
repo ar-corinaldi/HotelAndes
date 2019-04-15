@@ -1,50 +1,50 @@
 package uniandes.isis2304.parranderos.negocio;
 
-public class Habitacion implements VOHabitacion{
+public class Habitaciones implements VOHabitacion{
 
 	/******************************************************************************
 	 * ATRIBUTOS
 	 ******************************************************************************/
 						
-
+	public final static int SE_OCUPA = 1;
 	
+	public final static int SE_DESOCUPA = 0;
+
 	private long tipo_habitacion;
 
 	private double cuenta_habitacion;
 	
-	private boolean ocupada;
+	private int ocupada;
 	
 	private long num_hab;
-
-	
 
 	/******************************************************************************
 	 * CONSTRUCTOR
 	 ******************************************************************************/
 	
-	public Habitacion() {
+	public Habitaciones() {
 		tipo_habitacion = 0;
 		cuenta_habitacion = 0.0;
 		num_hab = 0;
-		setOcupada(false);
+		ocupada = 0;
 	}
 	
-	public Habitacion( long id, long tipoHabitacion,  double cuentaHab) {
-		this.tipo_habitacion = tipoHabitacion;
-		this.cuenta_habitacion = cuentaHab;
-		this.num_hab = id;
-		setOcupada(false);
+	public Habitaciones( long num_hab, int ocupada, double cuenta_habitacion, long tipo_habitacion) {
+		this.tipo_habitacion = tipo_habitacion;
+		this.cuenta_habitacion = cuenta_habitacion;
+		this.num_hab = num_hab;
+		this.ocupada = ocupada;
 	}
 
 	/******************************************************************************
 	 * METODOS
 	 ******************************************************************************/
 
-	public boolean isOcupada() {
+	public int getOcupada() {
 		return ocupada;
 	}
 
-	public void setOcupada(boolean ocupada) {
+	public void setOcupada(int ocupada) {
 		this.ocupada = ocupada;
 	}
 
@@ -72,4 +72,10 @@ public class Habitacion implements VOHabitacion{
 		this.num_hab = num_hab;
 	}
 
+	@Override
+	public String toString() {
+		return "Habitacion [tipo_habitacion=" + tipo_habitacion
+				+ ", cuenta_habitacion=" + cuenta_habitacion + ", ocupada="
+				+ ocupada + ", num_hab=" + num_hab + "]";
+	}
 }

@@ -18,7 +18,7 @@ public class Consumo implements VOConsumo{
 
 	private long idServicio;
 	
-	private Habitacion habitacion;
+	private Habitaciones habitacion;
 	
 	/******************************************************************************
 	 * CONSTRUCTORES
@@ -30,7 +30,7 @@ public class Consumo implements VOConsumo{
 		idUsuario = 0;
 		idServicio=0;
 		tipoDocumentoUsuario = "";
-		habitacion = new Habitacion();
+		habitacion = new Habitaciones();
 	}
 
 	public Consumo(long id, Timestamp fecha, long idCliente, long idServicio ) {
@@ -39,7 +39,7 @@ public class Consumo implements VOConsumo{
 		this.fecha = fecha;
 		this.idUsuario = idCliente;
 		this.idServicio = idServicio;
-		this.habitacion = new Habitacion();
+		this.habitacion = new Habitaciones();
 	}
 
 	/******************************************************************************
@@ -77,11 +77,11 @@ public class Consumo implements VOConsumo{
 		this.idServicio = idServicio;
 	}
 	
-	public Habitacion getHabitacion() {
+	public Habitaciones getHabitacion() {
 		return habitacion;
 	}
 
-	public void setHabitacion(Habitacion habitacion) {
+	public void setHabitacion(Habitaciones habitacion) {
 		this.habitacion = habitacion;
 	}
 

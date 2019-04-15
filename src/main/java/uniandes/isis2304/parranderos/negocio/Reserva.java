@@ -25,7 +25,7 @@ public class Reserva implements VOReserva{
 
 	private Usuarios usuario;
 
-	private Habitacion habitacion;
+	private Habitaciones habitacion;
 	
 	/******************************************************************************
 	 * CONSTRUCTORES
@@ -35,7 +35,7 @@ public class Reserva implements VOReserva{
 		salida = new Timestamp(0);
 		entrada = new Timestamp(0);
 		usuario = new Usuarios();
-		habitacion= new Habitacion();
+		habitacion= new Habitaciones();
 		setNumPersonas(0);
 		id = 0;
 		check_in = null;
@@ -43,7 +43,7 @@ public class Reserva implements VOReserva{
 		
 	}
 
-	public Reserva(long id, int numPersonas,Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuarios pUsuario, Habitacion pHabitacion) {
+	public Reserva(long id, int numPersonas,Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuarios pUsuario, Habitaciones pHabitacion) {
 		super();
 		this.id = id;
 		this.entrada = entrada;
@@ -93,11 +93,11 @@ public class Reserva implements VOReserva{
 		this.numPersonas = numPersonas;
 	}
 
-	public Habitacion getHabitacion() {
+	public Habitaciones getHabitacion() {
 		return habitacion;
 	}
 
-	public void setHabitacion(Habitacion habitacion) {
+	public void setHabitacion(Habitaciones habitacion) {
 		this.habitacion = habitacion;
 	}
 
