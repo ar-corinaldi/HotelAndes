@@ -54,9 +54,9 @@ public class SQLConsumo {
 	 * @return El n�mero de tuplas insertadas
 	 */
 	public long adicionarConsumo (PersistenceManager pm, long id, Timestamp fecha, long id_usuario, 
-			String tipo_documento_usuario,long id_servcio, long id_habitacion){
-        Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaConsumo () + "(id, fecha, id_usuario, tipo_documento_usuario, id_servcio, id_habitacion) values (?, ?, ?, ?, ?)");
-        q.setParameters(id, fecha, id_usuario, tipo_documento_usuario,id_servcio, id_habitacion);
+			String tipo_documento_usuario,long id_producto, long id_habitacion){
+        Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaConsumo () + "(id, fecha, id_usuario, tipo_documento_usuario, id_producto, id_habitacion) values (?, ?, ?, ?, ?, ?)");
+        q.setParameters(id, fecha, id_usuario, tipo_documento_usuario,id_producto, id_habitacion);
         return (long) q.executeUnique();
 	}
 	
