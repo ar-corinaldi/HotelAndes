@@ -8,14 +8,15 @@ public class Habitacion implements VOHabitacion{
 
 	private long tipoHabitacion;
 
-
 	private double cuentaHab;
 
-	private long id;
+	private int numHab;
 
 	private Consumo consumo;
 	
 	private Reserva reserva;
+	
+	private boolean ocupada;
 
 	/******************************************************************************
 	 * CONSTRUCTOR
@@ -24,17 +25,18 @@ public class Habitacion implements VOHabitacion{
 	public Habitacion() {
 		tipoHabitacion = 0;
 		cuentaHab = 0.0;
-		id = 0;
+		numHab = 0;
 		consumo = new Consumo();
 		reserva = new Reserva();
+		setOcupada(false);
 	}
 	
-	public Habitacion(long tipoHabitacion,  double cuentaHab, long id) {
+	public Habitacion(long tipoHabitacion,  double cuentaHab, int numHab, boolean ocupada ) {
 		super();
 		this.tipoHabitacion = tipoHabitacion;
 		this.cuentaHab = cuentaHab;
-		this.id = id;
-		
+		this.numHab = numHab;
+		this.setOcupada(ocupada);
 		consumo = new Consumo();
 		reserva = new Reserva();
 	}
@@ -66,12 +68,12 @@ public class Habitacion implements VOHabitacion{
 		this.tipoHabitacion = tipoHabitacion;
 	}
 
-	public long getId(){
-		return id;
+	public int getNumHab(){
+		return numHab;
 	}
 
-	public void setId( long id ){
-		this.id = id;
+	public void setNumHab( int numHab ){
+		this.numHab = numHab;
 	}
 
 	public Consumo getConsumo() {
@@ -92,7 +94,15 @@ public class Habitacion implements VOHabitacion{
 
 	@Override
 	public String toString() {
-		return "Habitacion [tipoHabitacion=" + tipoHabitacion + ", cuentaHab=" + cuentaHab + ", id=" + id + ", consumo=" + consumo + ", reserva=" + reserva + "]";
+		return "Habitacion [tipoHabitacion=" + tipoHabitacion + ", cuentaHab=" + cuentaHab + ", numHab=" + numHab + ", consumo=" + consumo + ", reserva=" + reserva + "]";
+	}
+
+	public boolean isOcupada() {
+		return ocupada;
+	}
+
+	public void setOcupada(boolean ocupada) {
+		this.ocupada = ocupada;
 	}
 	
 }

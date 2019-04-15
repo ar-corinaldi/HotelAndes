@@ -197,20 +197,23 @@ public class HotelAndes
 	 * @param nombre - El nombre del tipo de bebida
 	 * @return El objeto TipoBebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, String correo, long tipo_usuario, long id_reserva, long id_hotel)
+	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario, long id_hotel)
 	{
-		Usuario usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, correo, tipo_usuario, id_reserva, id_hotel);		
-		//pp.adicionarReserva(id_reserva, 1, new Timestamp(0), new Timestamp(0), pc, h);
+		Usuario usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_hotel);
 		return usuario;
 	}
 
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, PlanConsumo pc, Habitacion h){
-		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, pc, h);		
+	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab) throws Exception{
+		Habitacion habitacion = pp.darHabitacionPorId(numHab);
+		if( habitacion.isOcupada() ){
+			throw new Exception( "Habitacion " + habitacion.getNumHab() +"ya esta ocupada" );
+		}
+		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, idUsuario, tipoDoc, numHab);		
 		return reserva;
 	}
 
-	public Habitacion adicionarHabitacion(long id, double cuenta_habitacion, long tipo_habitacion, long id_hotel){
-		Habitacion h = pp.adicionarHabitacion(id, cuenta_habitacion, tipo_habitacion, id_hotel);		
+	public Habitacion adicionarHabitacion(int numHab , boolean ocupada, double cuenta_habitacion, long tipo_habitacion, long id_hotel){
+		Habitacion h = pp.adicionarHabitacion(numHab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel);		
 		return h;
 	}
 
@@ -232,7 +235,7 @@ public class HotelAndes
 		if(!(fechaActual.after(reserva.getEntrada())&& fechaActual.before(reserva.getSalida())))
 				throw new Exception("la reserva Termino");
 		
-		retornable =recepcionista.crearCheck(idCliente, tipoDocumentoCliente, fechaActual, entrada, reserva.getHabitacion().getId());
+		retornable =recepcionista.crearCheck(idCliente, tipoDocumentoCliente, fechaActual, entrada, reserva.getHabitacion().getNumHab());
 		int ingreso =1;
 		if(!retornable.isIngreso())
 			ingreso = 0;

@@ -52,8 +52,8 @@ public class SQLConvencion {
 	 */
 	public long adicionarConvencion(PersistenceManager pm, long id  , String nombre,  int cantidadPersonas,  long idPlanConsumo, long id_organizador, int tipo_documento_Organizador	)
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaConvencion() + "(id, nombre, cantidadPersonas, "
-				+ "idPlanConsumo, id_organizador,tipo_documento_Organizador	) values(?, ?, ?, ?, ?, ?)");
+		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaConvencion() + "(id, nombre, cantidad_personas, "
+				+ "id_plan_consumo, id_usuario, tipo_documento) values(?, ?, ?, ?, ?, ?)");
 		q.setParameters(id, nombre, cantidadPersonas, idPlanConsumo, id_organizador,tipo_documento_Organizador	);
 		return (long)q.executeUnique();
 	}
