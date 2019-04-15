@@ -70,7 +70,7 @@ public class SQLHabitacion
 	 */
 	public long eliminarHabitacionPorId (PersistenceManager pm, int num_hab)
 	{
-       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaHabitacion() + " WHERE id = ?");
+       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaHabitacion() + " WHERE num_hab = ?");
        q.setParameters(num_hab);
        return (long) q.executeUnique();
 	}
@@ -83,9 +83,9 @@ public class SQLHabitacion
 	 * @param idHabitacion - El identificador de la Habitacion
 	 * @return El objeto Habitacion que tiene el identificador dado
 	 */
-	public Habitacion darHabitacionPorId (PersistenceManager pm, int num_hab) 
+	public Habitacion darHabitacionPorId (PersistenceManager pm, long num_hab) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaHabitacion() + " WHERE id = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaHabitacion() + " WHERE num_hab = ?");
 		q.setResultClass(Habitacion.class);
 		q.setParameters(num_hab);
 		return (Habitacion) q.executeUnique();

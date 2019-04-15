@@ -197,19 +197,18 @@ public class HotelAndes
 	 * @param nombre - El nombre del tipo de bebida
 	 * @return El objeto TipoBebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, String correo, long tipo_usuario, long id_reserva, long id_hotel)
+	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario, long id_hotel)
 	{
-		Usuario usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, correo, tipo_usuario, id_reserva, id_hotel);		
-		//pp.adicionarReserva(id_reserva, 1, new Timestamp(0), new Timestamp(0), pc, h);
+		Usuario usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_hotel);
 		return usuario;
 	}
 
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, PlanConsumo pc, int idHab) throws Exception{
-		Habitacion habitacion = pp.darHabitacionPorId(idHab);
+	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab) throws Exception{
+		Habitacion habitacion = pp.darHabitacionPorId(numHab);
 		if( habitacion.isOcupada() ){
 			throw new Exception( "Habitacion " + habitacion.getNumHab() +"ya esta ocupada" );
 		}
-		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, pc, idHab);		
+		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, idUsuario, tipoDoc, numHab);		
 		return reserva;
 	}
 

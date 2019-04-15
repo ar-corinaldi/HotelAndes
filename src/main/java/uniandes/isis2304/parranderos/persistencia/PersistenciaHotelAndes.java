@@ -854,7 +854,7 @@ public class PersistenciaHotelAndes
 	 * @param idTipoBebida - El identificador del tipo de bebida
 	 * @return El objeto TipoBebida, construido con base en las tuplas de la tabla TIPOBEBIDA con el identificador dado
 	 */
-	public Habitacion darHabitacionPorId (int idHab)
+	public Habitacion darHabitacionPorId (long idHab)
 	{
 		return sqlHabitacion.darHabitacionPorId(pmf.getPersistenceManager(), idHab);
 	}
@@ -978,18 +978,18 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, String correo, long tipo_usuario, long id_reserva, long id_hotel) 
+	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario, long id_hotel) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, correo, tipo_usuario, id_reserva, id_hotel);
+			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_hotel);
 			tx.commit();
 
-			return new Usuario(tipo_documento, num_identidad, nombre, apellido, correo);
-		}
+			return new Usuario(tipo_documento, num_identidad, nombre, apellido);
+			}
 		catch (Exception e)
 		{
 			e.printStackTrace();
@@ -1079,14 +1079,14 @@ public class PersistenciaHotelAndes
 	 * @param gradoAlcohol - El grado de alcohol de la bebida (mayor que 0)
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, PlanConsumo pc, long idHab) 
+	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long idHab) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, id, numPersonas, entrada, salida, pc.getId(), idHab);
+			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, idHab, numPersonas, entrada, salida, checkIn, checkOut, idUsuario, tipoDoc, idHab);
 			tx.commit();
 
 			return new Reserva(id, entrada, salida, numPersonas);

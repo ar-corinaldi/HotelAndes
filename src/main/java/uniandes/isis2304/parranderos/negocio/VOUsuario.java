@@ -11,7 +11,4 @@ public interface VOUsuario {
 	
 	public String getApellido();
 	
-	public String getCorreo();
-	
-	public Reserva getReserva();
 }
