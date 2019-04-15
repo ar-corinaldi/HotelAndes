@@ -49,6 +49,7 @@ import com.google.gson.stream.JsonReader;
 
 import uniandes.isis2304.parranderos.negocio.Habitacion;
 import uniandes.isis2304.parranderos.negocio.HotelAndes;
+import uniandes.isis2304.parranderos.negocio.Usuario;
 import uniandes.isis2304.parranderos.negocio.VOReserva;
 import uniandes.isis2304.parranderos.negocio.VOUsuario;
 
@@ -77,6 +78,13 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	 * Ruta al archivo de configuración de los nombres de tablas de la base de datos
 	 */
 	private static final String CONFIG_TABLAS = "./src/main/resources/config/TablasBD_A.json"; 
+	
+	public static final int RECEPCIONISTA = 3;
+	
+	public static final int EMPLEADO = 4;
+
+	public static final int CLIENTE = 5;
+
 	
 	/* ****************************************************************
 	 * 			Atributos
@@ -243,41 +251,6 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	 * 			CRUD de Reserva
 	 *****************************************************************/
     
-    public void adicionarReserva( )
-	{
-		try 
-		{
-			//(long id, int numPersonas, Timestamp entrada, Timestamp salida, PlanConsumo pc, Habitacion h)
-			String id = JOptionPane.showInputDialog (this, "id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-			String numPersonas = JOptionPane.showInputDialog (this, "tipo doc?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-			String entrada = JOptionPane.showInputDialog (this, "fecha entrada?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-			String salida = JOptionPane.showInputDialog (this, "fecha salida?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-			String idUsuario = JOptionPane.showInputDialog (this, "usuario id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-			String tipoDoc = JOptionPane.showInputDialog(this, "tipo documento de usuario?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-			String numHab = JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-			if (id != null)
-			{
-				VOReserva reserva = parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, idUsuario, tipoDoc, numHab);
-				if (user == null)
-				{
-					throw new Exception ("No se pudo crear un tipo de bebida con nombre: " + id);
-				}
-				String resultado = "En adicionarTipoBebida\n\n";
-				resultado += "Tipo de bebida adicionado exitosamente: " + user;
-				resultado += "\n Operaci�n terminada";
-				panelDatos.actualizarInterfaz(resultado);
-			}
-			else
-			{
-				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
-			}
-		} 
-		catch (Exception e) 
-		{
-			//			e.printStackTrace();
-		}
-	}
-    
     /**
      * Adiciona un tipo de bebida con la información dada por el usuario
      * Se crea una nueva tupla de tipoBebida en la base de datos, si un tipo de bebida con ese nombre no existía
@@ -299,14 +272,14 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 			if (num_identidad != null)
 			{
-				VOUsuario user = parranderos.adicionarUsuario(Long.valueOf(num_identidad), tipo_documento, nombre, apellido, correo, Long.valueOf(tipo_usuario), Long.valueOf(id_reserva), Long.valueOf(id_hotel));
+				//VOUsuario user = parranderos.adicionarUsuario(Long.valueOf(num_identidad), tipo_documento, nombre, apellido, correo, Long.valueOf(tipo_usuario), Long.valueOf(id_reserva), Long.valueOf(id_hotel));
 				System.out.println("hola");
-				if (user == null)
-				{
-					throw new Exception ("No se pudo crear un tipo de bebida con nombre: " + nombre);
-				}
+				//if (user == null)
+				//{
+				//	throw new Exception ("No se pudo crear un tipo de bebida con nombre: " + nombre);
+				//}
 				String resultado = "En adicionarTipoBebida\n\n";
-				resultado += "Tipo de bebida adicionado exitosamente: " + user;
+				//resultado += "Tipo de bebida adicionado exitosamente: " + user;
 				resultado += "\n Operaci�n terminada";
 				panelDatos.actualizarInterfaz(resultado);
 			}
@@ -320,7 +293,48 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			//e.printStackTrace();
 		}
 	}
+    
+    public void adicionarReserva(){
+    	System.out.println("Adivionar Reserva");
+    	String id = JOptionPane.showInputDialog (this, "id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+		String numPersonas = JOptionPane.showInputDialog (this, "tipo doc?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+		String entrada = JOptionPane.showInputDialog (this, "fecha entrada?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+		String salida = JOptionPane.showInputDialog (this, "fecha salida?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+		String idUsuario = JOptionPane.showInputDialog (this, "usuario id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+		String tipoDoc = JOptionPane.showInputDialog(this, "tipo documento de usuario?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+		String numHab = JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+    	
+    }
+    
+    public void adicionarServicio(){
+    	System.out.println("Adicionar Servicio");
+    }
+    
+    public void registrarLlegadaCliente(){
+    	System.out.println("Registrar Llegada Cliente");
+    	verificarUsuario(RECEPCIONISTA);
+    }
 
+    public void registrarConsumoCliente(){
+    	System.out.println("Registrar Consumo Cliente");
+    }
+    
+    public boolean verificarUsuario( int tipoUsuario ){
+    	boolean sePuede = false;
+		String numIden = JOptionPane.showInputDialog (this, "numero identificacion?", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
+		String tipoDoc = JOptionPane.showInputDialog (this, "tipo documento?\ncedula\npasaporte", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
+		try {
+			Usuario user = parranderos.darUsuario(Integer.valueOf(numIden), tipoDoc);
+			if( user != null && user.getTipoUsuario() == RECEPCIONISTA ){
+				sePuede=true;
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return sePuede;
+    }
 	/* ****************************************************************
 	 * 			Métodos administrativos
 	 *****************************************************************/

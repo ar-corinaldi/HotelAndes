@@ -4,8 +4,7 @@ public interface VOHabitacion {
 	
 	
 	public double getCuentaHab();
-	
-		
+
 	public long getTipoHabitacion();
 	
 	public long getNumHabitacion();

@@ -40,10 +40,6 @@ public class Habitacion implements VOHabitacion{
 	 * METODOS
 	 ******************************************************************************/
 
-	
-
-	
-
 	@Override
 	public double getCuentaHab() {
 		return cuentaHab;
@@ -52,8 +48,6 @@ public class Habitacion implements VOHabitacion{
 	public void setCuentaHab(double cuentaHab) {
 		this.cuentaHab = cuentaHab;
 	}
-
-
 
 	public long getTipoHabitacion() {
 		return tipoHabitacion;
@@ -71,8 +65,6 @@ public class Habitacion implements VOHabitacion{
 		this.numHabitacion = id;
 	}
 
-
-
 	public boolean isOcupada() {
 		return ocupada;
 	}
@@ -86,12 +78,4 @@ public class Habitacion implements VOHabitacion{
 		return "Habitacion [tipoHabitacion=" + tipoHabitacion + ", cuentaHab=" + cuentaHab + ", numHabitacion=" + numHabitacion + "]";
 	}
 
-	public boolean isOcupada() {
-		return ocupada;
-	}
-
-	public void setOcupada(boolean ocupada) {
-		this.ocupada = ocupada;
-	}
-	
 }

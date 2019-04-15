@@ -1,3 +1,18 @@
+drop table "ISIS2304B101910"."CONSUMOS" cascade constraints ;
+DROP TABLE CONVENCIONES cascade constraints ;
+DROP TABLE HABITACIONES cascade constraints ;
+DROP TABLE HOTELES cascade constraints ;
+DROP TABLE PLANES_DE_CONSUMO cascade constraints ;
+DROP TABLE PRODUCTOS cascade constraints ;
+DROP TABLE RESERVAS cascade constraints ;
+DROP TABLE RESERVAS_SERVICIOS cascade constraints ;
+DROP TABLE SERVICIOS cascade constraints ;
+DROP TABLE TIPO_HABITACIONES cascade constraints ;
+DROP TABLE TIPO_PLANES_DE_CONSUMO cascade constraints ;
+DROP TABLE TIPO_SERVICIOS cascade constraints ;
+DROP TABLE TIPO_USUARIOS cascade constraints ;
+DROP TABLE USUARIOS cascade constraints ;
+
 CREATE TABLE CONSUMOS
 ( 
   id NUMBER NOT NULL,
@@ -88,10 +103,7 @@ CREATE TABLE SERVICIOS
   cargado_habitacion NUMBER NOT NULL,
   capacidad NUMBER NOT NULL,
   reservado NUMBER NOT NULL,
-  fecha_inicial TIMESTAMP,
-  fecha_final TIMESTAMP,
-  tipo_servicios NUMBER NOT NULL,
-  id_hotel NUMBER NOT NULL
+  tipo_servicios NUMBER NOT NULL
 );
 
 CREATE TABLE TIPO_HABITACIONES

@@ -11,4 +11,6 @@ public interface VOUsuario {
 	
 	public String getApellido();
 	
+	public Long getTipoUsuario();
+	
 }

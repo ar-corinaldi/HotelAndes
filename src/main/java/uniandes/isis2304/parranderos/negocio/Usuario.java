@@ -30,6 +30,8 @@ public class Usuario implements VOUsuario{
 
 	private String apellido;
 	
+	private long tipoUsuario;
+	
 	private List<Consumo> consumos;
 
 	/******************************************************************************
@@ -41,15 +43,17 @@ public class Usuario implements VOUsuario{
 		numeroDoc = 0;
 		nombre = "";
 		apellido="";
+		tipoUsuario = 0;
 		setConsumos(new ArrayList<>());
 	}
 	
-	public Usuario(String tipoDoc, Long numeroDoc, String nombre, String apellido) {
+	public Usuario(String tipoDoc, Long numeroDoc, String nombre, String apellido, long tipoUsuario) {
 		super();
 		this.tipoDoc = tipoDoc;
 		this.numeroDoc = numeroDoc;
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.tipoUsuario = tipoUsuario;
 		setConsumos(new ArrayList<>());
 	}
 
@@ -102,6 +106,14 @@ public class Usuario implements VOUsuario{
 
 	public void setConsumos(List<Consumo> consumos) {
 		this.consumos = consumos;
+	}
+
+	public Long getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(long tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
 	}
 	
 	

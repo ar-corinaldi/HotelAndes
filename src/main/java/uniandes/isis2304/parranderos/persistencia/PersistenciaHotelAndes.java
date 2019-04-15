@@ -154,7 +154,7 @@ public class PersistenciaHotelAndes
 	private SQLUtil sqlUtil;
 
 
-	
+	private SQLReservaServicio sqlReservaServicio;
 
 	/* ****************************************************************
 	 * 			Métodos del MANEJADOR DE PERSISTENCIA
@@ -172,18 +172,19 @@ public class PersistenciaHotelAndes
 		tablas = new LinkedList<String> ();
 		tablas.add ("Hotel_sequence"); //No se que poner
 		tablas.add ("CONSUMOS");
+		tablas.add("CONVENCIONES");
 		tablas.add ("HABITACIONES");
 		tablas.add ("HOTELES");
 		tablas.add ("PLANES_DE_CONSUMO");
 		tablas.add ("PRODUCTOS");
 		tablas.add ("RESERVAS");
+		tablas.add ("RESERVAS_SERVICIOS");
 		tablas.add ("SERVICIOS");
 		tablas.add ("TIPO_HABITACIONES");
 		tablas.add ("TIPO_PLANES_DE_CONSUMO");
 		tablas.add("TIPO_SERVICIOS");
 		tablas.add ("TIPO_USUARIOS");
 		tablas.add ("USUARIOS");
-		tablas.add("CHECK");
 	}
 
 	/**
@@ -259,17 +260,18 @@ public class PersistenciaHotelAndes
 	private void crearClasesSQL ()
 	{
 		sqlConsumo = new SQLConsumo(this);
+		sqlConvencion = new SQLConvencion(this);
 		sqlHabitacion = new SQLHabitacion(this);
 		sqlHotel = new SQLHotel(this);
 		sqlPlanConsumo = new SQLPlanConsumo (this);
 		sqlReserva = new SQLReserva(this);		
+		sqlReservaServicio = new SQLReservaServicio(this);
 		sqlServicio = new SQLServicio(this);
 		sqlTipoHabitacion = new SQLTipoHabitacion(this);
 		sqlTipoPlanConsumo = new SQLTipoPlanConsumo(this);		
 		sqlTipoUsuario = new SQLTipoUsuario(this);
 		sqlTipoServicio = new SQLTipoServicio(this);
 		sqlUsuario = new SQLUsuario(this);
-		sqlConvencion = new SQLConvencion(this);
 
 		sqlUtil = new SQLUtil(this);
 	}
@@ -329,52 +331,55 @@ public class PersistenciaHotelAndes
 	public String darTablaReserva() {
 		return tablas.get(7);
 	}
+	
+	/**
+	 * @return La cadena de caracteres con el nombre de la tabla de Reserva de Hotelandes
+	 */
+	public String darTablaReservaServicio() {
+		return tablas.get(8);
+	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla de Servicio de Hotelandes
 	 */
 	public String darTablaServicio() {
-		return tablas.get(8);
+		return tablas.get(9);
 	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla de TipoHabitacion de Hotelandes
 	 */
 	public String darTablaTipoHabitacion() {
-		return tablas.get(9);
+		return tablas.get(10);
 	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla de TipoPlanConsumo de Hotelandes
 	 */
 	public String darTablaTipoPlanConsumo() {
-		return tablas.get(10);
+		return tablas.get(11);
 	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla TipoServicio de HotelAndes
 	 */
 	public String darTablaTipoServicio(){
-		return tablas.get(11);
+		return tablas.get(12);
 	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla TipoUsuario de HotelAndes
 	 */
 	public String darTablaTipoUsuario(){
-		return tablas.get(12);
+		return tablas.get(13);
 	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla de Usuario de Hotelandes
 	 */
 	public String darTablaUsuario() {
-		return tablas.get(13);
+		return tablas.get(14);
 	}
-
-	
-
-	
 
 	/**
 	 * Transacción para el generador de secuencia de Parranderos
@@ -751,7 +756,7 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Habitacion adicionarHabitacion(int num_hab, boolean ocupada, double cuenta_habitacion, long tipo_habitacion, long id_hotel) 
+	public Habitacion adicionarHabitacion(int num_hab, boolean ocupada, double cuenta_habitacion, long tipo_habitacion) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
@@ -760,13 +765,13 @@ public class PersistenciaHotelAndes
 			tx.begin();            
 			int ocupadaSQL = 0;
 			if( ocupada ) ocupadaSQL = 1;
-			long tuplasInsertadas = sqlHabitacion.adicionarHabitacion(pm, num_hab, ocupadaSQL, cuenta_habitacion, tipo_habitacion, id_hotel);
+			long tuplasInsertadas = sqlHabitacion.adicionarHabitacion(pm, num_hab, ocupadaSQL, cuenta_habitacion, tipo_habitacion);
 			tx.commit();
 
 			log.trace ("insercionconsumo: " + num_hab + ": " + tuplasInsertadas + " tuplas insertadas");
 			Habitacion habitacion = sqlHabitacion.darHabitacionPorId(pm, num_hab);
 
-			return  new Habitacion(tipo_habitacion, cuenta_habitacion, num_hab, ocupada);
+			return  new Habitacion(num_hab, tipo_habitacion,cuenta_habitacion  );
 		}
 		catch (Exception e)
 		{
@@ -956,17 +961,17 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario, long id_hotel) 
+	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_hotel);
+			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
 			tx.commit();
 
-			return new Usuario(tipo_documento, num_identidad, nombre, apellido);
+			return new Usuario(tipo_documento, num_identidad, nombre, apellido, tipo_usuario);
 			}
 		catch (Exception e)
 		{
@@ -1057,17 +1062,17 @@ public class PersistenciaHotelAndes
 	 * @param gradoAlcohol - El grado de alcohol de la bebida (mayor que 0)
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long idHab) 
+	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuario user, Habitacion hab) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, idHab, numPersonas, entrada, salida, checkIn, checkOut, idUsuario, tipoDoc, idHab);
+			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, id, numPersonas, entrada, salida, checkIn, checkOut, user.getNumeroDoc(), user.getTipoDoc(), hab.getNumHabitacion());
 			tx.commit();
 
-			return new Reserva(id, numPersonas, entrada, salida, user, h, pc);
+			return new Reserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, hab);
 		}
 		catch (Exception e)
 		{

@@ -13,11 +13,11 @@
 					"event": "adicionarUsuario"
 				},
 				{
-					"label": "Listar",
+					"label": "Ver Tipo de Usuarios",
 					"event": "listarTipoBebida"
 				},
 				{
-					"label": "Borrar por Id",
+					"label": "Adicionar Tipo Usuario",
 					"event": "eliminarTipoBebidaPorId"
 				},
 				{
@@ -26,6 +26,37 @@
 				}
 			]
 		},
+		{ "menuTitle": "Cliente",
+		  "options":
+			[
+				{
+					"label": "Registrar Reserva",
+					"event": "adicionarReserva"
+				},
+				{
+					"label": "Registrar Servicio",
+					"event": "adicionarServicio"
+				}
+			]
+		},
+		{ "menuTitle": "Recepcionista",
+		  "options": 
+			[
+				{
+					"label": "Registrar Llegada",
+					"event": "registrarLlegadaCliente"
+				}
+			]
+		},
+		{ "menuTitle": "Empleado",
+		  "options":
+			[
+				{
+					"label": "Registrar Consumo",
+					"event": "registrarConsumoCliente"
+				}
+			]
+		},		
 		{ "menuTitle": "Mantenimiento",
 		  "options":
 			[

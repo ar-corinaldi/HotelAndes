@@ -7,6 +7,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import uniandes.isis2304.parranderos.negocio.Reserva;
+import uniandes.isis2304.parranderos.negocio.ReservaServicio;
 
 public class SQLReservaServicio {
 
@@ -83,7 +84,7 @@ public class SQLReservaServicio {
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaReservaServicio() + " WHERE id = ?");
 		q.setResultClass(ReservaServicio.class);
-		q.setParameters(idReserva);
+		q.setParameters(idReservaServicio);
 		return (Reserva) q.executeUnique();
 	}
 	
