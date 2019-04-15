@@ -59,11 +59,11 @@ public class SQLServicio {
 	 * @return El n�mero de tuplas insertadas
 	 */
 	public long adicionarServicio (PersistenceManager pm, long id, String nombre, String descripcion, 
-			double costo, int cargadoHabitacion,  int capacidad, int reservado, Timestamp fechaInicial,
+			double costo, int cargadoHabitacion,  int capacidad, int reservado, 
 			Timestamp fechaFinal, long idHotel, long tipoServicio) 
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaServicio() + "(id, nombre, descripcion, costo, cargadoHabitacion, capacidad, reservado, fecha_inicial, fecha_final, id_hotel, tipoServicio) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		q.setParameters(id, nombre, descripcion, costo, cargadoHabitacion, capacidad, reservado, fechaInicial, fechaFinal, idHotel, tipoServicio );
+		Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaServicio() + "(id, nombre, descripcion, costo, cargadoHabitacion, capacidad, reservado, fecha_final, id_hotel, tipoServicio) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		q.setParameters(id, nombre, descripcion, costo, cargadoHabitacion, capacidad, reservado,  fechaFinal, idHotel, tipoServicio );
 		return (long) q.executeUnique();
 	}
 

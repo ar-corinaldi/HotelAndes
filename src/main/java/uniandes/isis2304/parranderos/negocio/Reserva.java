@@ -9,15 +9,21 @@ public class Reserva implements VOReserva{
 	/******************************************************************************
 	 * ATRIBUTOS
 	 ******************************************************************************/
+					
+	
 	private long id;
 
 	private Timestamp entrada;
 
 	private Timestamp salida;
 
+	private Timestamp check_in;
+	
+	private Timestamp check_out;
+	
 	private int numPersonas;
 
-	private List<Usuario> usuarios;
+	private Usuario usuario;
 
 	private Habitacion habitacion;
 	
@@ -30,22 +36,27 @@ public class Reserva implements VOReserva{
 	public Reserva() {
 		salida = new Timestamp(0);
 		entrada = new Timestamp(0);
-		numPersonas = 0;
-		usuarios = new ArrayList<>();
+		usuario = new Usuario();
 		habitacion= new Habitacion();
+		setNumPersonas(0);
 		id = 0;
 		planConsumo = new PlanConsumo();
+		check_in = null;
+		check_out = null;
+		
 	}
 
-	public Reserva(long id, Timestamp entrada, Timestamp salida, int numPersonas) {
+	public Reserva(long id, int numPersonas,Timestamp entrada, Timestamp salida, Usuario pUsuario, Habitacion pHabitacion, PlanConsumo pPlan) {
 		super();
 		this.id = id;
 		this.entrada = entrada;
 		this.salida = salida;
-		this.numPersonas = numPersonas;
-		usuarios = new ArrayList<>();
-		habitacion= new Habitacion();
-		planConsumo = new PlanConsumo();
+		this.setNumPersonas(numPersonas);
+		usuario = pUsuario;
+		habitacion= pHabitacion;
+		planConsumo = pPlan;
+		check_in = null;
+		check_out = null;
 	}
 
 	/******************************************************************************
@@ -68,20 +79,22 @@ public class Reserva implements VOReserva{
 		this.salida = salida;
 	}
 
+	
+
+	public Usuario getUsuarios() {
+		return usuario;
+	}
+
+	public void setIdCliente(Usuario usuarios) {
+		this.usuario = usuarios;
+	}
+
 	public int getNumPersonas() {
 		return numPersonas;
 	}
 
 	public void setNumPersonas(int numPersonas) {
 		this.numPersonas = numPersonas;
-	}
-
-	public List<Usuario> getUsuarios() {
-		return usuarios;
-	}
-
-	public void setIdCliente(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
 	}
 
 	public Habitacion getHabitacion() {
@@ -108,11 +121,27 @@ public class Reserva implements VOReserva{
 		this.planConsumo = planConsumo;
 	}
 
+	public Timestamp getCheck_in() {
+		return check_in;
+	}
+
+	public void setCheck_in(Timestamp check_in) {
+		this.check_in = check_in;
+	}
+
+	public Timestamp getCheck_out() {
+		return check_out;
+	}
+
+	public void setCheck_out(Timestamp check_out) {
+		this.check_out = check_out;
+	}
+
 	@Override
 	public String toString() {
 		return "Reserva [id=" + id + ", entrada=" + entrada
-				+ ", salida=" + salida + ", numPersonas=" + numPersonas
-				+ ", usuarios=" + usuarios+ ", habitacion=" + habitacion
+				+ ", salida=" + salida 
+				+ ", usuarios=" + usuario+ ", habitacion=" + habitacion
 				+ ", planConsumo=" + planConsumo + "]";
 	}
 

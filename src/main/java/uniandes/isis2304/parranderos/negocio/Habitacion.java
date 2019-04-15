@@ -5,17 +5,18 @@ public class Habitacion implements VOHabitacion{
 	/******************************************************************************
 	 * ATRIBUTOS
 	 ******************************************************************************/
+						
 
+	
 	private long tipoHabitacion;
 
-
 	private double cuentaHab;
-
-	private long id;
-
-	private Consumo consumo;
 	
-	private Reserva reserva;
+	private boolean ocupada;
+	
+	private long numHabitacion;
+
+	
 
 	/******************************************************************************
 	 * CONSTRUCTOR
@@ -24,19 +25,15 @@ public class Habitacion implements VOHabitacion{
 	public Habitacion() {
 		tipoHabitacion = 0;
 		cuentaHab = 0.0;
-		id = 0;
-		consumo = new Consumo();
-		reserva = new Reserva();
+		numHabitacion = 0;
+		setOcupada(false);
 	}
 	
-	public Habitacion(long tipoHabitacion,  double cuentaHab, long id) {
-		super();
+	public Habitacion( long id, long tipoHabitacion,  double cuentaHab) {
 		this.tipoHabitacion = tipoHabitacion;
 		this.cuentaHab = cuentaHab;
-		this.id = id;
-		
-		consumo = new Consumo();
-		reserva = new Reserva();
+		this.numHabitacion = id;
+		setOcupada(false);
 	}
 
 	/******************************************************************************
@@ -66,33 +63,27 @@ public class Habitacion implements VOHabitacion{
 		this.tipoHabitacion = tipoHabitacion;
 	}
 
-	public long getId(){
-		return id;
+	public long getNumHabitacion(){
+		return numHabitacion;
 	}
 
-	public void setId( long id ){
-		this.id = id;
+	public void setNumHabitacion( long id ){
+		this.numHabitacion = id;
 	}
 
-	public Consumo getConsumo() {
-		return consumo;
+
+
+	public boolean isOcupada() {
+		return ocupada;
 	}
 
-	public void setConsumo(Consumo consumo) {
-		this.consumo = consumo;
-	}
-
-	public Reserva getReserva() {
-		return reserva;
-	}
-
-	public void setReserva(Reserva reserva) {
-		this.reserva = reserva;
+	public void setOcupada(boolean ocupada) {
+		this.ocupada = ocupada;
 	}
 
 	@Override
 	public String toString() {
-		return "Habitacion [tipoHabitacion=" + tipoHabitacion + ", cuentaHab=" + cuentaHab + ", id=" + id + ", consumo=" + consumo + ", reserva=" + reserva + "]";
+		return "Habitacion [tipoHabitacion=" + tipoHabitacion + ", cuentaHab=" + cuentaHab + ", numHabitacion=" + numHabitacion + "]";
 	}
 	
 }

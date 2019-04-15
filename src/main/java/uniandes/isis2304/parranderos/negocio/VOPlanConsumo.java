@@ -8,6 +8,5 @@ public interface VOPlanConsumo {
 	
 	public String getDescripcion();
 	
-	public Reserva getReserva();
 	
 }

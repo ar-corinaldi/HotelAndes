@@ -6,6 +6,8 @@ public class PlanConsumo implements VOPlanConsumo{
 	 * ATRIBUTOS
 	 ******************************************************************************/
 	
+	
+							
 	private long id;
 
 	private double descuento;
@@ -14,7 +16,6 @@ public class PlanConsumo implements VOPlanConsumo{
 
 	private long tipoPlanConsumo;
 	
-	private Reserva reserva;
 	
 	/******************************************************************************
 	 * CONSTRUCTOR
@@ -25,17 +26,14 @@ public class PlanConsumo implements VOPlanConsumo{
 		descuento = 0;
 		descripcion = "";
 		tipoPlanConsumo = 0;
-		reserva = new Reserva();
 	}
 	
 	public PlanConsumo(long id, double descuento, String descripcion,
 			long tipoPlanConsumo) {
-		super();
 		this.id = id;
 		this.descuento = descuento;
 		this.descripcion = descripcion;
 		this.tipoPlanConsumo = tipoPlanConsumo;
-		reserva = new Reserva();
 	}
 
 	/******************************************************************************
@@ -74,19 +72,13 @@ public class PlanConsumo implements VOPlanConsumo{
 		this.tipoPlanConsumo = tipoPlanConsumo;
 	}
 
-	public Reserva getReserva() {
-		return reserva;
-	}
 
-	public void setReserva(Reserva reserva) {
-		this.reserva = reserva;
-	}
 
 	@Override
 	public String toString() {
 		return "PlanConsumo [id=" + id + ", descuento=" + descuento
 				+ ", descripcion=" + descripcion + ", tipoPlanConsumo="
-				+ tipoPlanConsumo + ", reserva=" + reserva + "]";
+				+ tipoPlanConsumo +  "]";
 	}
 	
 }

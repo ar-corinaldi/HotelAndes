@@ -130,8 +130,4 @@ public class Usuario implements VOUsuario{
 	
 	
 	
-	public Check crearCheck(long idCliente, String tipoDocumento, Timestamp fecha, boolean entrada, long idHabitacion)
-	{
-		return new Check(idCliente, fecha, entrada, idCliente, tipoDocumento, idHabitacion);
-	}
 }

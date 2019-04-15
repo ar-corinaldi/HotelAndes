@@ -8,9 +8,6 @@ public interface VOHabitacion {
 		
 	public long getTipoHabitacion();
 	
-	public long getId();
+	public long getNumHabitacion();
 	
-	public Consumo getConsumo();
-	
-	public Reserva getReserva();
 }

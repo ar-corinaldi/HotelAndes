@@ -9,6 +9,7 @@ public class Producto implements VOProducto{
 	 * ATRIBUTOS
 	 ******************************************************************************/
 	
+	
 	private long id;
 	
 	private String nombre;
@@ -17,7 +18,7 @@ public class Producto implements VOProducto{
 	
 	private String descripcion;
 	
-	private List<Servicio> servicios;
+	private Servicio servicio;
 	
 	/******************************************************************************
 	 * CONSTRUCTORES
@@ -28,15 +29,15 @@ public class Producto implements VOProducto{
 		nombre = "";
 		costo = 0.0;
 		descripcion = "";
-		servicios = new ArrayList<>();
+		servicio = null;
 	}
 	
-	public Producto(long id, String nombre, double costo, String descripcion) {
+	public Producto(long id, String nombre, double costo, String descripcion, Servicio servicio) {
 		this.id = id;
 		this.nombre = nombre;
 		this.costo = costo;
 		this.descripcion = descripcion;
-		servicios = new ArrayList<>();
+		this.servicio = servicio;
 	}
 	
 	/******************************************************************************
@@ -75,18 +76,18 @@ public class Producto implements VOProducto{
 		this.descripcion = descripcion;
 	}
 	
-	public List<Servicio> getServicio() {
-		return servicios;
+	public Servicio getServicio() {
+		return servicio;
 	}
 
-	public void setServicio(List<Servicio> servicios) {
-		this.servicios = servicios;
+	public void setServicio(Servicio servicio) {
+		this.servicio = servicio;
 	}
 
 	@Override
 	public String toString() {
 		return "Producto [id=" + id + ", nombre=" + nombre + ", costo=" + costo
-				+ ", descripcion=" + descripcion + ", servicios=" + servicios
+				+ ", descripcion=" + descripcion + ", servicios=" + servicio
 				+ "]";
 	}
 

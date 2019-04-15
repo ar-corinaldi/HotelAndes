@@ -173,6 +173,7 @@ public class HotelAndes
 
 	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long id_servicio, long id_habitacion) throws Exception
 	{
+		//TODO revisar
 		Consumo con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, id_servicio, id_habitacion);
 		Usuario user = pp.darUsuarioPorId(id_habitacion,tipo_documento_usuario);
 		Servicio ser = pp.darServicioPorId(id_servicio);
@@ -204,8 +205,8 @@ public class HotelAndes
 		return usuario;
 	}
 
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, PlanConsumo pc, Habitacion h){
-		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, pc, h);		
+	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Usuario user, PlanConsumo pc, Habitacion h){
+		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, user, pc, h);		
 		return reserva;
 	}
 
@@ -218,29 +219,6 @@ public class HotelAndes
 		return pp.adicionarTipoHabitacion(id, nombre, costo, capacidad);		
 	}
 	
-	public Check adicionarCheck(long idCliente, String tipoDocumentoCliente,long idRecepcion, String tipoDocumentoRecepcion, boolean entrada) throws Exception
-	{
-		Check retornable = null;
-		Usuario recepcionista = pp.darUsuarioPorId(idRecepcion, tipoDocumentoRecepcion);
-		Usuario cliente = pp.darUsuarioPorId(idCliente, tipoDocumentoCliente);
-		Timestamp fechaActual = Timestamp.valueOf(LocalDateTime.now());
-		Reserva reserva = cliente.getReserva();
-	
-
-		if(pp.darReservaPorId(reserva.getId())==null)
-				throw new Exception("No se encuentra reserva del cliente"); 
-		if(!(fechaActual.after(reserva.getEntrada())&& fechaActual.before(reserva.getSalida())))
-				throw new Exception("la reserva Termino");
-		
-		retornable =recepcionista.crearCheck(idCliente, tipoDocumentoCliente, fechaActual, entrada, reserva.getHabitacion().getId());
-		int ingreso =1;
-		if(!retornable.isIngreso())
-			ingreso = 0;
-		pp.adicionarCheck(retornable.getId(), retornable.getFecha(), ingreso, retornable.getIdUsuario(), retornable.getTipoDocumentoUsuario(), retornable.getIdHabitacion());
-		
-		return retornable;
-		
-	}
 
 	public TipoHabitacion darTipoHabitacion(long tipoHabitacion) {
 		
