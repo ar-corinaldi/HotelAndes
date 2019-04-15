@@ -10,4 +10,5 @@ public interface VOHabitacion {
 	
 	public long getNumHabitacion();
 	
+	public boolean isOcupada();
 }

@@ -52,7 +52,7 @@ public class SQLTipoHabitacion {
 	 */
 	public long adicionarTipoHabitacion (PersistenceManager pm, long id, String nombre, double costo, int capacidad) 
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaTipoHabitacion() + "(id, nombre, costo, capacidad) values (?, ?, ?, ?)");
+        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaTipoHabitacion() + "(id, nombre, costo_noche, capacidad) values (?, ?, ?, ?)");
         q.setParameters(id, nombre, costo, capacidad);
         return (long) q.executeUnique();
 	}

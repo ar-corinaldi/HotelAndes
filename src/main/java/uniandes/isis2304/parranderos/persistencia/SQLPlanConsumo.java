@@ -57,8 +57,8 @@ public class SQLPlanConsumo {
 			Date fecha_inicio,Date fecha_final
 			, long tipo_plan_consumo,  long id_hotel) 
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaPlanConsumo() + "(id,	descripcion, descuento,	fecha_inicio, fecha_final, tipo_plan_consumo,  id_hotel) values (?, ?, ?, ?, ?, ?, ?)");
-        q.setParameters(id,	descripcion, descuento,	fecha_inicio, fecha_final, tipo_plan_consumo,  id_hotel);
+        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaPlanConsumo() + "(id, descripcion, descuento, fecha_inicio, fecha_final, tipo_plan_consumo, id_reserva, id_hotel) values (?, ?, ?, ?, ?, ?, ?, ?)");
+        q.setParameters(id,	descripcion, descuento,	fecha_inicio, fecha_final, tipo_plan_consumo, id_reserva, id_hotel);
         return (long) q.executeUnique();
 	}
 	

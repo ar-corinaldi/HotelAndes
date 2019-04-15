@@ -30,10 +30,6 @@ public class Usuario implements VOUsuario{
 
 	private String apellido;
 	
-	private String correo;
-	
-	private Reserva reserva;
-	
 	private List<Consumo> consumos;
 
 	/******************************************************************************
@@ -45,19 +41,15 @@ public class Usuario implements VOUsuario{
 		numeroDoc = 0;
 		nombre = "";
 		apellido="";
-		setCorreo("");
-		setReserva(new Reserva());
 		setConsumos(new ArrayList<>());
 	}
 	
-	public Usuario(String tipoDoc, Long numeroDoc, String nombre, String apellido, String correo) {
+	public Usuario(String tipoDoc, Long numeroDoc, String nombre, String apellido) {
 		super();
 		this.tipoDoc = tipoDoc;
 		this.numeroDoc = numeroDoc;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.setCorreo(correo);
-		setReserva(new Reserva());
 		setConsumos(new ArrayList<>());
 	}
 
@@ -97,27 +89,11 @@ public class Usuario implements VOUsuario{
 		this.apellido = apellido;
 	}
 
-	public String getCorreo() {
-		return correo;
-	}
-
-	public void setCorreo(String correo) {
-		this.correo = correo;
-	}
-
-	public Reserva getReserva() {
-		return reserva;
-	}
-
-	public void setReserva(Reserva reserva) {
-		this.reserva = reserva;
-	}
-
 	@Override
 	public String toString() {
 		return "Usuario [tipoDoc=" + tipoDoc + ", numeroDoc=" + numeroDoc
-				+ ", nombre=" + nombre + ", apellido=" + apellido + ", correo="
-				+ correo + ", reserva=" + reserva + "]";
+				+ ", nombre=" + nombre + ", apellido=" + apellido
+				+ ", consumos=" + consumos + "]";
 	}
 
 	public List<Consumo> getConsumos() {

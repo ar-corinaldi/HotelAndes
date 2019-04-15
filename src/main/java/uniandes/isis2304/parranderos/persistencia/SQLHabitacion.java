@@ -1,5 +1,6 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -53,12 +54,11 @@ public class SQLHabitacion
 	 * @param idHotel - El identificador del hotel
 	 * @return El n�mero de tuplas insertadas
 	 */
-	
-	public long adicionarHabitacion(PersistenceManager pm, long num_habitacion, int ocupada, double cuenta_habitacion, long tipo_habitacion, long id_hotel )
+	public long adicionarHabitacion(PersistenceManager pm, int numHab, int ocupada, double cuenta_habitacion, long tipo_habitacion, long id_hotel)
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaHabitacion() + "(num_habitacion,  ocupada, cuenta_habitacion, "
-				+ "tipo_habitacion, id_hotel) values(?, ?, ?, ?)");
-		q.setParameters(num_habitacion, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel);
+		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaHabitacion() + "(num_hab, ocupada, cuenta_habitacion, "
+		q.setParameters(numHab, ocupada,cuenta_habitacion, tipo_habitacion, id_hotel);
+				+ "tipo_habitacion, id_hotel) values(?, ?, ?,?, ?)");
 		return (long)q.executeUnique();
 	}
 	
@@ -68,10 +68,10 @@ public class SQLHabitacion
 	 * @param idHotel - El identificador del hotel
 	 * @return EL n�mero de tuplas eliminadas
 	 */
-	public long eliminarHabitacionPorId (PersistenceManager pm, long idHabitacion)
+	public long eliminarHabitacionPorId (PersistenceManager pm, int num_hab)
 	{
-       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaHabitacion() + " WHERE id = ?");
-       q.setParameters(idHabitacion);
+       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaHabitacion() + " WHERE num_hab = ?");
+       q.setParameters(num_hab);
        return (long) q.executeUnique();
 	}
 	
@@ -83,11 +83,11 @@ public class SQLHabitacion
 	 * @param idHabitacion - El identificador de la Habitacion
 	 * @return El objeto Habitacion que tiene el identificador dado
 	 */
-	public Habitacion darHabitacionPorId (PersistenceManager pm, long idHabitacion) 
+	public Habitacion darHabitacionPorId (PersistenceManager pm, long num_hab) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaHabitacion() + " WHERE id = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaHabitacion() + " WHERE num_hab = ?");
 		q.setResultClass(Habitacion.class);
-		q.setParameters(idHabitacion);
+		q.setParameters(num_hab);
 		return (Habitacion) q.executeUnique();
 	}
 	
