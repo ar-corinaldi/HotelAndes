@@ -56,12 +56,12 @@ public class SQLUsuario {
 			String nombre, String apellido, long tipo_usuario) throws Exception
 	{
 		System.out.println();
-		Query q = pm.newQuery(SQL, "INSERT INTO " + "USUARIOS"+ "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario) values (?, ?, ?, ?, ?)");
-		q.setParameters(num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
-		System.out.println(q);
-		System.out.println(pm);
+		Query q = pm.newQuery(SQL, "INSERT INTO " + "USUARIOS"+ "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario) values ("+ num_identidad +", '"+tipo_documento +"', '"
+				+ nombre 	+ "', '"
+				+ apellido 	+ "', "
+				+ tipo_usuario + ")");
 		Object o = null;
-		o = q.execute();
+		o = q.executeUnique();
 		System.out.println(o);
 		return (long) o;
 	}
@@ -88,12 +88,12 @@ public class SQLUsuario {
 	 */
 	public Usuarios darUsuarioPorId (PersistenceManager pm, long num_identidad, String tipo_documento) 
 	{
-		System.out.println(num_identidad);
-		System.out.println(tipo_documento);
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + "USUARIOS" + " WHERE num_identidad = ? AND tipo_documento = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "USUARIOS" + " WHERE num_identidad = "+num_identidad 
+				+ " AND tipo_documento = '"+tipo_documento+"'");
 		q.setResultClass(Usuarios.class);
-		q.setParameters(num_identidad, tipo_documento);
-		return (Usuarios) q.executeUnique();
+		Object o = q.execute();
+		System.out.println(o);
+		return (Usuarios) o;
 	}
 
 	public List<Usuarios> darUsuarios(PersistenceManager pm){

@@ -293,18 +293,18 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		System.out.println("Adivionar Reserva");
 		Usuarios user = verificarUsuario(CLIENTE);
 
-		//    	long id = Long.valueOf(JOptionPane.showInputDialog (this, "id?", "Adicionar reserva", JOptionPane.OK_OPTION));
-		//		String numPersonas = JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION);
-		//		String entrada = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2016-11-16 06:00:00.00)", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
-		//		String salida = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2016-13-16 12:00:00.00)", "Adicionar reserva", JOptionPane.OK_OPTION);
-		//		String idUsuario = JOptionPane.showInputDialog (this, "usuario id?", "Adicionar reserva", JOptionPane.OK_OPTION);
-		//		String tipoDoc = JOptionPane.showInputDialog(this, "tipo documento de usuario?", "Adicionar reserva", JOptionPane.OK_OPTION);
-		//		String numHab = JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.OK_OPTION);
-		//		try {
-		//			//parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, idUsuario, tipoDoc, numHab);
-		//		} catch (Exception e) {
-		//			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
-		//		}
+		    	long id = Long.valueOf(JOptionPane.showInputDialog (this, "id?", "Adicionar reserva", JOptionPane.OK_OPTION));
+				String numPersonas = JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION);
+				String entrada = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2016-11-16 06:00:00.00)", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+				String salida = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2016-13-16 12:00:00.00)", "Adicionar reserva", JOptionPane.OK_OPTION);
+				String idUsuario = JOptionPane.showInputDialog (this, "usuario id?", "Adicionar reserva", JOptionPane.OK_OPTION);
+				String tipoDoc = JOptionPane.showInputDialog(this, "tipo documento de usuario?", "Adicionar reserva", JOptionPane.OK_OPTION);
+				String numHab = JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.OK_OPTION);
+				try {
+					//parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, idUsuario, tipoDoc, numHab);
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+				}
 	}
 
 	public void adicionarServicio(){
