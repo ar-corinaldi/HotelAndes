@@ -204,13 +204,17 @@ public class HotelAndes
 		return usuario;
 	}
 
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, PlanConsumo pc, Habitacion h){
-		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, pc, h);		
+	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, PlanConsumo pc, int idHab) throws Exception{
+		Habitacion habitacion = pp.darHabitacionPorId(idHab);
+		if( habitacion.isOcupada() ){
+			throw new Exception( "Habitacion " + habitacion.getNumHab() +"ya esta ocupada" );
+		}
+		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, pc, idHab);		
 		return reserva;
 	}
 
-	public Habitacion adicionarHabitacion(long id, double cuenta_habitacion, long tipo_habitacion, long id_hotel){
-		Habitacion h = pp.adicionarHabitacion(id, cuenta_habitacion, tipo_habitacion, id_hotel);		
+	public Habitacion adicionarHabitacion(int numHab , boolean ocupada, double cuenta_habitacion, long tipo_habitacion, long id_hotel){
+		Habitacion h = pp.adicionarHabitacion(numHab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel);		
 		return h;
 	}
 
@@ -232,7 +236,7 @@ public class HotelAndes
 		if(!(fechaActual.after(reserva.getEntrada())&& fechaActual.before(reserva.getSalida())))
 				throw new Exception("la reserva Termino");
 		
-		retornable =recepcionista.crearCheck(idCliente, tipoDocumentoCliente, fechaActual, entrada, reserva.getHabitacion().getId());
+		retornable =recepcionista.crearCheck(idCliente, tipoDocumentoCliente, fechaActual, entrada, reserva.getHabitacion().getNumHab());
 		int ingreso =1;
 		if(!retornable.isIngreso())
 			ingreso = 0;

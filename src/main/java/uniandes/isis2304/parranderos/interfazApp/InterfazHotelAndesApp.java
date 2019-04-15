@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.jdo.JDODataStoreException;
@@ -46,7 +47,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
+import uniandes.isis2304.parranderos.negocio.Habitacion;
 import uniandes.isis2304.parranderos.negocio.HotelAndes;
+import uniandes.isis2304.parranderos.negocio.VOReserva;
 import uniandes.isis2304.parranderos.negocio.VOUsuario;
 
 /**
@@ -237,8 +240,43 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
     }
     
 	/* ****************************************************************
-	 * 			CRUD de TipoBebida
+	 * 			CRUD de Reserva
 	 *****************************************************************/
+    
+    public void adicionarReserva( )
+	{
+		try 
+		{
+			//(long id, int numPersonas, Timestamp entrada, Timestamp salida, PlanConsumo pc, Habitacion h)
+			String id = JOptionPane.showInputDialog (this, "id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+			String numPersonas = JOptionPane.showInputDialog (this, "tipo doc?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+			String entrada = JOptionPane.showInputDialog (this, "fecha entrada?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+			String salida = JOptionPane.showInputDialog (this, "fecha salida?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+			String pc = JOptionPane.showInputDialog (this, "plan consumo id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+			String idHab = JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+			if (id != null)
+			{
+				VOReserva user = parranderos.adicionarReserva(Long.valueOf(id), Integer.valueOf(numPersonas), Timestamp.valueOf(entrada), Timestamp.valueOf(salida), null, idHab);
+				if (user == null)
+				{
+					throw new Exception ("No se pudo crear un tipo de bebida con nombre: " + id);
+				}
+				String resultado = "En adicionarTipoBebida\n\n";
+				resultado += "Tipo de bebida adicionado exitosamente: " + user;
+				resultado += "\n Operaci�n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
+			}
+		} 
+		catch (Exception e) 
+		{
+			//			e.printStackTrace();
+		}
+	}
+    
     /**
      * Adiciona un tipo de bebida con la información dada por el usuario
      * Se crea una nueva tupla de tipoBebida en la base de datos, si un tipo de bebida con ese nombre no existía
