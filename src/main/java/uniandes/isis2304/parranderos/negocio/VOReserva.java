@@ -17,6 +17,4 @@ public interface VOReserva {
 	
 	public Habitacion getHabitacion();
 	
-	public PlanConsumo getPlanConsumo();
-	
 }

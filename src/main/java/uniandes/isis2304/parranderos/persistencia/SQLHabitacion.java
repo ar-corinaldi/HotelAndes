@@ -57,7 +57,7 @@ public class SQLHabitacion
 	{
 		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaHabitacion() + "(num_hab, ocupada, cuenta_habitacion, "
 				+ "tipo_habitacion) values(?, ?, ?, ?)");
-		q.setParameters(numHab, ocupada,cuenta_habitacion, tipo_habitacion);
+		q.setParameters(numHab, cuenta_habitacion, tipo_habitacion);
 		return (long)q.executeUnique();
 	}
 	

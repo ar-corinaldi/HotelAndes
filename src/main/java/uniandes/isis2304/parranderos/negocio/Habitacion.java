@@ -29,10 +29,10 @@ public class Habitacion implements VOHabitacion{
 		setOcupada(false);
 	}
 	
-	public Habitacion( long id, long tipoHabitacion,  double cuentaHab) {
+	public Habitacion( long numHab,  double cuentaHab, long tipoHabitacion ) {
 		this.tipoHabitacion = tipoHabitacion;
 		this.cuentaHab = cuentaHab;
-		this.numHabitacion = id;
+		this.numHabitacion = numHab;
 		setOcupada(false);
 	}
 
@@ -86,12 +86,4 @@ public class Habitacion implements VOHabitacion{
 		return "Habitacion [tipoHabitacion=" + tipoHabitacion + ", cuentaHab=" + cuentaHab + ", numHabitacion=" + numHabitacion + "]";
 	}
 
-	public boolean isOcupada() {
-		return ocupada;
-	}
-
-	public void setOcupada(boolean ocupada) {
-		this.ocupada = ocupada;
-	}
-	
 }

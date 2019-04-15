@@ -292,14 +292,11 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			String tipo_documento = JOptionPane.showInputDialog (this, "tipo doc?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
 			String nombre = JOptionPane.showInputDialog (this, "Nombre?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
 			String apellido = JOptionPane.showInputDialog (this, "Apellido?", "AAdicionar cliente", JOptionPane.QUESTION_MESSAGE);
-			String correo = JOptionPane.showInputDialog (this, "correo?", "Adicionar tipo de bebida", JOptionPane.QUESTION_MESSAGE);
 			String tipo_usuario = JOptionPane.showInputDialog (this, "tipo usuario?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
-			String id_reserva = JOptionPane.showInputDialog (this, "id reserva?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
-			String id_hotel = JOptionPane.showInputDialog (this, "id hotel", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
 
 			if (num_identidad != null)
 			{
-				VOUsuario user = parranderos.adicionarUsuario(Long.valueOf(num_identidad), tipo_documento, nombre, apellido, correo, Long.valueOf(tipo_usuario), Long.valueOf(id_reserva), Long.valueOf(id_hotel));
+				VOUsuario user = parranderos.adicionarUsuario(Long.valueOf(num_identidad), tipo_documento, nombre, apellido, Long.valueOf(tipo_usuario));
 				System.out.println("hola");
 				if (user == null)
 				{

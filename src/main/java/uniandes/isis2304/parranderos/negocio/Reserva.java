@@ -27,8 +27,6 @@ public class Reserva implements VOReserva{
 
 	private Habitacion habitacion;
 	
-	private PlanConsumo planConsumo;
-
 	/******************************************************************************
 	 * CONSTRUCTORES
 	 ******************************************************************************/
@@ -40,13 +38,12 @@ public class Reserva implements VOReserva{
 		habitacion= new Habitacion();
 		setNumPersonas(0);
 		id = 0;
-		planConsumo = new PlanConsumo();
 		check_in = null;
 		check_out = null;
 		
 	}
 
-	public Reserva(long id, int numPersonas,Timestamp entrada, Timestamp salida, Usuario pUsuario, Habitacion pHabitacion, PlanConsumo pPlan) {
+	public Reserva(long id, int numPersonas,Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut,Usuario pUsuario, Habitacion pHabitacion ) {
 		super();
 		this.id = id;
 		this.entrada = entrada;
@@ -54,7 +51,6 @@ public class Reserva implements VOReserva{
 		this.setNumPersonas(numPersonas);
 		usuario = pUsuario;
 		habitacion= pHabitacion;
-		planConsumo = pPlan;
 		check_in = null;
 		check_out = null;
 	}
@@ -113,14 +109,6 @@ public class Reserva implements VOReserva{
 		this.id= id;
 	}
 	
-	public PlanConsumo getPlanConsumo() {
-		return planConsumo;
-	}
-
-	public void setPlanConsumo(PlanConsumo planConsumo) {
-		this.planConsumo = planConsumo;
-	}
-
 	public Timestamp getCheck_in() {
 		return check_in;
 	}
@@ -141,8 +129,7 @@ public class Reserva implements VOReserva{
 	public String toString() {
 		return "Reserva [id=" + id + ", entrada=" + entrada
 				+ ", salida=" + salida 
-				+ ", usuarios=" + usuario+ ", habitacion=" + habitacion
-				+ ", planConsumo=" + planConsumo + "]";
+				+ ", usuarios=" + usuario+ ", habitacion=" + habitacion + "]";
 	}
 
 }
