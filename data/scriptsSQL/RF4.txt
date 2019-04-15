@@ -1,0 +1,9 @@
+INSERT INTO HABITACIONES (num_hab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel) VALUES (1, 0, 0, 1, 1);
+INSERT INTO HABITACIONES (num_hab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel) VALUES (2, 0, 0, 1, 1);
+INSERT INTO HABITACIONES (num_hab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel) VALUES (3, 0, 0, 1, 1);
+INSERT INTO HABITACIONES (num_hab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel) VALUES (4, 0, 0, 2, 1);
+INSERT INTO HABITACIONES (num_hab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel) VALUES (5, 0, 0, 2, 1);
+INSERT INTO HABITACIONES (num_hab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel) VALUES (6, 0, 0, 2, 1);
+INSERT INTO HABITACIONES (num_hab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel) VALUES (7, 0, 0, 3, 1);
+INSERT INTO HABITACIONES (num_hab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel) VALUES (8, 0, 0, 3, 1);
+INSERT INTO HABITACIONES (num_hab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel) VALUES (9, 0, 0, 3, 1);

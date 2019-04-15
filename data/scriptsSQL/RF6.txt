@@ -1,0 +1,7 @@
+INSERT INTO tipo_planes_de_consumo VALUES (1, 'larga estadia');
+INSERT INTO tipo_planes_de_consumo VALUES (2, 'tiempo compartido');
+INSERT INTO tipo_planes_de_consumo VALUES (3, 'todo incluido');
+INSERT INTO tipo_planes_de_consumo VALUES (4, 'promociones particulares');
+
+INSERT INTO planes_de_consumo (id, descripcion, descuento, fecha_inicio, fecha_final, tipo_plan_consumo, id_hotel) VALUES (1, '30% de descuento', 30, null, null, 1, 1);
+
