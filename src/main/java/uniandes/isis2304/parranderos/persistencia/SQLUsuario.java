@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.swing.JOptionPane;
 
+import uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp;
 import uniandes.isis2304.parranderos.negocio.Usuarios;
 
 public class SQLUsuario {
@@ -28,7 +30,7 @@ public class SQLUsuario {
 	/* ****************************************************************
 	 * 			Métodos
 	 *****************************************************************/
-	
+
 	/**
 	 * Constructor
 	 * @param pp - El Manejador de persistencia de la aplicación
@@ -37,7 +39,7 @@ public class SQLUsuario {
 	{
 		this.ph = ph;
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para adicionar un Usuario a la base de datos de HotelAndes
 	 * @param pm - El manejador de persistencia
@@ -51,13 +53,19 @@ public class SQLUsuario {
 	 * @return El número de tuplas insertadas
 	 */
 	public long adicionarUsuario (PersistenceManager pm, long num_identidad,  String tipo_documento,
-			String nombre, String apellido, long tipo_usuario) 
+			String nombre, String apellido, long tipo_usuario) throws Exception
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaUsuario() + "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario) values (?, ?, ?, ?, ?)");
-        q.setParameters(num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
-        return (long) q.executeUnique();
+		System.out.println();
+		Query q = pm.newQuery(SQL, "INSERT INTO " + "USUARIOS"+ "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario) values (?, ?, ?, ?, ?)");
+		q.setParameters(num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
+		System.out.println(q);
+		System.out.println(pm);
+		Object o = null;
+		o = q.execute();
+		System.out.println(o);
+		return (long) o;
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para eliminar un Usuario de la base de datos de HotelAndes, por su identificador
 	 * @param pm - El manejador de persistencia
@@ -66,11 +74,11 @@ public class SQLUsuario {
 	 */
 	public long eliminarUsuarioPorId (PersistenceManager pm, long num_identidad, String tipo_doc)
 	{
-       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaUsuario() + " WHERE num_identidad = ? AND tipo_documento = ?");
-       q.setParameters(num_identidad);
-       return (long) q.executeUnique();
+		Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaUsuario() + " WHERE num_identidad = ? AND tipo_documento = ?");
+		q.setParameters(num_identidad);
+		return (long) q.executeUnique();
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para encontrar la información de UN Usuario de la 
 	 * base de datos de HotelAndes, por su identificador
@@ -82,14 +90,12 @@ public class SQLUsuario {
 	{
 		System.out.println(num_identidad);
 		System.out.println(tipo_documento);
-		System.out.println();
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + "USUARIOS" + " WHERE num_identidad = ? AND tipo_documento = ?");
-		
 		q.setResultClass(Usuarios.class);
 		q.setParameters(num_identidad, tipo_documento);
 		return (Usuarios) q.executeUnique();
 	}
-	
+
 	public List<Usuarios> darUsuarios(PersistenceManager pm){
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaUsuario());
 		q.setResultClass(Usuarios.class);

@@ -142,7 +142,7 @@ public class PersistenciaHotelAndes
 	 * Atributo para el acceso a la tabla Usuario de la base de datos
 	 */
 	private SQLUsuario sqlUsuario;
-	
+
 	/**
 	 * Atributo para el acceso a la tabla convencion de la base de datos
 	 */
@@ -290,7 +290,7 @@ public class PersistenciaHotelAndes
 	public String darTablaConsumo() {
 		return tablas.get(1);
 	}
-	
+
 	public String darTablaConvencion() {
 		return tablas.get(2);
 	}
@@ -331,7 +331,7 @@ public class PersistenciaHotelAndes
 	public String darTablaReserva() {
 		return tablas.get(7);
 	}
-	
+
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla de Reserva de Hotelandes
 	 */
@@ -963,21 +963,23 @@ public class PersistenciaHotelAndes
 
 	public Usuarios adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario) 
 	{
+		System.out.println("Entra persistencia hotel");
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
 			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
+			System.out.println(tuplasInsertadas);
 			tx.commit();
-
-			return new Usuarios(tipo_documento, num_identidad, nombre, apellido, tipo_usuario);
-			}
+			Usuarios usuario = new Usuarios(tipo_documento, num_identidad, nombre, apellido, tipo_usuario);
+			System.out.println(usuario);
+			return usuario;
+		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			System.out.println("fin");
 			return null;
 		}
 		finally
@@ -1178,7 +1180,7 @@ public class PersistenciaHotelAndes
 
 
 
-	
+
 	/**
 	 * Elimina todas las tuplas de todas las tablas de la base de datos de Parranderos
 	 * Crea y ejecuta las sentencias SQL para cada tabla de la base de datos - EL ORDEN ES IMPORTANTE 
