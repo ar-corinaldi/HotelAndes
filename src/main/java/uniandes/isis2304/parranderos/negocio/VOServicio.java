@@ -14,14 +14,8 @@ public interface VOServicio {
 	
 	public long getId();
 	
-	public List<Object []> getProductos();
-	
 	public boolean isCargadoHab();
-	
-	public Date getHoraReserva();
-	
-	public boolean isReservado();
-	
+		
 	@Override
 	public String toString();
 	

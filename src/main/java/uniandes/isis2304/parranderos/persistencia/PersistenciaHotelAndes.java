@@ -27,7 +27,6 @@ import javax.jdo.Transaction;
 
 import org.apache.log4j.Logger;
 
-import uniandes.isis2304.parranderos.negocio.Check;
 import uniandes.isis2304.parranderos.negocio.Consumo;
 import uniandes.isis2304.parranderos.negocio.Habitacion;
 import uniandes.isis2304.parranderos.negocio.PlanConsumo;
@@ -87,10 +86,6 @@ public class PersistenciaHotelAndes
 	 */
 	private List <String> tablas;
 
-	/**
-	 * Atributo para el acceso a la tabla Catalogo de la base de datos
-	 */
-	private SQLCatalogo sqlCatalogo;
 
 	/**
 	 * Atributo para el acceso a la tabla Consumo de la base de datos
@@ -158,10 +153,6 @@ public class PersistenciaHotelAndes
 	 */
 	private SQLUtil sqlUtil;
 
-	/**
-	 * Atributo para el acceso a la tabla check de la base de datos
-	 */
-	private SQLCheck sqlCheck;
 
 	
 
@@ -180,7 +171,6 @@ public class PersistenciaHotelAndes
 		// Define los nombres por defecto de las tablas de la base de datos
 		tablas = new LinkedList<String> ();
 		tablas.add ("Hotel_sequence"); //No se que poner
-		tablas.add("CATALOGO");
 		tablas.add ("CONSUMOS");
 		tablas.add ("HABITACIONES");
 		tablas.add ("HOTELES");
@@ -194,7 +184,6 @@ public class PersistenciaHotelAndes
 		tablas.add ("TIPO_USUARIOS");
 		tablas.add ("USUARIOS");
 		tablas.add("CHECK");
-		tablas.add("Convencion");
 	}
 
 	/**
@@ -280,8 +269,6 @@ public class PersistenciaHotelAndes
 		sqlTipoUsuario = new SQLTipoUsuario(this);
 		sqlTipoServicio = new SQLTipoServicio(this);
 		sqlUsuario = new SQLUsuario(this);
-		sqlCatalogo = new SQLCatalogo(this);
-		sqlCheck = new SQLCheck(this);
 		sqlConvencion = new SQLConvencion(this);
 
 		sqlUtil = new SQLUtil(this);
@@ -294,17 +281,15 @@ public class PersistenciaHotelAndes
 		return tablas.get(0);
 	}
 
-	/**
-	 * @return La cadena de caracteres con el nombre de la tabla de Catalogo de Hotelandes
-	 */
-	public String darTablaCatalogo() {
-		return tablas.get(1);
-	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla de Consumo de Hotelandes
 	 */
 	public String darTablaConsumo() {
+		return tablas.get(1);
+	}
+	
+	public String darTablaConvencion() {
 		return tablas.get(2);
 	}
 
@@ -387,16 +372,9 @@ public class PersistenciaHotelAndes
 		return tablas.get(13);
 	}
 
-	/**
-	 * @return La cadena de caracteres con el nombre de la tabla de Check de Hotelandes
-	 */
-	public String darTablaCheck() {
-		return tablas.get(14);
-	}
+	
 
-	public String darTablaConvencion() {
-		return tablas.get(15);
-	}
+	
 
 	/**
 	 * Transacción para el generador de secuencia de Parranderos
@@ -1089,7 +1067,7 @@ public class PersistenciaHotelAndes
 			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, idHab, numPersonas, entrada, salida, checkIn, checkOut, idUsuario, tipoDoc, idHab);
 			tx.commit();
 
-			return new Reserva(id, entrada, salida, numPersonas);
+			return new Reserva(id, numPersonas, entrada, salida, user, h, pc);
 		}
 		catch (Exception e)
 		{
@@ -1193,107 +1171,7 @@ public class PersistenciaHotelAndes
 
 
 
-	/* ****************************************************************
-	 * 			M�todos para manejar los Check
-	 *****************************************************************/
-	/**
-	 * M�todo que inserta, de manera transaccional, una tupla en la tabla Bebida
-	 * Adiciona entradas al log de la aplicaci�n
-	 * @param id 
-	 * @param fecha 
-	 * @param id_usuario 
-	 * @param tipo_documento_usuario 
-	 * @param id_habitacion 
-	 * @param entrada 
-	 * @return El objeto Check adicionado. null si ocurre alguna Excepci�n
-	 */
-
-	public Check adicionarCheck(long id, Timestamp fecha, int entrada, long id_usuario, String tipo_documento_usuario,  long id_habitacion) 
-	{
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx=pm.currentTransaction();
-		try
-		{
-			tx.begin();            
-			long tuplasInsertadas = sqlCheck.adicionarCheck(pm, id, fecha, entrada, id_usuario, tipo_documento_usuario, id_habitacion);
-			tx.commit();
-
-			log.trace ("insercionconsumo: " + id + ": " + tuplasInsertadas + " tuplas insertadas");
-			boolean ingreso = false;
-			if(entrada==1)
-				ingreso= true;
-			return new Check(id, fecha, ingreso, id_usuario, tipo_documento_usuario, id_habitacion);
-		}
-		catch (Exception e)
-		{
-			//        	e.printStackTrace();
-			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return null;
-		}
-		finally
-		{
-			if (tx.isActive())
-			{
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
-
-	/**
-	 * Método que elimina, de manera transaccional, una tupla en la tabla Bebida, dado el identificador de la bebida
-	 * Adiciona entradas al log de la aplicación
-	 * @param idBebida - El identificador de la bebida
-	 * @return El número de tuplas eliminadas. -1 si ocurre alguna Excepción
-	 */
-	public long eliminarCheckPorId (long idCheck) 
-	{
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx=pm.currentTransaction();
-		try
-		{
-			tx.begin();
-			long resp = sqlCheck.eliminarCheckPorId (pm, idCheck);
-			tx.commit();
-
-			return resp;
-		}
-		catch (Exception e)
-		{
-			//        	e.printStackTrace();
-			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return -1;
-		}
-		finally
-		{
-			if (tx.isActive())
-			{
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
-
-	/**
-	 * Método que consulta todas las tuplas en la tabla Bebida
-	 * @return La lista de objetos Bebida, construidos con base en las tuplas de la tabla BEBIDA
-	 */
-	public List<Check> darCheck ()
-	{
-		return sqlCheck.darChecks(pmf.getPersistenceManager());
-	}
-
-
-	/**
-	 * Método que consulta todas las tuplas en la tabla Consuom con un identificador dado
-	 * @param idTipoBebida - El identificador del tipo de bebida
-	 * @return El objeto TipoBebida, construido con base en las tuplas de la tabla TIPOBEBIDA con el identificador dado
-	 */
-	public Check darCheckPorId (long idCheck)
-	{
-		return sqlCheck.darCheckPorId (pmf.getPersistenceManager(), idCheck);
-	}
-
+	
 	/**
 	 * Elimina todas las tuplas de todas las tablas de la base de datos de Parranderos
 	 * Crea y ejecuta las sentencias SQL para cada tabla de la base de datos - EL ORDEN ES IMPORTANTE 

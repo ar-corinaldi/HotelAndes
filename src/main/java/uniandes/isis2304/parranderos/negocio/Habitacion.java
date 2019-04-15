@@ -5,18 +5,18 @@ public class Habitacion implements VOHabitacion{
 	/******************************************************************************
 	 * ATRIBUTOS
 	 ******************************************************************************/
+						
 
+	
 	private long tipoHabitacion;
 
 	private double cuentaHab;
-
-	private int numHab;
-
-	private Consumo consumo;
-	
-	private Reserva reserva;
 	
 	private boolean ocupada;
+	
+	private long numHabitacion;
+
+	
 
 	/******************************************************************************
 	 * CONSTRUCTOR
@@ -25,20 +25,15 @@ public class Habitacion implements VOHabitacion{
 	public Habitacion() {
 		tipoHabitacion = 0;
 		cuentaHab = 0.0;
-		numHab = 0;
-		consumo = new Consumo();
-		reserva = new Reserva();
+		numHabitacion = 0;
 		setOcupada(false);
 	}
 	
-	public Habitacion(long tipoHabitacion,  double cuentaHab, int numHab, boolean ocupada ) {
-		super();
+	public Habitacion( long id, long tipoHabitacion,  double cuentaHab) {
 		this.tipoHabitacion = tipoHabitacion;
 		this.cuentaHab = cuentaHab;
-		this.numHab = numHab;
-		this.setOcupada(ocupada);
-		consumo = new Consumo();
-		reserva = new Reserva();
+		this.numHabitacion = id;
+		setOcupada(false);
 	}
 
 	/******************************************************************************
@@ -68,33 +63,27 @@ public class Habitacion implements VOHabitacion{
 		this.tipoHabitacion = tipoHabitacion;
 	}
 
-	public int getNumHab(){
-		return numHab;
+	public long getNumHabitacion(){
+		return numHabitacion;
 	}
 
-	public void setNumHab( int numHab ){
-		this.numHab = numHab;
+	public void setNumHabitacion( long id ){
+		this.numHabitacion = id;
 	}
 
-	public Consumo getConsumo() {
-		return consumo;
+
+
+	public boolean isOcupada() {
+		return ocupada;
 	}
 
-	public void setConsumo(Consumo consumo) {
-		this.consumo = consumo;
-	}
-
-	public Reserva getReserva() {
-		return reserva;
-	}
-
-	public void setReserva(Reserva reserva) {
-		this.reserva = reserva;
+	public void setOcupada(boolean ocupada) {
+		this.ocupada = ocupada;
 	}
 
 	@Override
 	public String toString() {
-		return "Habitacion [tipoHabitacion=" + tipoHabitacion + ", cuentaHab=" + cuentaHab + ", numHab=" + numHab + ", consumo=" + consumo + ", reserva=" + reserva + "]";
+		return "Habitacion [tipoHabitacion=" + tipoHabitacion + ", cuentaHab=" + cuentaHab + ", numHabitacion=" + numHabitacion + "]";
 	}
 
 	public boolean isOcupada() {

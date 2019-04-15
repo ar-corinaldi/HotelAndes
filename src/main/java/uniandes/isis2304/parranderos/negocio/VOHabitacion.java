@@ -8,11 +8,7 @@ public interface VOHabitacion {
 		
 	public long getTipoHabitacion();
 	
-	public int getNumHab();
+	public long getNumHabitacion();
 	
 	public boolean isOcupada();
-	
-	public Consumo getConsumo();
-	
-	public Reserva getReserva();
 }
