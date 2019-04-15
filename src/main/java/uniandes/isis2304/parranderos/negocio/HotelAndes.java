@@ -177,7 +177,7 @@ public class HotelAndes
 		Consumo con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, id_servicio, id_habitacion);
 		Usuario user = pp.darUsuarioPorId(id_habitacion,tipo_documento_usuario);
 		Servicio ser = pp.darServicioPorId(id_servicio);
-		if( user != null /**&& ser.isReservado()**/ ){
+		if( user != null && ser.isReservado() ){
 			user.getConsumos().add(con);
 		}
 		else{
@@ -198,24 +198,23 @@ public class HotelAndes
 	 * @param nombre - El nombre del tipo de bebida
 	 * @return El objeto TipoBebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario)
+	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario, long id_hotel)
 	{
-		Usuario usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
+		Usuario usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_hotel);
 		return usuario;
 	}
 
 	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab) throws Exception{
 		Habitacion habitacion = pp.darHabitacionPorId(numHab);
-		Usuario usuario = pp.darUsuarioPorId(idUsuario, tipoDoc);
 		if( habitacion.isOcupada() ){
-			throw new Exception( "Habitacion " + habitacion.getNumHabitacion() +"ya esta ocupada" );
+			throw new Exception( "Habitacion " + habitacion.getNumHab() +"ya esta ocupada" );
 		}
-		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, usuario, habitacion);		
+		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, idUsuario, tipoDoc, numHab);		
 		return reserva;
 	}
 
-	public Habitacion adicionarHabitacion(int numHab , boolean ocupada, double cuenta_habitacion, long tipo_habitacion){
-		Habitacion h = pp.adicionarHabitacion(numHab, ocupada, cuenta_habitacion, tipo_habitacion );		
+	public Habitacion adicionarHabitacion(int numHab , boolean ocupada, double cuenta_habitacion, long tipo_habitacion, long id_hotel){
+		Habitacion h = pp.adicionarHabitacion(numHab, ocupada, cuenta_habitacion, tipo_habitacion, id_hotel);		
 		return h;
 	}
 
