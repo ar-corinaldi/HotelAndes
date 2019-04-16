@@ -1,12 +1,4 @@
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (1435, 'cedula', 'Stephannie', 'Kinner', 1, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (22342, 'pasaporte', 'Heida', 'Galbraeth', 2, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (3343, 'cedula', 'Perle', 'Shyram', 3, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (422, 'cedula', 'Mercy', 'Buckberry', 3, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (5978, 'cedula', 'Guido', 'Jilliss', 4, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (6467, 'cedula', 'Marie', 'Branno',  4, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (7578, 'cedula', 'Magdalen', 'Lethby', 4, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (8894, 'pasaporte', 'Melony', 'Gurnee', 4, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (9867, 'cedula', 'Lorelle', 'Camillo', 5, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (2345, 'pasaporte', 'Liza', 'Ritmeier', 5, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (1657, 'cedula', 'Ali', 'More', 5, null);
-INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (1567, 'cedula', 'Kimbell', 'Trevaskiss', 5, null);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (9867, 'cedula', 'Lorelle', 'Camillo', 5, 0);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (2345, 'pasaporte', 'Liza', 'Ritmeier', 5, 0);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (1657, 'cedula', 'Ali', 'More', 5, 0);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (1567, 'cedula', 'Kimbell', 'Trevaskiss', 5, 0);
