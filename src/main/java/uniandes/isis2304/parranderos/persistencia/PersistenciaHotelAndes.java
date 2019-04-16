@@ -1311,10 +1311,19 @@ public class PersistenciaHotelAndes
 
 	}
 
-	public boolean verificarHabitacionesDisponibles(long tipo, int cantidad) {
-		sqlHabitacion.darHabitacionesDisponibles(pmf.getPersistenceManager(), tipo, cantidad);
+	public List<Habitaciones> verificarHabitacionesDisponibles(long tipo, int cantidad) {
+		List<Object> l = sqlHabitacion.darHabitacionesDisponibles(pmf.getPersistenceManager(), tipo, cantidad);
+		LinkedList<Habitaciones> h = new LinkedList<Habitaciones>();
+		for (Object object : l) {
+			Object[] datos = (Object[]) object;
+			long numHab = ((BigDecimal) datos [0]).longValue ();
+			int ocupada = ((BigDecimal) datos [1]).intValue ();
+			double cuentaHab = ((BigDecimal) datos[2]).doubleValue();
+			long tipoHab = ((BigDecimal)datos[3]).longValue();
+			h.add(new Habitaciones(numHab, ocupada, cuentaHab, tipoHab));
+		}
 		System.out.println("PersistenciaHotelAndes en el metodo verificarHabitacionesDisponibles");
-		return false;
+		return h;
 	}
 
 

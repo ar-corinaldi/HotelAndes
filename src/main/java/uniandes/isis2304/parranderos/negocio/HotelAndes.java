@@ -304,7 +304,10 @@ public class HotelAndes
 	}
 
 	public boolean verificarHabitacionesDisponibles(long tipo, int cantidad) {
-		boolean rta = pp.verificarHabitacionesDisponibles(tipo, cantidad);
+		boolean rta = false;
+		List<Habitaciones> l = pp.verificarHabitacionesDisponibles(tipo, cantidad);
+		System.out.println("Habitaciones Disponibles: "+l.size());
+		rta = l.size() == cantidad;
 		return rta;
 	}
 }
