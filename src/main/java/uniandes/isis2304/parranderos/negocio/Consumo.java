@@ -2,7 +2,7 @@ package uniandes.isis2304.parranderos.negocio;
 
 import java.sql.Timestamp;
 
-public class Consumo implements VOConsumo{
+public class Consumo {
 
 	/******************************************************************************
 	 * ATRIBUTOS
@@ -12,13 +12,13 @@ public class Consumo implements VOConsumo{
 
 	private Timestamp fecha;
 
-	private long idUsuario;
+	private long id_usuario;
 	
-	private String tipoDocumentoUsuario;
+	private String tipo_documento_usuario;
 
-	private long idServicio;
+	private long id_producto;
 	
-	private Habitaciones habitacion;
+	private long id_habitacion;
 	
 	/******************************************************************************
 	 * CONSTRUCTORES
@@ -27,19 +27,20 @@ public class Consumo implements VOConsumo{
 	public Consumo() {
 		id=0;
 		fecha = new Timestamp(0);
-		idUsuario = 0;
-		idServicio=0;
-		tipoDocumentoUsuario = "";
-		habitacion = new Habitaciones();
+		setId_usuario(0);
+		id_producto=0;
+		tipo_documento_usuario = "";
+		id_habitacion = 0;
 	}
 
-	public Consumo(long id, Timestamp fecha, long idCliente, long idServicio ) {
+	public Consumo(long id, Timestamp fecha, long idCliente, String tipoDoc, long idProd, long idHab) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
-		this.idUsuario = idCliente;
-		this.idServicio = idServicio;
-		this.habitacion = new Habitaciones();
+		this.setId_usuario(idCliente);
+		this.tipo_documento_usuario = tipoDoc;
+		this.id_producto = idProd;
+		this.id_habitacion = idHab;
 	}
 
 	/******************************************************************************
@@ -61,42 +62,44 @@ public class Consumo implements VOConsumo{
 		this.fecha = fecha;
 	}
 
-	public long getIdUsuario() {
-		return idUsuario;
+	public long getId_usuario() {
+		return id_usuario;
 	}
 
-	public void setIdUsuario(long idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setId_usuario(long id_usuario) {
+		this.id_usuario = id_usuario;
 	}
 
-	public long getIdServicio() {
-		return idServicio;
+	public String getTipo_documento_usuario() {
+		return tipo_documento_usuario;
 	}
 
-	public void setIdServicio(long idServicio) {
-		this.idServicio = idServicio;
-	}
-	
-	public Habitaciones getHabitacion() {
-		return habitacion;
+	public void setTipo_documento_usuario(String tipo_documento_usuario) {
+		this.tipo_documento_usuario = tipo_documento_usuario;
 	}
 
-	public void setHabitacion(Habitaciones habitacion) {
-		this.habitacion = habitacion;
+	public long getId_producto() {
+		return id_producto;
 	}
 
-	public String getTipoDocumentoUsuario() {
-		return tipoDocumentoUsuario;
+	public void setId_producto(long id_producto) {
+		this.id_producto = id_producto;
 	}
 
-	public void setTipoDocumentoUsuario(String tipoDocumentoUsuario) {
-		this.tipoDocumentoUsuario = tipoDocumentoUsuario;
+	public long getId_habitacion() {
+		return id_habitacion;
+	}
+
+	public void setId_habitacion(long id_habitacion) {
+		this.id_habitacion = id_habitacion;
 	}
 
 	@Override
 	public String toString() {
-		return "Consumo [id="+ id +"fecha=" + fecha + ", idCliente=" + idUsuario
-				+ ", idServicio=" + idServicio + ", habitacion=" + habitacion +"]";
+		return "Consumo [id=" + id + ", fecha=" + fecha + ", id_usuario="
+				+ id_usuario + ", tipo_documento_usuario="
+				+ tipo_documento_usuario + ", id_producto=" + id_producto
+				+ ", id_habitacion=" + id_habitacion + "]";
 	}
 	
 }

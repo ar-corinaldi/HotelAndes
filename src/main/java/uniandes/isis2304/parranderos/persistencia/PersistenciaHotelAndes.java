@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import uniandes.isis2304.parranderos.negocio.Consumo;
 import uniandes.isis2304.parranderos.negocio.Habitaciones;
 import uniandes.isis2304.parranderos.negocio.PlanConsumo;
+import uniandes.isis2304.parranderos.negocio.ReservaServicio;
 import uniandes.isis2304.parranderos.negocio.Reservas;
 import uniandes.isis2304.parranderos.negocio.Servicios;
 import uniandes.isis2304.parranderos.negocio.TipoHabitacion;
@@ -889,18 +890,18 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long id_servicio, long id_habitacion) 
+	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlConsumo.adicionarConsumo(pm, id, fecha, id_usuario, tipo_documento_usuario, id_servicio, id_habitacion);
+			long tuplasInsertadas = sqlConsumo.adicionarConsumo(pm, id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion);
 			tx.commit();
 
 			log.trace ("insercionconsumo: " + id + ": " + tuplasInsertadas + " tuplas insertadas");
-			return new Consumo(id, fecha, id_usuario, id_servicio);
+			return new Consumo(id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion);
 		}
 		catch (Exception e)
 		{
@@ -1070,6 +1071,7 @@ public class PersistenciaHotelAndes
 	public Usuarios darUsuarioPorId (long id, String tipoDoc)
 	{
 		Usuarios usuario = sqlUsuario.darUsuarioPorId (pmf.getPersistenceManager(), id, tipoDoc);
+		System.out.println(usuario);
 		return usuario;
 	}
 
@@ -1238,6 +1240,44 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 
+	}
+
+	public List<Consumo> adicionarConsumoUsuario(Consumo con, Usuarios user) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		List<Consumo> list = sqlConsumo.darConsumosXUsuario(pm, con, user);
+		System.out.println(list);
+		return list;
+	}
+
+	public ReservaServicio adicionarReservaServicio(long id,
+			Timestamp fecha_inicial, Timestamp fecha_final, long num_identidad,
+			String tipo_documento, long idServicio) {
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();            
+			long tuplasInsertadas = sqlReservaServicio.adicionarReservaServicio(pm, id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
+			tx.commit();
+			 ReservaServicio rs = new ReservaServicio(id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
+			return rs;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 
 

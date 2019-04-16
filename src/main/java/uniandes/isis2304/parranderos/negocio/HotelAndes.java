@@ -201,14 +201,19 @@ public class HotelAndes
 	/* ****************************************************************
 	 * 			Atributos
 	 *****************************************************************/
-	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long id_servicio, long id_habitacion) throws Exception
+	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion, Usuarios user) throws Exception
 	{
-		//TODO revisar
-		Consumo con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, id_servicio, id_habitacion);
-		Usuarios user = pp.darUsuarioPorId(id_habitacion,tipo_documento_usuario);
-		Servicios ser = pp.darServicioPorId(id_servicio);
-		if( user != null /**&& ser.isReservado()**/ ){
+		Consumo con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion);
+		System.out.println(con);
+		if( con != null ){
+			System.out.println("Entra");
 			user.getConsumos().add(con);
+			System.out.println(id_usuario);
+			System.out.println(tipo_documento_usuario);
+			List<Consumo> l = pp.adicionarConsumoUsuario(con, user);
+//			for (Consumo consumo : l) {
+//				System.out.println(l);
+//			}
 		}
 		else{
 			throw new Exception( "O el usuario no existe, o el id del consumo es nulo, o ya estaba reservado el servicio." );
@@ -222,7 +227,6 @@ public class HotelAndes
 			throw new Exception("No existe tal tipo de documento "+tipoDoc);
 		}
 		Usuarios usuario = pp.darUsuarioPorId(id, tipoDoc);
-		System.out.println(usuario);
 		return usuario;
 	}
 
@@ -281,5 +285,13 @@ public class HotelAndes
 		long [] borrrados = pp.limpiarParranderos();	
 		log.info ("Limpiando la BD de Parranderos: Listo!");
 		return borrrados;
+	}
+
+	public ReservaServicio adicionarReservaServicio(long id,
+			Timestamp fecha_inicial, Timestamp fecha_final, Long num_identidad,
+			String tipo_documento, long idServicio) {
+		ReservaServicio rs = pp.adicionarReservaServicio(id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
+		System.out.println(rs);
+		return rs;
 	}
 }
