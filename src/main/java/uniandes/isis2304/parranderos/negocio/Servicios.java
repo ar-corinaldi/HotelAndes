@@ -4,16 +4,22 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Servicio implements VOServicio{
+public class Servicios implements VOServicio{
 
 	/******************************************************************************
 	 * ATRIBUTOS
 	 ******************************************************************************/
+	public final static int SI_CAR_HAB = 1;
+	public final static int NO_CAR_HAB = 0;
+	
+	public final static int SI_RESERVADO = 1;
+	public final static int NO_RESERVADO = 0;
+
 	
 	
 	private long id;
 
-	private boolean cargadoHab;
+	private int cargado_habitacion;
 
 	private String nombre;
 
@@ -23,33 +29,60 @@ public class Servicio implements VOServicio{
 
 	private double costo;
 	
-	private long tipoServicio;
+	private int reservado;
 	
+	private long tipo_servicios;
+	
+	public int getCargado_habitacion() {
+		return cargado_habitacion;
+	}
+
+	public void setCargado_habitacion(int cargado_habitacion) {
+		this.cargado_habitacion = cargado_habitacion;
+	}
+
+	public int getReservado() {
+		return reservado;
+	}
+
+	public void setReservado(int reservado) {
+		this.reservado = reservado;
+	}
+
+	public long getTipo_servicios() {
+		return tipo_servicios;
+	}
+
+	public void setTipo_servicios(long tipo_servicios) {
+		this.tipo_servicios = tipo_servicios;
+	}
+
 	/******************************************************************************
 	 * CONSTRUCTOR
 	 ******************************************************************************/
 
-	public Servicio() {
+	public Servicios() {
 		id = 0;
-		cargadoHab = false;
+		cargado_habitacion= 0;
 		nombre = "";
 		descripcion = "";
 		costo = 0.0;
 		capacidad = 0;
-		setTipoServicio(0);
+		reservado = 0;
+		setTipo_servicios(0);
 	}
 	
-	public Servicio(long id, boolean cargadoHab, int capacidad,
-			 String nombre,
-			String descripcion, double costo, long tipoServicio) {
+	public Servicios(long id, String nombre,
+			String descripcion,   double costo, int cargadoHab, int capacidad,
+			int reservado, long tipoServicio) {
 		super();
 		this.id = id;
-		this.cargadoHab = cargadoHab;
+		this.cargado_habitacion = cargadoHab;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.costo = costo;
 		this.capacidad = capacidad;
-		this.tipoServicio = tipoServicio;
+		this.tipo_servicios = tipoServicio;
 	}
 
 	/******************************************************************************
@@ -89,41 +122,21 @@ public class Servicio implements VOServicio{
 		this.id = id;
 	}
 
-
-
-	public boolean isCargadoHab() {
-		return cargadoHab;
-	}
-
-	public void setCargadoHab(boolean cargadoHab) {
-		this.cargadoHab = cargadoHab;
-	}
-
-
-
-
-	@Override
-	public String toString() {
-		return "Servicio [id=" + id 
-				+ ", cargadoHab=" 
-				+ ", nombre=" + nombre
-				+ ", descripcion=" + descripcion + ", costo=" + costo + ", tipoServicio=" + tipoServicio+"]";
-	}
-
-	public long getTipoServicio() {
-		return tipoServicio;
-	}
-
-	public void setTipoServicio(long tipoServicio) {
-		this.tipoServicio = tipoServicio;
-	}
-
 	public int getCapacidad() {
 		return capacidad;
 	}
 
 	public void setCapacidad(int capacidad) {
 		this.capacidad = capacidad;
+	}
+
+	@Override
+	public String toString() {
+		return "Servicios [id=" + id + ", cargado_habitacion="
+				+ cargado_habitacion + ", nombre=" + nombre + ", descripcion="
+				+ descripcion + ", capacidad=" + capacidad + ", costo=" + costo
+				+ ", reservado=" + reservado + ", tipo_servicios="
+				+ tipo_servicios + "]";
 	}
 	
 }

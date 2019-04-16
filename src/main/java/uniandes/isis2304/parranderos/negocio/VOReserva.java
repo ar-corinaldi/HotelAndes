@@ -11,11 +11,13 @@ public interface VOReserva {
 	
 	public Timestamp getSalida();
 	
-	public int getNumPersonas();
+	public int getNum_personas();
 	
-	public Usuarios getUsuarios();
+	public long getId_usuario();
+
+	public String getTipo_documento_usuario();
 	
-	public Habitaciones getHabitacion();
+	public long getId_habitacion();
 	
 	
 }

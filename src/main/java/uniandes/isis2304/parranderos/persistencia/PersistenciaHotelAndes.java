@@ -30,8 +30,8 @@ import org.apache.log4j.Logger;
 import uniandes.isis2304.parranderos.negocio.Consumo;
 import uniandes.isis2304.parranderos.negocio.Habitaciones;
 import uniandes.isis2304.parranderos.negocio.PlanConsumo;
-import uniandes.isis2304.parranderos.negocio.Reserva;
-import uniandes.isis2304.parranderos.negocio.Servicio;
+import uniandes.isis2304.parranderos.negocio.Reservas;
+import uniandes.isis2304.parranderos.negocio.Servicios;
 import uniandes.isis2304.parranderos.negocio.TipoHabitacion;
 import uniandes.isis2304.parranderos.negocio.TipoPlanConsumo;
 import uniandes.isis2304.parranderos.negocio.TipoServicio;
@@ -1092,7 +1092,7 @@ public class PersistenciaHotelAndes
 	 * @param gradoAlcohol - El grado de alcohol de la bebida (mayor que 0)
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuarios user, Habitaciones hab) 
+	public Reservas adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuarios user, Habitaciones hab) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
@@ -1101,7 +1101,7 @@ public class PersistenciaHotelAndes
 			tx.begin();            
 			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, id, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab());
 			tx.commit();
-			return new Reserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, hab);
+			return new Reservas(id, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab());
 		}
 		catch (Exception e)
 		{
@@ -1157,7 +1157,7 @@ public class PersistenciaHotelAndes
 	 * Método que consulta todas las tuplas en la tabla Bebida
 	 * @return La lista de objetos Bebida, construidos con base en las tuplas de la tabla BEBIDA
 	 */
-	public List<Reserva> darReservas()
+	public List<Reservas> darReservas()
 	{
 		return sqlReserva.darReservas(pmf.getPersistenceManager());
 	}
@@ -1168,7 +1168,7 @@ public class PersistenciaHotelAndes
 	 * @param idTipoBebida - El identificador del tipo de bebida
 	 * @return El objeto TipoBebida, construido con base en las tuplas de la tabla TIPOBEBIDA con el identificador dado
 	 */
-	public Reserva darReservaPorId (long id)
+	public Reservas darReservaPorId (long id)
 	{
 		return sqlReserva.darReservaPorId (pmf.getPersistenceManager(), id);
 	}
@@ -1181,7 +1181,7 @@ public class PersistenciaHotelAndes
 	 * Método que consulta todas las tuplas en la tabla Bebida
 	 * @return La lista de objetos Bebida, construidos con base en las tuplas de la tabla BEBIDA
 	 */
-	public List<Servicio> darServicios()
+	public List<Servicios> darServicios()
 	{
 		return sqlServicio.darServicios(pmf.getPersistenceManager());
 	}
@@ -1192,7 +1192,7 @@ public class PersistenciaHotelAndes
 	 * @param idTipoBebida - El identificador del tipo de bebida
 	 * @return El objeto TipoBebida, construido con base en las tuplas de la tabla TIPOBEBIDA con el identificador dado
 	 */
-	public Servicio darServicioPorId (long id)
+	public Servicios darServicioPorId (long id)
 	{
 		return sqlServicio.darServicioPorId (pmf.getPersistenceManager(), id);
 	}

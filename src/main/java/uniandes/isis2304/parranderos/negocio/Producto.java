@@ -18,7 +18,7 @@ public class Producto implements VOProducto{
 	
 	private String descripcion;
 	
-	private Servicio servicio;
+	private Servicios servicio;
 	
 	/******************************************************************************
 	 * CONSTRUCTORES
@@ -32,7 +32,7 @@ public class Producto implements VOProducto{
 		servicio = null;
 	}
 	
-	public Producto(long id, String nombre, double costo, String descripcion, Servicio servicio) {
+	public Producto(long id, String nombre, double costo, String descripcion, Servicios servicio) {
 		this.id = id;
 		this.nombre = nombre;
 		this.costo = costo;
@@ -76,11 +76,11 @@ public class Producto implements VOProducto{
 		this.descripcion = descripcion;
 	}
 	
-	public Servicio getServicio() {
+	public Servicios getServicio() {
 		return servicio;
 	}
 
-	public void setServicio(Servicio servicio) {
+	public void setServicio(Servicios servicio) {
 		this.servicio = servicio;
 	}
 

@@ -14,7 +14,11 @@ public interface VOServicio {
 	
 	public long getId();
 	
-	public boolean isCargadoHab();
+	public int getCargado_habitacion();
+	
+	public int getReservado();
+	
+	public long getTipo_servicios();
 		
 	@Override
 	public String toString();
