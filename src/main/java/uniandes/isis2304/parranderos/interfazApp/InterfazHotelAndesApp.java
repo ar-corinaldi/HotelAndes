@@ -49,6 +49,8 @@ import com.google.gson.stream.JsonReader;
 
 import uniandes.isis2304.parranderos.negocio.Habitaciones;
 import uniandes.isis2304.parranderos.negocio.HotelAndes;
+import uniandes.isis2304.parranderos.negocio.ReservaServicio;
+import uniandes.isis2304.parranderos.negocio.Servicios;
 import uniandes.isis2304.parranderos.negocio.Usuarios;
 import uniandes.isis2304.parranderos.negocio.VOReserva;
 import uniandes.isis2304.parranderos.negocio.VOUsuario;
@@ -291,17 +293,17 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 	public void adicionarReserva(){
 		System.out.println("Adivionar Reserva");
-		Usuarios user = verificarUsuario(CLIENTE);
+		Usuarios cliente = verificarUsuario(CLIENTE);
 
-		    	long id = Long.valueOf(JOptionPane.showInputDialog (this, "id?", "Adicionar reserva", JOptionPane.OK_OPTION));
+		    	long id = Long.valueOf(JOptionPane.showInputDialog (this, "id de la reserva?", "Adicionar reserva", JOptionPane.OK_OPTION));
 				int numPersonas = Integer.valueOf(JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION));
-				String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Adicionar reserva", JOptionPane.QUESTION_MESSAGE);
+				String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Adicionar reserva", JOptionPane.OK_OPTION);
 				String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2019-09-23)", "Adicionar reserva", JOptionPane.OK_OPTION);
 				long numHab = Long.valueOf(JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.OK_OPTION));
 				try {
 					Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
 					Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
-					parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, user.getNum_identidad(), user.getTipo_documento(), numHab, user);
+					parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, cliente.getNum_identidad(), cliente.getTipo_documento(), numHab, cliente);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 				}
@@ -309,6 +311,25 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 	public void adicionarServicio(){
 		System.out.println("Adicionar Servicio");
+		Usuarios cliente = verificarUsuario(CLIENTE);
+		long id = Long.valueOf(JOptionPane.showInputDialog (this, "id del servicio?", "Adicionar reserva", JOptionPane.OK_OPTION));
+		String inicialStr = JOptionPane.showInputDialog (this, "fecha inicial?\n(Ejm: 2019-09-16)", "Adicionar reserva", JOptionPane.OK_OPTION);
+		String finalStr = JOptionPane.showInputDialog (this, "fecha final?(Ejm: 2019-09-23)", "Adicionar reserva", JOptionPane.OK_OPTION);
+		long idServicio = Long.valueOf(JOptionPane.showInputDialog(this, "Servicio?", "Adicionar reserva", JOptionPane.OK_OPTION));
+		
+		Timestamp fecha_inicial = Timestamp.valueOf(inicialStr.trim() + " 06:00:00.00");
+		Timestamp fecha_final = Timestamp.valueOf(finalStr.trim() + " 12:00:00.00");
+
+		ReservaServicio rs = new ReservaServicio(id, fecha_inicial, fecha_final, cliente.getNum_identidad(), cliente.getTipo_documento(), idServicio);
+		Servicios ser = parranderos.darServicio(idServicio);
+		if(ser == null){
+			JOptionPane.showMessageDialog(this, "No existe el servicio solicitado", "Error", JOptionPane.WARNING_MESSAGE);
+		} else{
+			int carHab = Integer.valueOf(JOptionPane.showInputDialog (this, "reservado habitacion?", "Adicionar reserva", JOptionPane.OK_OPTION));
+			ser.setCargado_habitacion(carHab);
+			ser.setReservado(Servicios.SI_RESERVADO);
+			
+		}
 	}
 
 	public void registrarLlegadaCliente(){

@@ -64,7 +64,7 @@ public class HotelAndes
 
 	private List<PlanConsumo> planesConsumo;
 
-	private List<Servicio> servicios;
+	private List<Servicios> servicios;
 	
 	/* ****************************************************************
 	 * 			Métodos
@@ -154,11 +154,11 @@ public class HotelAndes
 		this.planesConsumo = planesConsumo;
 	}
 
-	public List<Servicio> getServicios() {
+	public List<Servicios> getServicios() {
 		return servicios;
 	}
 
-	public void setServicios(List<Servicio> servicios) {
+	public void setServicios(List<Servicios> servicios) {
 		this.servicios = servicios;
 	}
 
@@ -174,7 +174,7 @@ public class HotelAndes
 	/* ****************************************************************
 	 * 			RESERVA
 	 *****************************************************************/
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user) throws Exception{
+	public Reservas adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user) throws Exception{
 		Habitaciones habitacion = pp.darHabitacionPorId(numHab);
 		//TipoHabitacion tipoHab = pp.darTipoHabitacion(habitacion.getTipo_habitacion());
 		if( habitacion.getOcupada() == Habitaciones.SE_OCUPA )
@@ -187,11 +187,11 @@ public class HotelAndes
 		System.out.println("Habitacion desocupada");
 		pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, habitacion.getNum_hab());
 		System.out.println("Habitacion ocupada");
-		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion);
+		Reservas reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion);
 		System.out.print("Crea la reserva: ");
 		System.out.println(reserva);
 		
-		//System.out.println(pp.darReservaPorId(1));
+		System.out.println(pp.darReservaPorId(reserva.getId()));
 		return reserva;
 	}
 	
@@ -206,13 +206,12 @@ public class HotelAndes
 		//TODO revisar
 		Consumo con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, id_servicio, id_habitacion);
 		Usuarios user = pp.darUsuarioPorId(id_habitacion,tipo_documento_usuario);
-		Servicio ser = pp.darServicioPorId(id_servicio);
+		Servicios ser = pp.darServicioPorId(id_servicio);
 		if( user != null /**&& ser.isReservado()**/ ){
 			user.getConsumos().add(con);
 		}
 		else{
 			throw new Exception( "O el usuario no existe, o el id del consumo es nulo, o ya estaba reservado el servicio." );
-			//excepcion 
 		}
 		
 		return con;
@@ -261,7 +260,7 @@ public class HotelAndes
 		return pp.darConsumos();
 	}
 
-	public Servicio darServicio(long idServicio) {
+	public Servicios darServicio(long idServicio) {
 		return pp.darServicioPorId(idServicio);
 	}
 	

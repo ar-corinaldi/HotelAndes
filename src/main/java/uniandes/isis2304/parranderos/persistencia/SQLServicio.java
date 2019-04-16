@@ -7,7 +7,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import uniandes.isis2304.parranderos.negocio.Servicio;
+import uniandes.isis2304.parranderos.negocio.Servicios;
 
 
 public class SQLServicio {
@@ -88,19 +88,19 @@ public class SQLServicio {
 	 * @param idServicio - El identificador del Servicio
 	 * @return El objeto Hotel que tiene el identificador dado
 	 */
-	public Servicio darServicioPorId (PersistenceManager pm, long idServicio) 
+	public Servicios darServicioPorId (PersistenceManager pm, long idServicio) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaServicio () + " WHERE id = ?");
-		q.setResultClass(Servicio.class);
+		q.setResultClass(Servicios.class);
 		q.setParameters(idServicio);
-		return (Servicio) q.executeUnique();
+		return (Servicios) q.executeUnique();
 	}
 
 
-	public List<Servicio> darServicios(PersistenceManager pm){
+	public List<Servicios> darServicios(PersistenceManager pm){
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaServicio());
-		q.setResultClass(Servicio.class);
-		return (List<Servicio>) q.executeList();
+		q.setResultClass(Servicios.class);
+		return (List<Servicios>) q.executeList();
 	}
 
 }

@@ -58,8 +58,7 @@ CREATE TABLE PLANES_DE_CONSUMO
   descuento NUMBER NOT NULL,
   fecha_inicio TIMESTAMP,
   fecha_final TIMESTAMP,
-  tipo_plan_consumo NUMBER NOT NULL,
-  id_reserva NUMBER NOT NULL
+  tipo_plan_consumo NUMBER NOT NULL
 );
 
 CREATE TABLE PRODUCTOS
@@ -81,7 +80,8 @@ CREATE TABLE RESERVAS
   check_out TIMESTAMP,
   id_usuario NUMBER NOT NULL,
   tipo_documento_usuario VARCHAR(50) NOT NULL,
-  id_habitacion NUMBER NOT NULL
+  id_habitacion NUMBER NOT NULL,
+  id_plan_consumo NUMBER
 );
 
 CREATE TABLE RESERVAS_SERVICIOS
@@ -138,5 +138,6 @@ CREATE TABLE USUARIOS
   tipo_documento VARCHAR2(50) NOT NULL,
   nombre VARCHAR2(50) NOT NULL,
   apellido VARCHAR2(50) NOT NULL,
-  tipo_usuario NUMBER NOT NULL
+  tipo_usuario NUMBER NOT NULL,
+  id_convencion NUMBER
 );

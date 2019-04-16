@@ -12,5 +12,5 @@ public interface VOProducto {
 	
 	public String getDescripcion();
 	
-	public Servicio getServicio();
+	public Servicios getServicio();
 }
