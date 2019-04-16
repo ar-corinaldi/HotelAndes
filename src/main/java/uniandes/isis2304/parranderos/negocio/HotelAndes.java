@@ -232,9 +232,9 @@ public class HotelAndes
 	 * @param nombre - El nombre del tipo de bebida
 	 * @return El objeto TipoBebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Usuarios adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario)
+	public Usuarios adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario, long id_convencion)
 	{
-		Usuarios usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
+		Usuarios usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion);
 		return usuario;
 	}
 

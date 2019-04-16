@@ -53,12 +53,14 @@ public class SQLUsuario {
 	 * @return El número de tuplas insertadas
 	 */
 	public long adicionarUsuario (PersistenceManager pm, long num_identidad,  String tipo_documento,
-			String nombre, String apellido, long tipo_usuario) throws Exception
+			String nombre, String apellido, long tipo_usuario, long id_convencion) throws Exception
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO " + "USUARIOS"+ "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario) values ("+ num_identidad +", '"+tipo_documento +"', '"
+		Query q = pm.newQuery(SQL, "INSERT INTO " + "USUARIOS"+ "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values ("+ num_identidad +", '"+tipo_documento +"', '"
 				+ nombre 	+ "', '"
 				+ apellido 	+ "', "
-				+ tipo_usuario + ")");
+				+ tipo_usuario + ", "
+				+ id_convencion+ ")"
+				);
 		Object o = null;
 		o = q.executeUnique();
 		return (long) o;
@@ -70,9 +72,10 @@ public class SQLUsuario {
 	 * @param num_identidad - El numero de identidad del usuario	 
 	 * @return EL número de tuplas eliminadas
 	 */
-	public long eliminarUsuarioPorId (PersistenceManager pm, long num_identidad, String tipo_doc)
+	public long eliminarUsuarioPorId (PersistenceManager pm, long num_identidad, String tipo_documento)
 	{
-		Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaUsuario() + " WHERE num_identidad = ? AND tipo_documento = ?");
+		Query q = pm.newQuery(SQL, "DELETE FROM " +"USUARIOS" + " WHERE num_identidad = "+num_identidad 
+				+ " AND tipo_documento = '"+tipo_documento+"'");
 		q.setParameters(num_identidad);
 		return (long) q.executeUnique();
 	}
@@ -94,7 +97,7 @@ public class SQLUsuario {
 	}
 
 	public List<Usuarios> darUsuarios(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaUsuario());
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "USUARIOS");
 		q.setResultClass(Usuarios.class);
 		return (List<Usuarios>) q.executeList();
 	}

@@ -50,8 +50,9 @@ public class SQLTipoServicio {
 	 */
 	public long adicionarTipoServicio (PersistenceManager pm, long id, String nombre) 
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaTipoServicio() + "(id, nombre) values (?, ?)");
-        q.setParameters(id, nombre);
+        Query q = pm.newQuery(SQL, "INSERT INTO " + "TIPO_SERVICIOS" + "(id, nombre)values ( "
+        		+ id + " ,"
+        		+ "'"+ nombre+"' )");
         return (long) q.executeUnique();
 	}
 	
@@ -64,7 +65,7 @@ public class SQLTipoServicio {
 	 */
 	public long eliminarTipoServicioPorId (PersistenceManager pm, long id)
 	{
-       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaTipoServicio() + " WHERE id = ?");
+       Query q = pm.newQuery(SQL, "DELETE FROM " + "TIPO_SERVICIOS" + " WHERE id = " +id);
        q.setParameters(id);
        return (long) q.executeUnique();
 	}
@@ -78,7 +79,7 @@ public class SQLTipoServicio {
 	 */
 	public TipoServicio darTipoServicioPorId (PersistenceManager pm, long id) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaTipoServicio () + " WHERE id = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "TIPO_SERVICIOS" + " WHERE id = " +id);
 		q.setResultClass(TipoServicio.class);
 		q.setParameters(id);
 		return (TipoServicio) q.executeUnique();
@@ -86,7 +87,7 @@ public class SQLTipoServicio {
 
 
 	public List<TipoServicio> darTiposServicio(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaTipoServicio());
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "TIPO_SERVICIOS");
 		q.setResultClass(TipoServicio.class);
 		return (List<TipoServicio>) q.executeList();
 	}

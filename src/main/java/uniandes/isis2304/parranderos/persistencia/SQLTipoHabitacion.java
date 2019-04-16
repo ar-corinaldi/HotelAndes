@@ -50,10 +50,14 @@ public class SQLTipoHabitacion {
 	 * @param capacidad - La capacidad del tipo de Habitacion
 	 * @return El n�mero de tuplas insertadas
 	 */
-	public long adicionarTipoHabitacion (PersistenceManager pm, long id, String nombre, double costo, int capacidad) 
+	public long adicionarTipoHabitacion (PersistenceManager pm, long id, double costo_noche, String nombre,  int capacidad) 
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaTipoHabitacion() + "(id, nombre, costo_noche, capacidad) values (?, ?, ?, ?)");
-        q.setParameters(id, nombre, costo, capacidad);
+        Query q = pm.newQuery(SQL, "INSERT INTO " + "TIPO_HABITACIONES" + "(id, costo_noche, nombre,  capacidad) "
+        		+ "values ("
+        		+ id+ ", "
+        		+ costo_noche+ ", "
+        		+ "'"+ nombre+"', "
+        		+ capacidad + ")");
         return (long) q.executeUnique();
 	}
 	
@@ -66,8 +70,7 @@ public class SQLTipoHabitacion {
 	 */
 	public long eliminarTipoHabitacionPorId (PersistenceManager pm, long id)
 	{
-       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaTipoHabitacion() + " WHERE id = ?");
-       q.setParameters(id);
+       Query q = pm.newQuery(SQL, "DELETE FROM " + "TIPO_HABITACIONES"+ " WHERE id = " + id);
        return (long) q.executeUnique();
 	}
 	
@@ -87,7 +90,7 @@ public class SQLTipoHabitacion {
 
 
 	public List<TipoHabitacion> darTiposHabitacion(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaTipoHabitacion());
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "TIPO_HABITACIONES");
 		q.setResultClass(TipoHabitacion.class);
 		return (List<TipoHabitacion>) q.executeList();
 	}

@@ -55,8 +55,16 @@ public class SQLReservaServicio {
 	 */
 	public long adicionarReservaServicio (PersistenceManager pm, long id, Timestamp fechaInicial, Timestamp fechaFinal, long idUsuario, String tipoDoc, long idServicio) 
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaReserva () + "(id, fecha_inicial, fecha_final, id_usuario, tipo_documento_usuario, id_servicio) values (?, ?, ?, ?, ?, ?)");
-        q.setParameters(id, fechaInicial, fechaFinal, idUsuario, tipoDoc, idServicio);
+		String inicio = "TO_TIMESTAMP('"+fechaInicial.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		String fin = "TO_TIMESTAMP('"+fechaFinal.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+
+        Query q = pm.newQuery(SQL, "INSERT INTO " + "RESERVAS_SERVICIOS"+ "(id, fecha_inicial, fecha_final, id_usuario, tipo_documento_usuario, id_servicio) values "
+        		+ id+ ", "
+        		+ inicio+ ", "
+        		+ fin+ ", "
+        		+ idUsuario+ ", '"
+        		+ tipoDoc+ "', "
+        		+ idServicio+ ")");
         return (long) q.executeUnique();
 	}
 	
@@ -68,8 +76,7 @@ public class SQLReservaServicio {
 	 */
 	public long eliminarReservaServicioPorId (PersistenceManager pm, long idReservaServicio)
 	{
-        Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaReservaServicio() + " WHERE id = ?");
-        q.setParameters(idReservaServicio);
+        Query q = pm.newQuery(SQL, "DELETE FROM " + "RESERVAS_SERVICIOS"+ " WHERE id = " + idReservaServicio);
         return (long) q.executeUnique();
 	}
 	
@@ -82,14 +89,13 @@ public class SQLReservaServicio {
 	 */
 	public Reservas darReservaServicioPorId (PersistenceManager pm, long idReservaServicio) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaReservaServicio() + " WHERE id = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " +  "RESERVAS_SERVICIOS"+  " WHERE id = " + idReservaServicio);
 		q.setResultClass(ReservaServicio.class);
-		q.setParameters(idReservaServicio);
 		return (Reservas) q.executeUnique();
 	}
 	
 	public List<Reservas> darReservaServicios(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaReservaServicio());
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "RESERVAS_SERVICIOS");
 		q.setResultClass(ReservaServicio.class);
 		return (List<Reservas>) q.executeList();
 	}

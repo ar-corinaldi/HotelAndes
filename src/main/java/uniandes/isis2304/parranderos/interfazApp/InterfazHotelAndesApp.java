@@ -270,7 +270,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 			if (num_identidad != null)
 			{
-				VOUsuario user = parranderos.adicionarUsuario(Long.valueOf(num_identidad), tipo_documento, nombre, apellido, Long.valueOf(tipo_usuario));
+				//al ser un usuario solo se pone en 0 el id de la convencion
+				VOUsuario user = parranderos.adicionarUsuario(Long.valueOf(num_identidad), tipo_documento, nombre, apellido, Long.valueOf(tipo_usuario), 0);
 				if (user == null)
 				{
 					throw new Exception ("No se pudo crear un tipo de bebida con nombre: " + nombre);

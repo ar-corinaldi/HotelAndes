@@ -424,7 +424,7 @@ public class PersistenciaHotelAndes
 		try
 		{
 			tx.begin();
-			long tuplasInsertadas = sqlTipoHabitacion.adicionarTipoHabitacion(pm, id, nombre, costo, capacidad);
+			long tuplasInsertadas = sqlTipoHabitacion.adicionarTipoHabitacion(pm, id, costo, nombre,  capacidad);
 			tx.commit();
 
 			return new TipoHabitacion(id, nombre, costo, capacidad);
@@ -990,16 +990,16 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Usuarios adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario) 
+	public Usuarios adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario, long id_convencion) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
+			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion);
 			tx.commit();
-			Usuarios usuario = new Usuarios(num_identidad, tipo_documento, nombre, apellido, tipo_usuario);
+			Usuarios usuario = new Usuarios(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) ;
 			System.out.println(usuario);
 			return usuario;
 		}
