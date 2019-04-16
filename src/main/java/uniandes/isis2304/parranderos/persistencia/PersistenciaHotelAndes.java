@@ -1353,6 +1353,14 @@ public class PersistenciaHotelAndes
 	public List<Object> darUsuariosConvencion(Long idConvencion) {
 		return sqlUsuario.darUsuariosConvencion( pmf.getPersistenceManager(), idConvencion);
 	}
+	public long reservarServicioPorId(int reservado, long id) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlServicio.reservarServicioPorId(pm, reservado, id);
+			tx.commit();
 
 	public void cancelarReservasServicios(long numIdentidad, String tipoDocumento) {
 

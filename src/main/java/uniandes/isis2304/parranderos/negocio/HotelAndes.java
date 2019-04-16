@@ -303,20 +303,19 @@ public class HotelAndes
 		return conv;
 	}
 
-	public boolean verificarHabitacionesDisponibles(long tipo, int cantidad) {
+	public List<Habitaciones> verificarHabitacionesDisponibles(long tipo, int cantidad) {
 		boolean rta = false;
 		List<Habitaciones> l = pp.verificarHabitacionesDisponibles(tipo, cantidad);
 		System.out.println("Habitaciones Disponibles: "+l.size());
 		rta = l.size() == cantidad;
-		return rta;
+		return l;
 	}
 
-	public boolean verificarServiciosDisponibles(long tipo, int cantidad) {
+	public Servicios verificarServiciosDisponibles(long tipo, int cantidad) {
 		Servicios s = pp.verificarServiciosDisponibles(tipo, cantidad);
 		boolean rta = s.getCapacidad() >= cantidad;
-		System.out.println(s);
 		System.out.println("Capacidad del servicio: "+ s.getCapacidad());
-		return rta;
+		return s;
 	}
 	
 	public Object darConvencion(long idConvencion) {
@@ -336,5 +335,24 @@ public class HotelAndes
 	public void cancelarReservasServicios(long numIdentidad, String tipoDocumento) {
 
 		pp.cancelarReservasServicios(numIdentidad, tipoDocumento);		
+	}
+
+	public void reservarHabitaciones(List<Habitaciones> l) {
+		for (Habitaciones h : l) {
+			pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, h.getNum_hab());
+			System.out.println("Se ocupo la habitacion con numero: "+h.getNum_hab());
+		}
+	}
+
+	public void reservarServicios(List<Servicios> ls) {
+		for (Servicios s : ls) {
+			
+			pp.reservarServicioPorId(Servicios.SI_RESERVADO, s.getId());
+			System.out.println("Se reserva el servicio: "+s.getId());
+		}
+	}
+
+	public void registrarSalidaConvencion(long idConv) {
+		pp.darUsuariosConvencion(idConv);
 	}
 }

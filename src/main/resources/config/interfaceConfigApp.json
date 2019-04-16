@@ -67,6 +67,14 @@
 				{
 					"label": "Cancelar Reservas",
 					"event": "cancelarReservaConvencion"
+				},
+				{
+					"label": "Registrar Llegada Convencion",
+					"event": "registrarLlegadaConvencion"
+				},
+				{
+					"label": "Terminar Convencion",
+					"event": "registrarSalidaConvencion"
 				}
 			]
 		},	
