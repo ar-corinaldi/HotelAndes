@@ -28,6 +28,7 @@ import javax.jdo.Transaction;
 import org.apache.log4j.Logger;
 
 import uniandes.isis2304.parranderos.negocio.Consumo;
+import uniandes.isis2304.parranderos.negocio.Convencion;
 import uniandes.isis2304.parranderos.negocio.Habitaciones;
 import uniandes.isis2304.parranderos.negocio.PlanConsumo;
 import uniandes.isis2304.parranderos.negocio.ReservaServicio;
@@ -1253,7 +1254,7 @@ public class PersistenciaHotelAndes
 	public ReservaServicio adicionarReservaServicio(long id,
 			Timestamp fecha_inicial, Timestamp fecha_final, long num_identidad,
 			String tipo_documento, long idServicio) {
-		
+
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
@@ -1261,7 +1262,7 @@ public class PersistenciaHotelAndes
 			tx.begin();            
 			long tuplasInsertadas = sqlReservaServicio.adicionarReservaServicio(pm, id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
 			tx.commit();
-			 ReservaServicio rs = new ReservaServicio(id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
+			ReservaServicio rs = new ReservaServicio(id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
 			return rs;
 		}
 		catch (Exception e)
@@ -1278,6 +1279,42 @@ public class PersistenciaHotelAndes
 			}
 			pm.close();
 		}
+	}
+
+	public Convencion adicionarConvencion(long id, String nombre2,
+			int cantidadPersonas, long idPlanCons, long idUsuario, 
+			String tipo_documento) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();            
+			long tuplasInsertadas = sqlConvencion.adicionarConvencion(pm, id, nombre2, cantidadPersonas, idPlanCons, idUsuario, tipo_documento);
+			tx.commit();
+			Convencion con = new Convencion(id, nombre2, cantidadPersonas, idPlanCons, idUsuario, tipo_documento);
+			return con;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+
+	}
+
+	public boolean verificarHabitacionesDisponibles(long tipo, int cantidad) {
+		sqlHabitacion.darHabitacionesDisponibles(pmf.getPersistenceManager(), tipo, cantidad);
+		System.out.println("PersistenciaHotelAndes en el metodo verificarHabitacionesDisponibles");
+		return false;
 	}
 
 

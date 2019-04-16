@@ -1,7 +1,10 @@
-INSERT INTO tipo_planes_de_consumo VALUES (1, 'larga estadia');
-INSERT INTO tipo_planes_de_consumo VALUES (2, 'tiempo compartido');
-INSERT INTO tipo_planes_de_consumo VALUES (3, 'todo incluido');
-INSERT INTO tipo_planes_de_consumo VALUES (4, 'promociones particulares');
+INSERT INTO tipo_planes_de_consumo VALUES (2, 'larga estadia');
+INSERT INTO tipo_planes_de_consumo VALUES (3, 'tiempo compartido');
+INSERT INTO tipo_planes_de_consumo VALUES (4, 'todo incluido');
+INSERT INTO tipo_planes_de_consumo VALUES (5, 'promociones particulares');
+INSERT INTO tipo_planes_de_consumo VALUES (6, 'restaurante incluido');
 
-INSERT INTO planes_de_consumo (id, descripcion, descuento, fecha_inicio, fecha_final, tipo_plan_consumo) VALUES (1, '30% de descuento', 30, null, null, 1);
+INSERT INTO planes_de_consumo (id, descripcion, descuento, fecha_inicio, fecha_final, tipo_plan_consumo) VALUES ( 1, 'no pagas en el restaurante', 0, null, null, 6);
+INSERT INTO planes_de_consumo (id, descripcion, descuento, fecha_inicio, fecha_final, tipo_plan_consumo) VALUES (2, '30% de descuento', 0.7 , null, null, 1);
+INSERT INTO planes_de_consumo (id, descripcion, descuento, fecha_inicio, fecha_final, tipo_plan_consumo) VALUES (3, 'todo includo!', 0.7 , null, null, 4);
 

@@ -294,4 +294,17 @@ public class HotelAndes
 		System.out.println(rs);
 		return rs;
 	}
+
+	public Convencion adicionarConvencion(long id, String nombre2,
+			int cantidadPersonas, long idPlanCons, Long num_identidad, String tipo_documento
+			) {
+		Convencion conv = pp.adicionarConvencion(id, nombre2, cantidadPersonas, idPlanCons, num_identidad,  tipo_documento);
+		System.out.println(conv);
+		return conv;
+	}
+
+	public boolean verificarHabitacionesDisponibles(long tipo, int cantidad) {
+		boolean rta = pp.verificarHabitacionesDisponibles(tipo, cantidad);
+		return rta;
+	}
 }

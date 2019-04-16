@@ -48,6 +48,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import uniandes.isis2304.parranderos.negocio.Consumo;
+import uniandes.isis2304.parranderos.negocio.Convencion;
 import uniandes.isis2304.parranderos.negocio.Habitaciones;
 import uniandes.isis2304.parranderos.negocio.HotelAndes;
 import uniandes.isis2304.parranderos.negocio.ReservaServicio;
@@ -87,6 +88,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	public static final long EMPLEADO = 4;
 
 	public static final long CLIENTE = 5;
+
+	public static final long ORGANIZADOR = 6;
 
 
 	/* ****************************************************************
@@ -368,9 +371,30 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	}
 
 	public void registrarConsumoCliente(){
-		System.out.println("Registrar Consumo Cliente");
 	}
 
+	public void registrarConvencion(){
+		System.out.println("Registrar Convencion");
+		Usuarios organizador = verificarUsuario(ORGANIZADOR);
+		if( organizador == null){
+			JOptionPane.showMessageDialog(this,"Organizador no existe", "Error", JOptionPane.WARNING_MESSAGE);
+		} else{
+			boolean sePuede = true;
+			long id = Long.valueOf(JOptionPane.showInputDialog (this, "id convencion?", "Registrar convencion", JOptionPane.QUESTION_MESSAGE));
+			String nombre = JOptionPane.showInputDialog (this, "Nombre?", "Registra convencion", JOptionPane.QUESTION_MESSAGE);
+			int cantidadPersonas = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad personas?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+			long idPlanCons = Long.valueOf(JOptionPane.showInputDialog (this, "Plan de consumo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+			int tiposHab = Integer.parseInt(JOptionPane.showInputDialog (this, "Cuantos tipos de habitacion?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+			for( int i=0; i<tiposHab && sePuede; i++ ){
+				 long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+				 int cantidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad del tipo "+tipo +"?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+				 sePuede = parranderos.verificarHabitacionesDisponibles(tipo, cantidad);
+			}
+			
+			Convencion conv = parranderos.adicionarConvencion(id, nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
+		}
+	}
+	
 	public Usuarios verificarUsuario( long tipoUsuario ){
 		Usuarios user =null;
 		String numIden = JOptionPane.showInputDialog (this, "numero identificacion?", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
