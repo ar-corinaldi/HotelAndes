@@ -10,8 +10,8 @@ import uniandes.isis2304.parranderos.negocio.Habitaciones;
 
 public class SQLHabitacion 
 {
-	
-	
+
+
 	/* ****************************************************************
 	 * 			Constantes
 	 *****************************************************************/
@@ -20,7 +20,7 @@ public class SQLHabitacion
 	 * Se renombra ac� para facilitar la escritura de las sentencias
 	 */
 	private final static String SQL = PersistenciaHotelAndes.SQL;
-	
+
 	/* ****************************************************************
 	 * 			Atributos
 	 *****************************************************************/
@@ -33,7 +33,7 @@ public class SQLHabitacion
 	/* ****************************************************************
 	 * 			M�todos
 	 *****************************************************************/
-	
+
 	/**
 	 * Constructor
 	 * @param pp - El Manejador de persistencia de la aplicaci�n
@@ -42,8 +42,8 @@ public class SQLHabitacion
 	{
 		this.ph = ph;
 	}
-	
-	
+
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para adicionar una habitacion a la base de datos de HotelAndes
 	 * @param pm - El manejador de persistencia
@@ -60,7 +60,7 @@ public class SQLHabitacion
 		q.setParameters(numHab, ocupada,cuenta_habitacion, tipo_habitacion);
 		return (long)q.executeUnique();
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para eliminar una Habitacion de la base de datos de HotelAndes, por su identificador
 	 * @param pm - El manejador de persistencia
@@ -69,11 +69,11 @@ public class SQLHabitacion
 	 */
 	public long eliminarHabitacionPorId (PersistenceManager pm, long num_hab)
 	{
-       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaHabitacion() + " WHERE num_hab = ?");
-       q.setParameters(num_hab);
-       return (long) q.executeUnique();
+		Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaHabitacion() + " WHERE num_hab = ?");
+		q.setParameters(num_hab);
+		return (long) q.executeUnique();
 	}
-	
+
 
 	/**
 	 * Crea y ejecuta la sentencia SQL para encontrar la informaci�n de UNA Habitacion de la 
@@ -88,7 +88,7 @@ public class SQLHabitacion
 		q.setResultClass(Habitaciones.class);
 		return (Habitaciones) q.executeUnique();
 	}
-	
+
 	public List<Habitaciones> darHabitaciones(PersistenceManager pm){
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaHabitacion());
 		q.setResultClass(Habitaciones.class);
@@ -97,8 +97,14 @@ public class SQLHabitacion
 
 
 	public long ocuparHabitacionPorId(PersistenceManager pm, int ocupada, long num_hab) {
-	       Query q = pm.newQuery(SQL, "UPDATE " + "HABITACIONES" + " SET ocupada= "+ ocupada 
-	    		   +" WHERE num_hab = "+num_hab);
-	       return (long) q.executeUnique();
-		}
+		Query q = pm.newQuery(SQL, "UPDATE " + "HABITACIONES" + " SET ocupada= "+ ocupada 
+				+" WHERE num_hab = "+num_hab);
+		return (long) q.executeUnique();
+	}
+
+
+	public void darHabitacionesDisponibles(
+			PersistenceManager persistenceManager, long tipo, int cantidad) {
+
+	}
 }

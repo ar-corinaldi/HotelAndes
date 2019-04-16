@@ -50,11 +50,15 @@ public class SQLConvencion {
 	 * @param idHotel - El identificador del hotel
 	 * @return El n�mero de tuplas insertadas
 	 */
-	public long adicionarConvencion(PersistenceManager pm, long id  , String nombre,  int cantidadPersonas,  long idPlanConsumo, long id_organizador, int tipo_documento_Organizador	)
+	public long adicionarConvencion(PersistenceManager pm, long id  , String nombre,  int cantidadPersonas,  long idPlanConsumo, long id_organizador, String tipo_documento)
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaConvencion() + "(id, nombre, cantidad_personas, "
-				+ "id_plan_consumo, id_usuario, tipo_documento) values(?, ?, ?, ?, ?, ?)");
-		q.setParameters(id, nombre, cantidadPersonas, idPlanConsumo, id_organizador,tipo_documento_Organizador	);
+		Query q = pm.newQuery(SQL, "INSERT INTO "+ "CONVENCIONES" + "(id, nombre, cantidad_personas, "
+				+ "id_plan_consumo, id_usuario, tipo_documento_usuario) values("+ id+", '"
+				+ nombre+"', "
+				+ cantidadPersonas+", "
+				+ idPlanConsumo+", "
+				+ id_organizador+", '"
+				+ tipo_documento+"')");
 		return (long)q.executeUnique();
 	}
 	

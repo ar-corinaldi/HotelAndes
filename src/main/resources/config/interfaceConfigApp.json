@@ -53,10 +53,19 @@
 			[
 				{
 					"label": "Registrar Consumo",
-					"event": "registrarConsumoCliente"
+					"event": "registrarConvencion"
 				}
 			]
-		},		
+		},	
+		{ "menuTitle": "Organizador",
+		  "options":
+			[
+				{
+					"label": "Registrar Convencion",
+					"event": "registrarConvencion"
+				}
+			]
+		},	
 		{ "menuTitle": "Mantenimiento",
 		  "options":
 			[
