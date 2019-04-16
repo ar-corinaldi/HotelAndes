@@ -1340,8 +1340,27 @@ public class PersistenciaHotelAndes
 		Servicios s = new Servicios(id, nombre, descripcion, costo, cargadoHab, capacidad, reservado, tipoServicios);
 		return s;
 	}
+	
+	public Convencion darConvencion(long idConvencion) {
+		return sqlConvencion.darConvencionPorId(pmf.getPersistenceManager(), idConvencion);
+	}
+
+	public void cancelarReservasConvencion(Long idConvencion) {
+		
+
+		List<Object> objects = sqlUsuario.darUsuariosConvencion( pmf.getPersistenceManager(), idConvencion);
+		
+		LinkedList<Usuarios> users = new LinkedList<Usuarios>();
+		for (Object object : objects) {
+			Object[] datos = (Object[]) object;
+			long NUM_IDENTIDAD = ((BigDecimal) datos [0]).longValue ();
+			String TIPO_DOCUMENTO = ( datos [1]).toString();
+			
+			sqlReserva.cancelarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
+			
+		}
 
 
 
-
+	}
 }

@@ -318,4 +318,14 @@ public class HotelAndes
 		System.out.println("Capacidad del servicio: "+ s.getCapacidad());
 		return rta;
 	}
+	
+	public Convencion darConvencion(long idConvencion) {
+		Convencion conv = pp.darConvencion(idConvencion);
+		return  conv;
+		
+	}
+
+	public void cancelarReservasConvencion(Long idConvencion) {
+		pp.cancelarReservasConvencion(idConvencion);
+	}
 }

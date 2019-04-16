@@ -112,4 +112,11 @@ public class SQLUsuario {
 		q.setResultClass(Usuarios.class);
 		return (List<Usuarios>) q.executeList();
 	}
+	
+	public List<Object> darUsuariosConvencion(PersistenceManager pm, Long idConvencion) {
+		String sql = "SELECT * FROM USUARIOS WHERE id = " + idConvencion;
+		Query q = pm.newQuery(SQL, sql);
+		
+		return q.executeList();
+	}
 }
