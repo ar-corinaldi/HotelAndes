@@ -19,6 +19,7 @@ public class Usuarios implements VOUsuario{
 	 * ATRIBUTOS
 	 ******************************************************************************/
 
+	
 	/**
 	 * (Cedula, Pasaporte)
 	 */
@@ -31,6 +32,8 @@ public class Usuarios implements VOUsuario{
 	private String apellido;
 	
 	private long tipo_usuario;
+	
+	private long id_convencion;
 	
 	private List<Consumo> consumos;
 
@@ -47,13 +50,14 @@ public class Usuarios implements VOUsuario{
 		setConsumos(new ArrayList<>());
 	}
 	
-	public Usuarios(Long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario) {
+	public Usuarios(Long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario, long id_convencion) {
 		super();
 		this.tipo_documento = tipo_documento;
 		this.num_identidad = num_identidad;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.tipo_usuario = tipo_usuario;
+		this.setId_convencion(id_convencion);
 		setConsumos(new ArrayList<>());
 	}
 
@@ -114,6 +118,14 @@ public class Usuarios implements VOUsuario{
 
 	public void setTipo_usuario(long tipo_usuario) {
 		this.tipo_usuario = tipo_usuario;
+	}
+
+	public long getId_convencion() {
+		return id_convencion;
+	}
+
+	public void setId_convencion(long id_convencion) {
+		this.id_convencion = id_convencion;
 	}
 	
 	

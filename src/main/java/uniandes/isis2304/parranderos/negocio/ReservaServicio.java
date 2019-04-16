@@ -26,6 +26,18 @@ public class ReservaServicio {
 		this.id_servicio = 0;
 	}
 	
+	public ReservaServicio(long id, Timestamp fecha_Inicial, Timestamp fecha_Final, long id_usuario,
+			String tipo_documento_usuario, long id_servicio) {
+		super();
+		this.id = id;
+		this.fecha_Inicial = fecha_Inicial;
+		this.fecha_Final = fecha_Final;
+		this.id_usuario = id_usuario;
+		this.tipo_documento_usuario = tipo_documento_usuario;
+		this.id_servicio = id_servicio;
+	}
+	
+	
 	public long getId() {
 		return id;
 	}
@@ -74,14 +86,5 @@ public class ReservaServicio {
 		this.id_servicio = id_servicio;
 	}
 
-	public ReservaServicio(long id, Timestamp fecha_Inicial, Timestamp fecha_Final, long id_usuario,
-			String tipo_documento_usuario, long id_servicio) {
-		super();
-		this.id = id;
-		this.fecha_Inicial = fecha_Inicial;
-		this.fecha_Final = fecha_Final;
-		this.id_usuario = id_usuario;
-		this.tipo_documento_usuario = tipo_documento_usuario;
-		this.id_servicio = id_servicio;
-	}
+
 }
