@@ -1387,4 +1387,9 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 	}
+
+	public List<Object> darUsuariosConvencion(long idConv) {
+		List<Object> lo = sqlUsuario.darUsuariosConvencion(pmf.getPersistenceManager(), idConv);
+		return   lo;
+	}
 }

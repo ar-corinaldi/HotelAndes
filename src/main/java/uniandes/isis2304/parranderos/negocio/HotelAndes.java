@@ -342,4 +342,8 @@ public class HotelAndes
 			System.out.println("Se reserva el servicio: "+s.getId());
 		}
 	}
+
+	public void registrarSalidaConvencion(long idConv) {
+		pp.darUsuariosConvencion(idConv);
+	}
 }
