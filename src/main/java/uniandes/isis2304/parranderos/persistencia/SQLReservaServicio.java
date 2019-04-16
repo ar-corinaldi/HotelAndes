@@ -98,4 +98,12 @@ public class SQLReservaServicio {
 		q.setResultClass(ReservaServicio.class);
 		return (List<Reservas>) q.executeList();
 	}
+
+	public long cancelarReservasServicios(PersistenceManager pm, long numIdentidad,
+			String tipoDocumento) {
+		String sql = "DELETE FROM RESERVAS_SERVICIOS WHERE id_usuario = "+ numIdentidad + "	AND tipo_documento_usuario = '" + tipoDocumento+ "'";
+		Query q = pm.newQuery(SQL,sql);
+        return (long) q.executeUnique();
+
+	}
 }

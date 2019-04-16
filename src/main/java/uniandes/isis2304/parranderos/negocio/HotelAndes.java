@@ -319,13 +319,22 @@ public class HotelAndes
 		return rta;
 	}
 	
-	public Convencion darConvencion(long idConvencion) {
-		Convencion conv = pp.darConvencion(idConvencion);
+	public Object darConvencion(long idConvencion) {
+		Object conv = pp.darConvencion(idConvencion);
 		return  conv;
 		
 	}
 
-	public void cancelarReservasConvencion(Long idConvencion) {
-		pp.cancelarReservasConvencion(idConvencion);
+	public void cancelarReserva(long NumDocumento, String TipoDocumento) {
+		pp.cancelarReservas(NumDocumento, TipoDocumento);
+	}
+
+	public List<Object> darUsuariosConvencion(long idConvencion) {
+		return pp.darUsuariosConvencion(idConvencion);
+	}
+
+	public void cancelarReservasServicios(long numIdentidad, String tipoDocumento) {
+
+		pp.cancelarReservasServicios(numIdentidad, tipoDocumento);		
 	}
 }

@@ -26,7 +26,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jdo.JDODataStoreException;
@@ -412,13 +414,27 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		String cancelarTodo = JOptionPane.showInputDialog (this, "Desea cancelar toda la convencion", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
 		if(cancelarTodo.equals("si"))
 		{
-			parranderos.cancelarReservasConvencion(idConvencion);
+			List<Object> users = 	parranderos.darUsuariosConvencion(idConvencion);
+
+			for (Object object : users) {
+				Object[] datos = (Object[]) object;
+				long NUM_IDENTIDAD = ((BigDecimal) datos [0]).longValue ();
+				String TIPO_DOCUMENTO = ( datos [1]).toString();
+				parranderos.cancelarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+				parranderos.cancelarReservasServicios(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+			
+
+			}
 		}
 		else 
 		{
 			String cuantos = JOptionPane.showInputDialog (this, "Cuantas personas desean cancelar?", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
 			for (int i = 0; i < Integer.valueOf(cuantos); i++) {
-				
+				String numIdentidadStr = JOptionPane.showInputDialog (this, "Ingrese el numero de identidad del cliente a cancelar", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
+				String TipoDoc = JOptionPane.showInputDialog (this, "Ingrese el tipo de documento", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
+				Long numIdentidad = Long.valueOf(numIdentidadStr);
+				parranderos.cancelarReserva(numIdentidad, TipoDoc);
+				parranderos.cancelarReservasServicios(numIdentidad, TipoDoc);
 			}
 		}
 	}

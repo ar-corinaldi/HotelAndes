@@ -144,7 +144,9 @@ public class SQLReserva {
 	}
 	
 	
-	public void cancelarReservasUsuario(PersistenceManager pm, Long idUsuario, String tipoDocumento) {
+	public long cancelarReservasUsuario(PersistenceManager pm, Long idUsuario, String tipoDocumento) {
 		String sql = "DELETE from Reservas where ID_USUARIO = " +idUsuario + " AND TIPO_DOCUMENTO_USUARIO = '"+ tipoDocumento+ "'" ;
+		Query q =pm.newQuery(SQL, sql);
+		return  (long) q.execute();
 	}
 }

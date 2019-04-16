@@ -1341,26 +1341,21 @@ public class PersistenciaHotelAndes
 		return s;
 	}
 	
-	public Convencion darConvencion(long idConvencion) {
+	public Object darConvencion(long idConvencion) {
 		return sqlConvencion.darConvencionPorId(pmf.getPersistenceManager(), idConvencion);
 	}
 
-	public void cancelarReservasConvencion(Long idConvencion) {
-		
-
-		List<Object> objects = sqlUsuario.darUsuariosConvencion( pmf.getPersistenceManager(), idConvencion);
-		
-		LinkedList<Usuarios> users = new LinkedList<Usuarios>();
-		for (Object object : objects) {
-			Object[] datos = (Object[]) object;
-			long NUM_IDENTIDAD = ((BigDecimal) datos [0]).longValue ();
-			String TIPO_DOCUMENTO = ( datos [1]).toString();
-			
+	public void cancelarReservas(long NUM_IDENTIDAD, String TIPO_DOCUMENTO ) 
+	{
 			sqlReserva.cancelarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
-			
-		}
+	}
 
+	public List<Object> darUsuariosConvencion(Long idConvencion) {
+		return sqlUsuario.darUsuariosConvencion( pmf.getPersistenceManager(), idConvencion);
+	}
 
+	public void cancelarReservasServicios(long numIdentidad, String tipoDocumento) {
 
+		sqlReservaServicio.cancelarReservasServicios(pmf.getPersistenceManager(), numIdentidad, tipoDocumento);
 	}
 }

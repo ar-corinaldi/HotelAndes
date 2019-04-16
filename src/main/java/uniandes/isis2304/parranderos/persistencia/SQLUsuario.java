@@ -114,7 +114,7 @@ public class SQLUsuario {
 	}
 	
 	public List<Object> darUsuariosConvencion(PersistenceManager pm, Long idConvencion) {
-		String sql = "SELECT * FROM USUARIOS WHERE id = " + idConvencion;
+		String sql = "SELECT * FROM USUARIOS WHERE ID_CONVENCION = " + idConvencion;
 		Query q = pm.newQuery(SQL, sql);
 		
 		return q.executeList();

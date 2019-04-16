@@ -7,6 +7,7 @@ import javax.jdo.Query;
 
 import uniandes.isis2304.parranderos.negocio.Convencion;
 import uniandes.isis2304.parranderos.negocio.Habitaciones;
+import uniandes.isis2304.parranderos.negocio.Usuarios;
 
 public class SQLConvencion {
 	/* ****************************************************************
@@ -83,12 +84,12 @@ public class SQLConvencion {
 	 * @param idHabitacion - El identificador de la Habitacion
 	 * @return El objeto Habitacion que tiene el identificador dado
 	 */
-	public Convencion darConvencionPorId (PersistenceManager pm, long idConvencion) 
+	public Object darConvencionPorId (PersistenceManager pm, long idConvencion) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + "CONVENCIONES" + " WHERE id = " + idConvencion);
 		q.setResultClass(Convencion.class);
-		Object o = q.executeUnique();
-		return (Convencion) o;
+		Object o = q.execute();
+		return  o;
 	}
 	
 	public List<Convencion> darHabitaciones(PersistenceManager pm){
