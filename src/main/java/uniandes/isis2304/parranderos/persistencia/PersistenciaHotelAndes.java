@@ -1322,8 +1322,23 @@ public class PersistenciaHotelAndes
 			long tipoHab = ((BigDecimal)datos[3]).longValue();
 			h.add(new Habitaciones(numHab, ocupada, cuentaHab, tipoHab));
 		}
-		System.out.println("PersistenciaHotelAndes en el metodo verificarHabitacionesDisponibles");
 		return h;
+	}
+
+	public Servicios verificarServiciosDisponibles(long tipo, int cantidad) {
+		Object object = sqlServicio.darServiciosDisponibles(pmf.getPersistenceManager(), tipo, cantidad);
+		Object[] datos = (Object[]) object;
+		long id = ((BigDecimal) datos [0]).longValue ();
+		String nombre = datos[1].toString();
+		String descripcion = datos[2]==null ? null: datos[2].toString();
+		double costo = ((BigDecimal) datos[3]).doubleValue();
+		int cargadoHab = ((BigDecimal)datos[4]).intValue();
+		int capacidad = ((BigDecimal)datos[5]).intValue();
+		int reservado = ((BigDecimal)datos[6]).intValue();
+		long tipoServicios = ((BigDecimal) datos [0]).longValue();
+
+		Servicios s = new Servicios(id, nombre, descripcion, costo, cargadoHab, capacidad, reservado, tipoServicios);
+		return s;
 	}
 
 

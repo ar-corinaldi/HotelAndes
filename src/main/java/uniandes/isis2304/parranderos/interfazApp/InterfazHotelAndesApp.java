@@ -390,9 +390,14 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				int cantidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad del tipo "+tipo +"?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 				sePuede = parranderos.verificarHabitacionesDisponibles(tipo, cantidad);
 			}
+			tiposHab = Integer.parseInt(JOptionPane.showInputDialog (this, "Cuantos tipos de servicio?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+			for( int i=0; i<tiposHab && sePuede; i++ ){
+				long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+				sePuede = parranderos.verificarServiciosDisponibles(tipo, cantidadPersonas);
+			}
 			if(!sePuede)
 			{
-				JOptionPane.showMessageDialog(this, "No hay suficientes habitacoines", "Error", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this, "No hay suficientes habitaciones o servicios", "Error", JOptionPane.WARNING_MESSAGE);
 			} else{
 				Convencion conv = parranderos.adicionarConvencion(id, nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
 			}

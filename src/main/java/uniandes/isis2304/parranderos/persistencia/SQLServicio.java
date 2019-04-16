@@ -103,4 +103,17 @@ public class SQLServicio {
 		return (List<Servicios>) q.executeList();
 	}
 
+
+	public Object darServiciosDisponibles(
+			PersistenceManager pm, long tipo, int cantidad) {
+		//		SELECT *
+		//		FROM HABITACIONES 
+		//		WHERE tipo_habitacion = 5 AND ocupada=0
+		//		FETCH FIRST 30 ROWS ONLY;
+		String sql = "SELECT * FROM SERVICIOS WHERE TIPO_SERVICIOS = "+ tipo +" AND RESERVADO = 0 FETCH FIRST "+cantidad+ " ROWS ONLY";
+		Query q = pm.newQuery(SQL, sql);
+		
+		return (Object) q.executeUnique();
+	}
+
 }
