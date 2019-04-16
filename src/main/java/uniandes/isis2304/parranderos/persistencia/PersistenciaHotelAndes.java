@@ -1359,8 +1359,32 @@ public class PersistenciaHotelAndes
 			sqlReserva.cancelarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
 			
 		}
+	}
 
+	public long reservarServicioPorId(int reservado, long id) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlServicio.reservarServicioPorId(pm, reservado, id);
+			tx.commit();
 
-
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 }

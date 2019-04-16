@@ -120,4 +120,12 @@ public class SQLServicio {
 		return (Object) q.executeUnique();
 	}
 
+
+	public long reservarServicioPorId(PersistenceManager pm, int reservado,
+			long id) {
+		Query q = pm.newQuery(SQL, "UPDATE " + "SERVICIOS" + " SET reservado = "+ reservado 
+				+" WHERE id = "+id);
+		return (long) q.executeUnique();
+	}
+
 }

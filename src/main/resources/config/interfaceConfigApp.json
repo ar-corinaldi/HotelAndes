@@ -63,6 +63,14 @@
 				{
 					"label": "Registrar Convencion",
 					"event": "registrarConvencion"
+				},
+				{
+					"label": "Registrar Llegada Convencion",
+					"event": "registrarLlegadaConvencion"
+				},
+				{
+					"label": "Terminar Convencion",
+					"event": "registrarSalidaConvencion"
 				}
 			]
 		},	

@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jdo.JDODataStoreException;
@@ -385,25 +386,32 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			int cantidadPersonas = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad personas?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 			long idPlanCons = Long.valueOf(JOptionPane.showInputDialog (this, "Plan de consumo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 			int tiposHab = Integer.parseInt(JOptionPane.showInputDialog (this, "Cuantos tipos de habitacion?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+			List<Habitaciones> l= null;
 			for( int i=0; i<tiposHab && sePuede; i++ ){
 				long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 				int cantidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad del tipo "+tipo +"?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
-				sePuede = parranderos.verificarHabitacionesDisponibles(tipo, cantidad);
+				l = parranderos.verificarHabitacionesDisponibles(tipo, cantidad);
+				sePuede = l.size() == cantidad;
 			}
 			tiposHab = Integer.parseInt(JOptionPane.showInputDialog (this, "Cuantos tipos de servicio?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+			List<Servicios> ls = new LinkedList<Servicios>();
 			for( int i=0; i<tiposHab && sePuede; i++ ){
 				long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
-				sePuede = parranderos.verificarServiciosDisponibles(tipo, cantidadPersonas);
+				Servicios s = parranderos.verificarServiciosDisponibles(tipo, cantidadPersonas); 
+				ls.add(s);
+				sePuede = sePuede && s.getCapacidad() > cantidadPersonas;
 			}
 			if(!sePuede)
 			{
 				JOptionPane.showMessageDialog(this, "No hay suficientes habitaciones o servicios", "Error", JOptionPane.WARNING_MESSAGE);
 			} else{
+				parranderos.reservarHabitaciones(l);
+				parranderos.reservarServicios(ls);
 				Convencion conv = parranderos.adicionarConvencion(id, nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
 			}
 		}
 	}
-	
+
 	public void cancelarReservaConvencion()
 	{
 		String idConvencionStr = JOptionPane.showInputDialog (this, "id convencion a cancelar", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
@@ -418,9 +426,18 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		{
 			String cuantos = JOptionPane.showInputDialog (this, "Cuantas personas desean cancelar?", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
 			for (int i = 0; i < Integer.valueOf(cuantos); i++) {
-				
+
 			}
 		}
+	}
+
+	public void registrarLlegadaConvencion(){
+		System.out.println("Registrar Llegada Convencion");
+	}
+
+	public void registrarSalidaConvencion(){
+		System.out.println("Registrar Salida Convencion");
+
 	}
 
 	public Usuarios verificarUsuario( long tipoUsuario ){
