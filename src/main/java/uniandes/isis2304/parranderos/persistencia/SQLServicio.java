@@ -58,12 +58,18 @@ public class SQLServicio {
 	 * @param tipoServicio - El tipo del Servicio
 	 * @return El n�mero de tuplas insertadas
 	 */
-	public long adicionarServicio (PersistenceManager pm, long id, String nombre, String descripcion, 
-			double costo, int cargadoHabitacion,  int capacidad, int reservado, Timestamp fechaInicial,
-			Timestamp fechaFinal, long tipoServicio) 
+	public long adicionarServicio (PersistenceManager pm, long id, String nombre, String descripcion, double costo, int cargado_habitacion,	 int capacidad, long id_tipo_servicios) 
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaServicio() + "(id, nombre, descripcion, costo, cargado_habitacion, capacidad, reservado, fecha_inicial, fecha_final, tipo_servicios) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		q.setParameters(id, nombre, descripcion, costo, cargadoHabitacion, capacidad, reservado, fechaInicial, fechaFinal, tipoServicio );
+		
+		Query q = pm.newQuery(SQL, "INSERT INTO " + "SERVICIOS"+ "(id, nombre, descripcion, costo, cargado_habitacion, capacidad, id_tipo_servicios) "
+				+ "values ("
+				+ id +", '"
+				+ nombre +"', '"
+				+ descripcion +"',"
+				+ costo +","
+				+ cargado_habitacion +","
+				+ capacidad +","
+				+ id_tipo_servicios +")");
 		return (long) q.executeUnique();
 	}
 
@@ -76,8 +82,7 @@ public class SQLServicio {
 	 */
 	public long eliminarServicioPorId (PersistenceManager pm, long idServicio)
 	{
-		Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaServicio() + " WHERE id = ?");
-		q.setParameters(idServicio);
+		Query q = pm.newQuery(SQL, "DELETE FROM " + "SERVICIOS" + " WHERE id = "+idServicio);
 		return (long) q.executeUnique();
 	}
 
@@ -90,15 +95,14 @@ public class SQLServicio {
 	 */
 	public Servicios darServicioPorId (PersistenceManager pm, long idServicio) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaServicio () + " WHERE id = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "SERVICIOS" + " WHERE id = "+idServicio);
 		q.setResultClass(Servicios.class);
-		q.setParameters(idServicio);
 		return (Servicios) q.executeUnique();
 	}
 
 
 	public List<Servicios> darServicios(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaServicio());
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "SERVICIOS");
 		q.setResultClass(Servicios.class);
 		return (List<Servicios>) q.executeList();
 	}

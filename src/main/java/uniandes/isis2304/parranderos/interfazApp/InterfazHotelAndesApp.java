@@ -403,6 +403,25 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			}
 		}
 	}
+	
+	public void cancelarReservaConvencion()
+	{
+		String idConvencionStr = JOptionPane.showInputDialog (this, "id convencion a cancelar", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
+		Long idConvencion = Long.valueOf(idConvencionStr);
+		parranderos.darConvencion(idConvencion);
+		String cancelarTodo = JOptionPane.showInputDialog (this, "Desea cancelar toda la convencion", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
+		if(cancelarTodo.equals("si"))
+		{
+			parranderos.cancelarReservasConvencion(idConvencion);
+		}
+		else 
+		{
+			String cuantos = JOptionPane.showInputDialog (this, "Cuantas personas desean cancelar?", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
+			for (int i = 0; i < Integer.valueOf(cuantos); i++) {
+				
+			}
+		}
+	}
 
 	public Usuarios verificarUsuario( long tipoUsuario ){
 		Usuarios user =null;

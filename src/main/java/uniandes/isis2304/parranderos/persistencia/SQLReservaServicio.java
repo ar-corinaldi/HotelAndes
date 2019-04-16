@@ -75,9 +75,8 @@ public class SQLReservaServicio {
 	 */
 	public long eliminarReservaServicioPorId (PersistenceManager pm, long idReservaServicio)
 	{
-		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaReservaServicio() + " WHERE id = ?");
-		q.setParameters(idReservaServicio);
-		return (long) q.executeUnique();
+        Query q = pm.newQuery(SQL, "DELETE FROM " + "RESERVAS_SERVICIOS"+ " WHERE id = " + idReservaServicio);
+        return (long) q.executeUnique();
 	}
 
 	/**
@@ -89,14 +88,13 @@ public class SQLReservaServicio {
 	 */
 	public Reservas darReservaServicioPorId (PersistenceManager pm, long idReservaServicio) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaReservaServicio() + " WHERE id = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " +  "RESERVAS_SERVICIOS"+  " WHERE id = " + idReservaServicio);
 		q.setResultClass(ReservaServicio.class);
-		q.setParameters(idReservaServicio);
 		return (Reservas) q.executeUnique();
 	}
 
 	public List<Reservas> darReservaServicios(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaReservaServicio());
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "RESERVAS_SERVICIOS");
 		q.setResultClass(ReservaServicio.class);
 		return (List<Reservas>) q.executeList();
 	}

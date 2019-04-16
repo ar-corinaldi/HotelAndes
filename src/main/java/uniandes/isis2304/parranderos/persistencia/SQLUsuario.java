@@ -83,9 +83,10 @@ public class SQLUsuario {
 	 * @param num_identidad - El numero de identidad del usuario	 
 	 * @return EL número de tuplas eliminadas
 	 */
-	public long eliminarUsuarioPorId (PersistenceManager pm, long num_identidad, String tipo_doc)
+	public long eliminarUsuarioPorId (PersistenceManager pm, long num_identidad, String tipo_documento)
 	{
-		Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaUsuario() + " WHERE num_identidad = ? AND tipo_documento = ?");
+		Query q = pm.newQuery(SQL, "DELETE FROM " +"USUARIOS" + " WHERE num_identidad = "+num_identidad 
+				+ " AND tipo_documento = '"+tipo_documento+"'");
 		q.setParameters(num_identidad);
 		return (long) q.executeUnique();
 	}
@@ -107,8 +108,15 @@ public class SQLUsuario {
 	}
 
 	public List<Usuarios> darUsuarios(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaUsuario());
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "USUARIOS");
 		q.setResultClass(Usuarios.class);
 		return (List<Usuarios>) q.executeList();
+	}
+	
+	public List<Object> darUsuariosConvencion(PersistenceManager pm, Long idConvencion) {
+		String sql = "SELECT * FROM USUARIOS WHERE id = " + idConvencion;
+		Query q = pm.newQuery(SQL, sql);
+		
+		return q.executeList();
 	}
 }

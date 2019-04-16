@@ -50,8 +50,9 @@ public class SQLTipoPlanConsumo {
 	 */
 	public long adicionarTipoPlanConsumo (PersistenceManager pm, long id, String nombre) 
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaTipoPlanConsumo() + "(id, nombre) values (?, ?)");
-        q.setParameters(id, nombre);
+        Query q = pm.newQuery(SQL, "INSERT INTO " + "TIPO_PLANES_DE_CONSUMO" + "(id, nombre) values ( "
+        		+ id + " ,"
+        		+ "'"+ nombre+"' )");
         return (long) q.executeUnique();
 	}
 	
@@ -64,8 +65,7 @@ public class SQLTipoPlanConsumo {
 	 */
 	public long eliminarTipoPlanConsumoPorId (PersistenceManager pm, long id)
 	{
-       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaTipoPlanConsumo() + " WHERE id = ?");
-       q.setParameters(id);
+       Query q = pm.newQuery(SQL, "DELETE FROM  " + "TIPO_PLANES_DE_CONSUMO" + " WHERE id = "+ id);
        return (long) q.executeUnique();
 	}
 	
@@ -78,15 +78,14 @@ public class SQLTipoPlanConsumo {
 	 */
 	public TipoPlanConsumo darTipoPlanConsumoPorId (PersistenceManager pm, long id) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaTipoPlanConsumo () + " WHERE id = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "TIPO_PLANES_DE_CONSUMO" + " WHERE id = "+ id);
 		q.setResultClass(TipoPlanConsumo.class);
-		q.setParameters(id);
 		return (TipoPlanConsumo) q.executeUnique();
 	}
 
 
 	public List<PlanConsumo> darTiposPlanConsumo(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaHabitacion());
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "TIPO_PLANES_DE_CONSUMO");
 		q.setResultClass(PlanConsumo.class);
 		return (List<PlanConsumo>) q.executeList();
 	}

@@ -70,7 +70,7 @@ public class SQLConvencion {
 	 */
 	public long eliminaConvencionPorId (PersistenceManager pm, long idConvencion)
 	{
-       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaConvencion() + " WHERE id = ?");
+       Query q = pm.newQuery(SQL, "DELETE FROM " +"CONVENCIONES" + " WHERE id = ?");
        q.setParameters(idConvencion);
        return (long) q.executeUnique();
 	}
@@ -83,16 +83,16 @@ public class SQLConvencion {
 	 * @param idHabitacion - El identificador de la Habitacion
 	 * @return El objeto Habitacion que tiene el identificador dado
 	 */
-	public Convencion darHabitacionPorId (PersistenceManager pm, long idConvencion) 
+	public Convencion darConvencionPorId (PersistenceManager pm, long idConvencion) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaConvencion() + " WHERE id = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "CONVENCIONES" + " WHERE id = " + idConvencion);
 		q.setResultClass(Convencion.class);
-		q.setParameters(idConvencion);
-		return (Convencion) q.executeUnique();
+		Object o = q.executeUnique();
+		return (Convencion) o;
 	}
 	
 	public List<Convencion> darHabitaciones(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaConvencion());
+		Query q = pm.newQuery(SQL, "SELECT * FROM " +"CONVENCIONES");
 		q.setResultClass(Convencion.class);
 		return (List<Convencion>) q.executeList();
 	}
