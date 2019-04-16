@@ -19,7 +19,7 @@ public class SQLReservaServicio {
 	 * Se renombra ac� para facilitar la escritura de las sentencias
 	 */
 	private final static String SQL = PersistenciaHotelAndes.SQL;
-	
+
 	/* ****************************************************************
 	 * 			Atributos
 	 *****************************************************************/
@@ -28,7 +28,7 @@ public class SQLReservaServicio {
 	 */
 	private PersistenciaHotelAndes pp;
 
-	
+
 
 	/* ****************************************************************
 	 * 			M�todos
@@ -41,7 +41,7 @@ public class SQLReservaServicio {
 	public SQLReservaServicio(PersistenciaHotelAndes pp) {
 		this.pp = pp;
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para adicionar una Reserva a la base de datos de HotelAndes
 	 * @param pm - El manejador de persistencia
@@ -55,19 +55,18 @@ public class SQLReservaServicio {
 	 */
 	public long adicionarReservaServicio (PersistenceManager pm, long id, Timestamp fechaInicial, Timestamp fechaFinal, long idUsuario, String tipoDoc, long idServicio) 
 	{
-		String inicio = "TO_TIMESTAMP('"+fechaInicial.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
-		String fin = "TO_TIMESTAMP('"+fechaFinal.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		String fechaInicialTS = "TO_TIMESTAMP('"+fechaInicial.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		String fechaFinalTS = "TO_TIMESTAMP('"+fechaFinal.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 
-        Query q = pm.newQuery(SQL, "INSERT INTO " + "RESERVAS_SERVICIOS"+ "(id, fecha_inicial, fecha_final, id_usuario, tipo_documento_usuario, id_servicio) values "
-        		+ id+ ", "
-        		+ inicio+ ", "
-        		+ fin+ ", "
-        		+ idUsuario+ ", '"
-        		+ tipoDoc+ "', "
-        		+ idServicio+ ")");
-        return (long) q.executeUnique();
+		Query q = pm.newQuery(SQL, "INSERT INTO " + "RESERVAS_SERVICIOS" + "(id, fecha_inicial, fecha_final, id_usuario, tipo_documento_usuario, id_servicio) values ("+id+", "
+				+ fechaInicialTS+", "
+				+ fechaFinalTS+", "
+				+ idUsuario+", '"
+				+ tipoDoc+"', "
+				+ idServicio+")");
+		return (long) q.executeUnique();
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para eliminar UNA Reserva de la base de datos de HotelAndes, por su identificador
 	 * @param pm - El manejador de persistencia
@@ -79,7 +78,7 @@ public class SQLReservaServicio {
         Query q = pm.newQuery(SQL, "DELETE FROM " + "RESERVAS_SERVICIOS"+ " WHERE id = " + idReservaServicio);
         return (long) q.executeUnique();
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para encontrar la informaci�n de UNA Reserva de la 
 	 * base de datos de HotelAndes, por su identificador
@@ -93,7 +92,7 @@ public class SQLReservaServicio {
 		q.setResultClass(ReservaServicio.class);
 		return (Reservas) q.executeUnique();
 	}
-	
+
 	public List<Reservas> darReservaServicios(PersistenceManager pm){
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + "RESERVAS_SERVICIOS");
 		q.setResultClass(ReservaServicio.class);

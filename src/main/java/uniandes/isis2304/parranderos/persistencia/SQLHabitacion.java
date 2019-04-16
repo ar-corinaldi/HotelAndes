@@ -84,9 +84,8 @@ public class SQLHabitacion
 	 */
 	public Habitaciones darHabitacionPorId (PersistenceManager pm, long num_hab) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + "HABITACIONES" + " WHERE num_hab = ?");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "HABITACIONES" + " WHERE num_hab = "+num_hab);
 		q.setResultClass(Habitaciones.class);
-		q.setParameters(num_hab);
 		return (Habitaciones) q.executeUnique();
 	}
 	

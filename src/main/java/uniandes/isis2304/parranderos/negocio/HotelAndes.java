@@ -41,7 +41,7 @@ public class HotelAndes
 	 * Logger para escribir la traza de la ejecución
 	 */
 	private static Logger log = Logger.getLogger(HotelAndes.class.getName());
-	
+
 	/* ****************************************************************
 	 * 			Atributos
 	 *****************************************************************/
@@ -65,7 +65,7 @@ public class HotelAndes
 	private List<PlanConsumo> planesConsumo;
 
 	private List<Servicios> servicios;
-	
+
 	/* ****************************************************************
 	 * 			Métodos
 	 *****************************************************************/
@@ -76,7 +76,7 @@ public class HotelAndes
 	{
 		pp = PersistenciaHotelAndes.getInstance ();
 	}
-	
+
 	/**
 	 * El constructor qye recibe los nombres de las tablas en tableConfig
 	 * @param tableConfig - Objeto Json con los nombres de las tablas y de la unidad de persistencia
@@ -85,7 +85,7 @@ public class HotelAndes
 	{
 		pp = PersistenciaHotelAndes.getInstance (tableConfig);
 	}
-	
+
 	/**
 	 * Cierra la conexión con la base de datos (Unidad de persistencia)
 	 */
@@ -93,7 +93,7 @@ public class HotelAndes
 	{
 		pp.cerrarUnidadPersistencia ();
 	}
-	
+
 	/******************************************************************************
 	 * METODOS
 	 ******************************************************************************/
@@ -174,55 +174,59 @@ public class HotelAndes
 	/* ****************************************************************
 	 * 			RESERVA
 	 *****************************************************************/
-	public Reservas adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user) throws Exception{
+	public Reservas adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user, long idPlanCons) throws Exception{
 		Habitaciones habitacion = pp.darHabitacionPorId(numHab);
-		//TipoHabitacion tipoHab = pp.darTipoHabitacion(habitacion.getTipo_habitacion());
 		if( habitacion.getOcupada() == Habitaciones.SE_OCUPA )
 			throw new Exception( "Habitacion " + habitacion.getNum_hab() +" ya esta ocupada" );
-//		else if(numPersonas >  tipoHab.getCapacidad())
-//			throw new Exception("Es mayor la cantidad de personas en la reserva que en la habitacion");
 		else
 			habitacion.setOcupada(Habitaciones.SE_OCUPA);
-			
-		System.out.println("Habitacion desocupada");
-		pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, habitacion.getNum_hab());
-		System.out.println("Habitacion ocupada");
-		Reservas reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion);
-		System.out.print("Crea la reserva: ");
-		System.out.println(reserva);
-		
-		System.out.println(pp.darReservaPorId(reserva.getId()));
+
+		Reservas reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion, idPlanCons);
+		if( reserva!= null ){
+			System.out.println("Habitacion desocupada");
+			pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, habitacion.getNum_hab());
+			System.out.println("Habitacion ocupada");
+			System.out.print("Crea la reserva: ");
+			System.out.println(reserva);
+
+			System.out.println(pp.darReservaPorId(reserva.getId()));
+		}
+		else throw new Exception("Reserva nula: "+reserva);
 		return reserva;
 	}
-	
-	
-	
-	
+
+
+
+
 	/* ****************************************************************
 	 * 			Atributos
 	 *****************************************************************/
-	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long id_servicio, long id_habitacion) throws Exception
+	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion, Usuarios user) throws Exception
 	{
-		//TODO revisar
-		Consumo con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, id_servicio, id_habitacion);
-		Usuarios user = pp.darUsuarioPorId(id_habitacion,tipo_documento_usuario);
-		Servicios ser = pp.darServicioPorId(id_servicio);
-		if( user != null /**&& ser.isReservado()**/ ){
+		Consumo con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion);
+		System.out.println(con);
+		if( con != null ){
+			System.out.println("Entra");
 			user.getConsumos().add(con);
+			System.out.println(id_usuario);
+			System.out.println(tipo_documento_usuario);
+			List<Consumo> l = pp.adicionarConsumoUsuario(con, user);
+//			for (Consumo consumo : l) {
+//				System.out.println(l);
+//			}
 		}
 		else{
 			throw new Exception( "O el usuario no existe, o el id del consumo es nulo, o ya estaba reservado el servicio." );
 		}
-		
+
 		return con;
 	}
-	
+
 	public Usuarios darUsuario(long id, String tipoDoc) throws Exception{
 		if( tipoDoc == Usuarios.CEDULA || tipoDoc == Usuarios.PASAPORTE ){
 			throw new Exception("No existe tal tipo de documento "+tipoDoc);
 		}
 		Usuarios usuario = pp.darUsuarioPorId(id, tipoDoc);
-		System.out.println(usuario);
 		return usuario;
 	}
 
@@ -232,13 +236,14 @@ public class HotelAndes
 	 * @param nombre - El nombre del tipo de bebida
 	 * @return El objeto TipoBebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Usuarios adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, long tipo_usuario, long id_convencion)
+	public Usuarios adicionarUsuario(Usuarios user)
 	{
-		Usuarios usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion);
-		return usuario;
+		Usuarios userDB = pp.adicionarUsuario(user.getNum_identidad(), user.getTipo_documento(), user.getNombre(), user.getApellido(), user.getTipo_usuario(), user.getId_convencion());
+		System.out.println(userDB);
+		return userDB;
 	}
 
-	
+
 
 	public Habitaciones adicionarHabitacion(int numHab , boolean ocupada, double cuenta_habitacion, long tipo_habitacion){
 		Habitaciones h = pp.adicionarHabitacion(numHab, ocupada, tipo_habitacion, cuenta_habitacion);		
@@ -248,10 +253,10 @@ public class HotelAndes
 	public TipoHabitacion adicionarTipoHabitacion(long id, String nombre, double costo, int capacidad){
 		return pp.adicionarTipoHabitacion(id, nombre, costo, capacidad);		
 	}
-	
+
 
 	public TipoHabitacion darTipoHabitacion(long tipoHabitacion) {
-		
+
 		return pp.darTipoHabitacion(tipoHabitacion);
 	}
 
@@ -263,7 +268,7 @@ public class HotelAndes
 	public Servicios darServicio(long idServicio) {
 		return pp.darServicioPorId(idServicio);
 	}
-	
+
 
 	/* ****************************************************************
 	 * 			Métodos para administración
@@ -276,9 +281,17 @@ public class HotelAndes
 	 */
 	public long [] limpiarParranderos ()
 	{
-        log.info ("Limpiando la BD de Parranderos");
-        long [] borrrados = pp.limpiarParranderos();	
-        log.info ("Limpiando la BD de Parranderos: Listo!");
-        return borrrados;
+		log.info ("Limpiando la BD de Parranderos");
+		long [] borrrados = pp.limpiarParranderos();	
+		log.info ("Limpiando la BD de Parranderos: Listo!");
+		return borrrados;
+	}
+
+	public ReservaServicio adicionarReservaServicio(long id,
+			Timestamp fecha_inicial, Timestamp fecha_final, Long num_identidad,
+			String tipo_documento, long idServicio) {
+		ReservaServicio rs = pp.adicionarReservaServicio(id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
+		System.out.println(rs);
+		return rs;
 	}
 }

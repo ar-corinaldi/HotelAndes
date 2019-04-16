@@ -47,6 +47,7 @@ public class Usuarios implements VOUsuario{
 		nombre = "";
 		apellido="";
 		tipo_usuario = 0;
+		id_convencion = 0;
 		setConsumos(new ArrayList<>());
 	}
 	
@@ -59,6 +60,15 @@ public class Usuarios implements VOUsuario{
 		this.tipo_usuario = tipo_usuario;
 		this.setId_convencion(id_convencion);
 		setConsumos(new ArrayList<>());
+	}
+	
+	public Usuarios(String num_identidad, String tipo_documento, String nombre, String apellido, String tipo_usuario, String id_convencion){
+		this.num_identidad = Long.valueOf(num_identidad);
+		this.tipo_documento = tipo_documento;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.tipo_usuario = Long.valueOf(tipo_usuario);
+		this.id_convencion = Long.valueOf(id_convencion);
 	}
 
 	/******************************************************************************
@@ -97,11 +107,15 @@ public class Usuarios implements VOUsuario{
 		this.apellido = apellido;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "Usuario [tipo_documento=" + tipo_documento + ", num_identidad=" + num_identidad
-				+ ", nombre=" + nombre + ", apellido=" + apellido
-				+ ", consumos=" + consumos + "]";
+		return "Usuarios [tipo_documento=" + tipo_documento
+				+ ", num_identidad=" + num_identidad + ", nombre=" + nombre
+				+ ", apellido=" + apellido + ", tipo_usuario=" + tipo_usuario
+				+ ", id_convencion=" + id_convencion + ", consumos=" + consumos
+				+ "]";
 	}
 
 	public List<Consumo> getConsumos() {

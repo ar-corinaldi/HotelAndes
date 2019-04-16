@@ -13,6 +13,8 @@ public class Reservas implements VOReserva{
 
 	private long id;
 
+	private int num_personas;
+
 	private Timestamp entrada;
 
 	private Timestamp salida;
@@ -21,13 +23,13 @@ public class Reservas implements VOReserva{
 
 	private Timestamp check_out;
 
-	private int num_personas;
-
 	private long id_usuario;
 
 	private String tipo_documento_usuario;
 
 	private long id_habitacion;
+	
+	private long id_plan_consumo;
 
 	/******************************************************************************
 	 * CONSTRUCTORES
@@ -42,20 +44,21 @@ public class Reservas implements VOReserva{
 		id = 0;
 		check_in = null;
 		check_out = null;
-
+		id_plan_consumo = 0;
 	}
 
-	public Reservas(long id, int numPersonas,Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long pUsuario, String tipoDoc, long pHabitacion) {
+	public Reservas(long id, int numPersonas,Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long pUsuario, String tipoDoc, long idHab, long idPlanCons) {
 		super();
 		this.id = id;
+		this.num_personas = numPersonas;
 		this.entrada = entrada;
 		this.salida = salida;
-		this.num_personas = numPersonas;
-		setTipo_documento_usuario(tipoDoc);
-		this.setId_habitacion(pHabitacion);
-		this.setTipo_documento_usuario(tipoDoc);
 		check_in = null;
 		check_out = null;
+		setTipo_documento_usuario(tipoDoc);
+		this.setTipo_documento_usuario(tipoDoc);
+		this.setId_habitacion(idHab);
+		this.id_plan_consumo = idPlanCons;
 	}
 
 	/******************************************************************************
@@ -134,16 +137,22 @@ public class Reservas implements VOReserva{
 		this.id_habitacion = id_habitacion;
 	}
 
+	public long getId_plan_consumo() {
+		return id_plan_consumo;
+	}
+
+	public void setId_plan_consumo(long id_plan_consumo) {
+		this.id_plan_consumo = id_plan_consumo;
+	}
+
 	@Override
 	public String toString() {
-		return "Reservas [id=" + id + ", entrada=" + entrada + ", salida="
-				+ salida + ", check_in=" + check_in + ", check_out="
-				+ check_out + ", num_personas=" + num_personas
-				+ ", id_usuario=" + id_usuario + ", tipo_documento_usuario="
+		return "Reservas [id=" + id + ", num_personas=" + num_personas
+				+ ", entrada=" + entrada + ", salida=" + salida + ", check_in="
+				+ check_in + ", check_out=" + check_out + ", id_usuario="
+				+ id_usuario + ", tipo_documento_usuario="
 				+ tipo_documento_usuario + ", id_habitacion=" + id_habitacion
-				+ "]";
+				+ ", id_plan_consumo=" + id_plan_consumo + "]";
 	}
-	
-	
 
 }

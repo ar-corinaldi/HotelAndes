@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import uniandes.isis2304.parranderos.negocio.Consumo;
 import uniandes.isis2304.parranderos.negocio.Habitaciones;
 import uniandes.isis2304.parranderos.negocio.PlanConsumo;
+import uniandes.isis2304.parranderos.negocio.ReservaServicio;
 import uniandes.isis2304.parranderos.negocio.Reservas;
 import uniandes.isis2304.parranderos.negocio.Servicios;
 import uniandes.isis2304.parranderos.negocio.TipoHabitacion;
@@ -788,7 +789,7 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 	}
-	
+
 	public long ocuparHabitacionPorId( int ocupada, long numHab ){
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
@@ -815,7 +816,7 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 	}
-	
+
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla Bebida, dado el identificador de la bebida
 	 * Adiciona entradas al log de la aplicación
@@ -889,18 +890,18 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long id_servicio, long id_habitacion) 
+	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlConsumo.adicionarConsumo(pm, id, fecha, id_usuario, tipo_documento_usuario, id_servicio, id_habitacion);
+			long tuplasInsertadas = sqlConsumo.adicionarConsumo(pm, id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion);
 			tx.commit();
 
 			log.trace ("insercionconsumo: " + id + ": " + tuplasInsertadas + " tuplas insertadas");
-			return new Consumo(id, fecha, id_usuario, id_servicio);
+			return new Consumo(id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion);
 		}
 		catch (Exception e)
 		{
@@ -999,8 +1000,7 @@ public class PersistenciaHotelAndes
 			tx.begin();            
 			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion);
 			tx.commit();
-			Usuarios usuario = new Usuarios(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) ;
-			System.out.println(usuario);
+			Usuarios usuario = new Usuarios(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion);
 			return usuario;
 		}
 		catch (Exception e)
@@ -1071,6 +1071,7 @@ public class PersistenciaHotelAndes
 	public Usuarios darUsuarioPorId (long id, String tipoDoc)
 	{
 		Usuarios usuario = sqlUsuario.darUsuarioPorId (pmf.getPersistenceManager(), id, tipoDoc);
+		System.out.println(usuario);
 		return usuario;
 	}
 
@@ -1092,16 +1093,16 @@ public class PersistenciaHotelAndes
 	 * @param gradoAlcohol - El grado de alcohol de la bebida (mayor que 0)
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Reservas adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuarios user, Habitaciones hab) 
+	public Reservas adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuarios user, Habitaciones hab, long idPlanCons) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, id, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab());
+			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, id, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
 			tx.commit();
-			return new Reservas(id, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab());
+			return new Reservas(id, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
 		}
 		catch (Exception e)
 		{
@@ -1239,6 +1240,44 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 
+	}
+
+	public List<Consumo> adicionarConsumoUsuario(Consumo con, Usuarios user) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+
+		List<Consumo> list = sqlConsumo.darConsumosXUsuario(pm, con, user);
+		System.out.println(list);
+		return list;
+	}
+
+	public ReservaServicio adicionarReservaServicio(long id,
+			Timestamp fecha_inicial, Timestamp fecha_final, long num_identidad,
+			String tipo_documento, long idServicio) {
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();            
+			long tuplasInsertadas = sqlReservaServicio.adicionarReservaServicio(pm, id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
+			tx.commit();
+			 ReservaServicio rs = new ReservaServicio(id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
+			return rs;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 
 

@@ -8,6 +8,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import uniandes.isis2304.parranderos.negocio.Consumo;
+import uniandes.isis2304.parranderos.negocio.Usuarios;
 
 
 public class SQLConsumo {
@@ -55,8 +56,14 @@ public class SQLConsumo {
 	 */
 	public long adicionarConsumo (PersistenceManager pm, long id, Timestamp fecha, long id_usuario, 
 			String tipo_documento_usuario,long id_producto, long id_habitacion){
-        Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaConsumo () + "(id, fecha, id_usuario, tipo_documento_usuario, id_producto, id_habitacion) values (?, ?, ?, ?, ?, ?)");
-        q.setParameters(id, fecha, id_usuario, tipo_documento_usuario,id_producto, id_habitacion);
+		String fechaTS = "TO_TIMESTAMP('"+fecha.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+
+		Query q = pm.newQuery(SQL, "INSERT INTO " +  "CONSUMOS" + "(id, fecha, id_usuario, tipo_documento_usuario, id_producto, id_habitacion) values ("+ id +", "
+        		+ fechaTS+", "
+        		+ id_usuario +", '"
+        		+ tipo_documento_usuario+"', "
+        		+ id_producto+", "
+        		+ id_habitacion+")");
         return (long) q.executeUnique();
 	}
 	
@@ -92,5 +99,17 @@ public class SQLConsumo {
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaConsumo());
 		q.setResultClass(Consumo.class);
 		return (List<Consumo>) q.executeList();
+	}
+
+	public List<Consumo> darConsumosXUsuario(PersistenceManager pm,
+			Consumo con, Usuarios user) {
+		//SELECT * FROM CONSUMOS WHERE id_usuario = 1010247782 AND tipo_documento_usuario = 'cedula'
+		String sql = "SELECT * "
+				+ "FROM CONSUMOS "
+				+ "WHERE id_usuario = "+user.getNum_identidad()+ " AND tipo_documento_usuario = '"+user.getTipo_documento() +"'";
+        
+		Query q = pm.newQuery(SQL, sql);
+		System.out.println(sql);
+		return q.executeList();
 	}
 }

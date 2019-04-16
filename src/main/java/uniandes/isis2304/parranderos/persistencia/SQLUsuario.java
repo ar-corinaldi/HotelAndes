@@ -55,15 +55,26 @@ public class SQLUsuario {
 	public long adicionarUsuario (PersistenceManager pm, long num_identidad,  String tipo_documento,
 			String nombre, String apellido, long tipo_usuario, long id_convencion) throws Exception
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO " + "USUARIOS"+ "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values ("+ num_identidad +", '"+tipo_documento +"', '"
-				+ nombre 	+ "', '"
-				+ apellido 	+ "', "
-				+ tipo_usuario + ", "
-				+ id_convencion+ ")"
-				);
-		Object o = null;
-		o = q.executeUnique();
-		return (long) o;
+		Object o;
+		if( id_convencion==-1 ){
+
+			Query q = pm.newQuery(SQL, "INSERT INTO " + "USUARIOS"+ "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values ("+ num_identidad +", '"+tipo_documento +"', '"
+					+ nombre 	+ "', '"
+					+ apellido 	+ "', "
+					+ tipo_usuario + ", "
+					+ null+")");
+			return (long) q.executeUnique();
+		}
+		else{
+			Query q = pm.newQuery(SQL, "INSERT INTO " + "USUARIOS"+ "(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values ("+ num_identidad +", '"+tipo_documento +"', '"
+					+ nombre 	+ "', '"
+					+ apellido 	+ "', "
+					+ tipo_usuario + ", "
+					+ id_convencion+")");
+			return (long) q.executeUnique();
+		}
+
+
 	}
 
 	/**
