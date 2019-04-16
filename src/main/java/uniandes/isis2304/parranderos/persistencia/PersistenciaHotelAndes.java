@@ -1311,10 +1311,34 @@ public class PersistenciaHotelAndes
 
 	}
 
-	public boolean verificarHabitacionesDisponibles(long tipo, int cantidad) {
-		sqlHabitacion.darHabitacionesDisponibles(pmf.getPersistenceManager(), tipo, cantidad);
-		System.out.println("PersistenciaHotelAndes en el metodo verificarHabitacionesDisponibles");
-		return false;
+	public List<Habitaciones> verificarHabitacionesDisponibles(long tipo, int cantidad) {
+		List<Object> l = sqlHabitacion.darHabitacionesDisponibles(pmf.getPersistenceManager(), tipo, cantidad);
+		LinkedList<Habitaciones> h = new LinkedList<Habitaciones>();
+		for (Object object : l) {
+			Object[] datos = (Object[]) object;
+			long numHab = ((BigDecimal) datos [0]).longValue ();
+			int ocupada = ((BigDecimal) datos [1]).intValue ();
+			double cuentaHab = ((BigDecimal) datos[2]).doubleValue();
+			long tipoHab = ((BigDecimal)datos[3]).longValue();
+			h.add(new Habitaciones(numHab, ocupada, cuentaHab, tipoHab));
+		}
+		return h;
+	}
+
+	public Servicios verificarServiciosDisponibles(long tipo, int cantidad) {
+		Object object = sqlServicio.darServiciosDisponibles(pmf.getPersistenceManager(), tipo, cantidad);
+		Object[] datos = (Object[]) object;
+		long id = ((BigDecimal) datos [0]).longValue ();
+		String nombre = datos[1].toString();
+		String descripcion = datos[2]==null ? null: datos[2].toString();
+		double costo = ((BigDecimal) datos[3]).doubleValue();
+		int cargadoHab = ((BigDecimal)datos[4]).intValue();
+		int capacidad = ((BigDecimal)datos[5]).intValue();
+		int reservado = ((BigDecimal)datos[6]).intValue();
+		long tipoServicios = ((BigDecimal) datos [0]).longValue();
+
+		Servicios s = new Servicios(id, nombre, descripcion, costo, cargadoHab, capacidad, reservado, tipoServicios);
+		return s;
 	}
 
 

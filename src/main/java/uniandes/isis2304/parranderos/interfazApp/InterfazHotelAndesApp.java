@@ -359,7 +359,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			ReservaServicio rs = parranderos.adicionarReservaServicio(id, fecha_inicial, fecha_final, cliente.getNum_identidad(), cliente.getTipo_documento(), idServicio);
 		}
 
-		
+
 
 	}
 
@@ -386,15 +386,24 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			long idPlanCons = Long.valueOf(JOptionPane.showInputDialog (this, "Plan de consumo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 			int tiposHab = Integer.parseInt(JOptionPane.showInputDialog (this, "Cuantos tipos de habitacion?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 			for( int i=0; i<tiposHab && sePuede; i++ ){
-				 long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
-				 int cantidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad del tipo "+tipo +"?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
-				 sePuede = parranderos.verificarHabitacionesDisponibles(tipo, cantidad);
+				long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+				int cantidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad del tipo "+tipo +"?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+				sePuede = parranderos.verificarHabitacionesDisponibles(tipo, cantidad);
 			}
-			
-			Convencion conv = parranderos.adicionarConvencion(id, nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
+			tiposHab = Integer.parseInt(JOptionPane.showInputDialog (this, "Cuantos tipos de servicio?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+			for( int i=0; i<tiposHab && sePuede; i++ ){
+				long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+				sePuede = parranderos.verificarServiciosDisponibles(tipo, cantidadPersonas);
+			}
+			if(!sePuede)
+			{
+				JOptionPane.showMessageDialog(this, "No hay suficientes habitaciones o servicios", "Error", JOptionPane.WARNING_MESSAGE);
+			} else{
+				Convencion conv = parranderos.adicionarConvencion(id, nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
+			}
 		}
 	}
-	
+
 	public Usuarios verificarUsuario( long tipoUsuario ){
 		Usuarios user =null;
 		String numIden = JOptionPane.showInputDialog (this, "numero identificacion?", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);

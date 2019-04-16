@@ -103,8 +103,16 @@ public class SQLHabitacion
 	}
 
 
-	public void darHabitacionesDisponibles(
-			PersistenceManager persistenceManager, long tipo, int cantidad) {
-
+	public List<Object> darHabitacionesDisponibles(
+			PersistenceManager pm, long tipo, int cantidad) {
+		//		SELECT *
+		//		FROM HABITACIONES 
+		//		WHERE tipo_habitacion = 5 AND ocupada=0
+		//		FETCH FIRST 30 ROWS ONLY;
+		String sql = "SELECT * FROM HABITACIONES WHERE TIPO_HABITACION = "+ tipo +" AND OCUPADA = 0 "
+				+ "FETCH FIRST "+cantidad+ " ROWS ONLY";
+		Query q = pm.newQuery(SQL, sql);
+		
+		return (List<Object>) q.executeList();
 	}
 }

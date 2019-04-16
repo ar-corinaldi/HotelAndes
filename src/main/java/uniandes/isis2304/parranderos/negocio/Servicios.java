@@ -1,9 +1,5 @@
 package uniandes.isis2304.parranderos.negocio;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Servicios implements VOServicio{
 
 	/******************************************************************************
@@ -75,7 +71,7 @@ public class Servicios implements VOServicio{
 	
 	public Servicios(long id, String nombre,
 			String descripcion,   double costo, int cargado_habitacion, int capacidad,
-			long tipoServicio) {
+			int reservado, long tipoServicio) {
 		super();
 		this.id = id;
 		this.cargado_habitacion = cargado_habitacion;
@@ -83,7 +79,8 @@ public class Servicios implements VOServicio{
 		this.descripcion = descripcion;
 		this.costo = costo;
 		this.capacidad = capacidad;
-		this.id_tipo_servicios = id_tipo_servicios;
+		this.reservado = reservado;
+		this.id_tipo_servicios = tipoServicio;
 	}
 
 	/******************************************************************************
