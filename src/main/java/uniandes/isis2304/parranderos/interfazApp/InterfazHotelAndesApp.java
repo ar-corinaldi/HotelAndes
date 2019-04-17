@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -376,6 +378,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		System.out.println("Registrar Llegada Cliente");
 		Usuarios recepcionista = verificarUsuario(RECEPCIONISTA);
 		Usuarios cliente = verificarUsuario(CLIENTE);
+		long idRes = Long.valueOf(JOptionPane.showInputDialog(this, "Id de la reserva?", "Llegada Cliente", JOptionPane.OK_OPTION));
+		parranderos.registrarLlegadaReserva(cliente.getNum_identidad(), cliente.getTipo_documento(), new Timestamp(System.currentTimeMillis()), idRes);
 
 	}
 
