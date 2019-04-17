@@ -114,18 +114,18 @@ public class SQLServicio {
 		//		FROM HABITACIONES 
 		//		WHERE tipo_habitacion = 5 AND ocupada=0
 		//		FETCH FIRST 30 ROWS ONLY;
-		String sql = "SELECT * FROM SERVICIOS WHERE TIPO_SERVICIOS = "+ tipo +" AND RESERVADO = 0 FETCH FIRST "+cantidad+ " ROWS ONLY";
+		String sql = "SELECT * FROM SERVICIOS WHERE TIPO_SERVICIOS = "+ tipo +" FETCH FIRST "+cantidad+ " ROWS ONLY";
 		Query q = pm.newQuery(SQL, sql);
 		
 		return (Object) q.executeUnique();
 	}
 
-
-	public long reservarServicioPorId(PersistenceManager pm, int reservado,
-			long id) {
-		Query q = pm.newQuery(SQL, "UPDATE " + "SERVICIOS" + " SET reservado = "+ reservado 
-				+" WHERE id = "+id);
-		return (long) q.executeUnique();
-	}
+//DEPRECIEATED XD
+//	public long reservarServicioPorId(PersistenceManager pm, int reservado,
+//			long id) {
+//		Query q = pm.newQuery(SQL, "UPDATE " + "SERVICIOS" + " SET reservado = "+ reservado 
+//				+" WHERE id = "+id);
+//		return (long) q.executeUnique();
+//	}
 
 }

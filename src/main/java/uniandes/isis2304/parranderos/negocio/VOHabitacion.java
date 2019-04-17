@@ -9,5 +9,4 @@ public interface VOHabitacion {
 	
 	public long getNum_hab();
 	
-	public int getOcupada();
 }

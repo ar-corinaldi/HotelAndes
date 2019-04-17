@@ -415,15 +415,15 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 					Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
 					Convencion conv = parranderos.adicionarConvencion(id, nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
 
-					
+
 					for(int i=0; i<cantidadPersonas; i++){
 						Usuarios user = new Usuarios((long) (i+1), "cedula", nombre, nombre, 5, id);
 						parranderos.adicionarUsuario(user);
 						parranderos.adicionarReserva((long)i+1, 1, entrada, salida, null, null, (long)(i+1), "cedula", l.get(i).getNum_hab(), user, idPlanCons);
 					} 
 				}
-				parranderos.reservarHabitaciones(l);
-				parranderos.reservarServicios(ls);
+				//parranderos.reservarHabitaciones(l);
+				//parranderos.reservarServicios(ls);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -447,14 +447,12 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				Object[] datos = (Object[]) object;
 				long NUM_IDENTIDAD = ((BigDecimal) datos [0]).longValue ();
 				String TIPO_DOCUMENTO = ( datos [1]).toString();
-//				parranderos.cancelarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
-//				parranderos.cancelarReservasServicios(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+				parranderos.cancelarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+				parranderos.cancelarReservasServicios(NUM_IDENTIDAD, TIPO_DOCUMENTO);
 				parranderos.eliminarUsuario(NUM_IDENTIDAD, TIPO_DOCUMENTO);
 				System.out.println("eliminando... "+  contador ++);
-				
-			
-
 			}
+			parranderos.cancelarConvencion(idConvencion);
 		}
 		else 
 		{

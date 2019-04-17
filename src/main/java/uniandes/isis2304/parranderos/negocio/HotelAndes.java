@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import com.google.gson.JsonObject;
 
+import oracle.net.aso.i;
 import uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes;
 
 /**
@@ -176,15 +177,15 @@ public class HotelAndes
 	 *****************************************************************/
 	public Reservas adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user, long idPlanCons) throws Exception{
 		Habitaciones habitacion = pp.darHabitacionPorId(numHab);
-		if( habitacion.getOcupada() == Habitaciones.SE_OCUPA )
-			throw new Exception( "Habitacion " + habitacion.getNum_hab() +" ya esta ocupada" );
-		else
-			habitacion.setOcupada(Habitaciones.SE_OCUPA);
+//		if( habitacion.getOcupada() == Habitaciones.SE_OCUPA )
+//			throw new Exception( "Habitacion " + habitacion.getNum_hab() +" ya esta ocupada" );
+//		else
+//			habitacion.setOcupada(Habitaciones.SE_OCUPA);
 
 		Reservas reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion, idPlanCons);
 		if( reserva!= null ){
 			System.out.println("Habitacion desocupada");
-			pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, habitacion.getNum_hab());
+			//pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, habitacion.getNum_hab());
 			System.out.println("Habitacion ocupada");
 			System.out.print("Crea la reserva: ");
 			System.out.println(reserva);
@@ -245,8 +246,8 @@ public class HotelAndes
 
 
 
-	public Habitaciones adicionarHabitacion(int numHab , boolean ocupada, double cuenta_habitacion, long tipo_habitacion){
-		Habitaciones h = pp.adicionarHabitacion(numHab, ocupada, tipo_habitacion, cuenta_habitacion);		
+	public Habitaciones adicionarHabitacion(int numHab ,  double cuenta_habitacion, long tipo_habitacion){
+		Habitaciones h = pp.adicionarHabitacion(numHab,  tipo_habitacion, cuenta_habitacion);		
 		return h;
 	}
 
@@ -337,12 +338,12 @@ public class HotelAndes
 		pp.cancelarReservasServicios(numIdentidad, tipoDocumento);		
 	}
 
-	public void reservarHabitaciones(List<Habitaciones> l) {
-		for (Habitaciones h : l) {
-			pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, h.getNum_hab());
-			System.out.println("Se ocupo la habitacion con numero: "+h.getNum_hab());
-		}
-	}
+//	public void reservarHabitaciones(List<Habitaciones> l) {
+//		for (Habitaciones h : l) {
+//			pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, h.getNum_hab());
+//			System.out.println("Se ocupo la habitacion con numero: "+h.getNum_hab());
+//		}
+//	}
 
 	public void reservarServicios(List<Servicios> ls) {
 		for (Servicios s : ls) {
@@ -359,5 +360,9 @@ public class HotelAndes
 	public void eliminarUsuario(Long numIdentidad, String tipoDoc) {
 
 		pp.eliminarUsuarioPorId(numIdentidad, tipoDoc);		
+	}
+
+	public void cancelarConvencion(Long idConvencion) {
+		pp.cancelarConvencion(idConvencion);
 	}
 }

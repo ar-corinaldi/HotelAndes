@@ -53,11 +53,11 @@ public class SQLHabitacion
 	 * @param idHotel - El identificador del hotel
 	 * @return El n�mero de tuplas insertadas
 	 */
-	public long adicionarHabitacion(PersistenceManager pm, int numHab, int ocupada, double cuenta_habitacion, long tipo_habitacion)
+	public long adicionarHabitacion(PersistenceManager pm, int numHab, double cuenta_habitacion, long tipo_habitacion)
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaHabitacion() + "(num_hab, ocupada, cuenta_habitacion, "
-				+ "tipo_habitacion) values(?, ?, ?, ?)");
-		q.setParameters(numHab, ocupada,cuenta_habitacion, tipo_habitacion);
+		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaHabitacion() + "(num_hab,  cuenta_habitacion, "
+				+ "tipo_habitacion) values(?, ?, ?)");
+		q.setParameters(numHab, cuenta_habitacion, tipo_habitacion);
 		return (long)q.executeUnique();
 	}
 
@@ -95,12 +95,12 @@ public class SQLHabitacion
 		return (List<Habitaciones>) q.executeList();
 	}
 
-
-	public long ocuparHabitacionPorId(PersistenceManager pm, int ocupada, long num_hab) {
-		Query q = pm.newQuery(SQL, "UPDATE " + "HABITACIONES" + " SET ocupada= "+ ocupada 
-				+" WHERE num_hab = "+num_hab);
-		return (long) q.executeUnique();
-	}
+//Depreciated
+//	public long ocuparHabitacionPorId(PersistenceManager pm, int ocupada, long num_hab) {
+//		Query q = pm.newQuery(SQL, "UPDATE " + "HABITACIONES" + " SET ocupada= "+ ocupada 
+//				+" WHERE num_hab = "+num_hab);
+//		return (long) q.executeUnique();
+//	}
 
 
 	public List<Object> darHabitacionesDisponibles(
@@ -109,8 +109,8 @@ public class SQLHabitacion
 		//		FROM HABITACIONES 
 		//		WHERE tipo_habitacion = 5 AND ocupada=0
 		//		FETCH FIRST 30 ROWS ONLY;
-		String sql = "SELECT * FROM HABITACIONES WHERE TIPO_HABITACION = "+ tipo +" AND OCUPADA = 0 "
-				+ "FETCH FIRST "+cantidad+ " ROWS ONLY";
+		String sql = "SELECT * FROM HABITACIONES WHERE TIPO_HABITACION = "+ tipo+ 
+				" FETCH FIRST "+cantidad+ " ROWS ONLY";
 		Query q = pm.newQuery(SQL, sql);
 		
 		return (List<Object>) q.executeList();

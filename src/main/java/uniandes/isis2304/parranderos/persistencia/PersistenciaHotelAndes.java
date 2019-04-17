@@ -758,22 +758,21 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Habitaciones adicionarHabitacion(int num_hab, boolean ocupada, long tipo_habitacion, double cuenta_habitacion) 
+	public Habitaciones adicionarHabitacion(int num_hab,  long tipo_habitacion, double cuenta_habitacion) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			int ocupadaSQL = 0;
-			if( ocupada ) ocupadaSQL = 1;
-			long tuplasInsertadas = sqlHabitacion.adicionarHabitacion(pm, num_hab, ocupadaSQL, cuenta_habitacion, tipo_habitacion);
+
+			long tuplasInsertadas = sqlHabitacion.adicionarHabitacion(pm, num_hab, cuenta_habitacion, tipo_habitacion);
 			tx.commit();
 
 			log.trace ("insercionconsumo: " + num_hab + ": " + tuplasInsertadas + " tuplas insertadas");
 			Habitaciones habitacion = sqlHabitacion.darHabitacionPorId(pm, num_hab);
 
-			return  new Habitaciones(num_hab, ocupadaSQL,cuenta_habitacion, tipo_habitacion );
+			return  new Habitaciones(num_hab, cuenta_habitacion, tipo_habitacion );
 		}
 		catch (Exception e)
 		{
@@ -797,10 +796,10 @@ public class PersistenciaHotelAndes
 		try
 		{
 			tx.begin();
-			long resp = sqlHabitacion.ocuparHabitacionPorId(pm, ocupada, numHab);
+			//long resp = sqlHabitacion.ocuparHabitacionPorId(pm, ocupada, numHab);
 			tx.commit();
 
-			return resp;
+			return 0;
 		}
 		catch (Exception e)
 		{
@@ -1317,10 +1316,9 @@ public class PersistenciaHotelAndes
 		for (Object object : l) {
 			Object[] datos = (Object[]) object;
 			long numHab = ((BigDecimal) datos [0]).longValue ();
-			int ocupada = ((BigDecimal) datos [1]).intValue ();
-			double cuentaHab = ((BigDecimal) datos[2]).doubleValue();
-			long tipoHab = ((BigDecimal)datos[3]).longValue();
-			h.add(new Habitaciones(numHab, ocupada, cuentaHab, tipoHab));
+			double cuentaHab = ((BigDecimal) datos[1]).doubleValue();
+			long tipoHab = ((BigDecimal)datos[2]).longValue();
+			h.add(new Habitaciones(numHab,  cuentaHab, tipoHab));
 		}
 		return h;
 	}
@@ -1339,30 +1337,30 @@ public class PersistenciaHotelAndes
 		Servicios s = new Servicios(id, nombre, descripcion, costo, cargadoHab, capacidad,  tipoServicios);
 		return s;
 	}
-	
+
 	public Object darConvencion(long idConvencion) {
 		return sqlConvencion.darConvencionPorId(pmf.getPersistenceManager(), idConvencion);
 	}
 
 	public void cancelarReservas(long NUM_IDENTIDAD, String TIPO_DOCUMENTO ) 
 	{
-			sqlReserva.cancelarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
+		sqlReserva.cancelarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
 	}
 
 	public List<Object> darUsuariosConvencion(Long idConvencion) {
 		return sqlUsuario.darUsuariosConvencion( pmf.getPersistenceManager(), idConvencion);
 	}
-	
+
 	public long reservarServicioPorId(int reservado, long id) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();
-			long resp = sqlServicio.reservarServicioPorId(pm, reservado, id);
+			//long resp = sqlServicio.reservarServicioPorId(pm, reservado, id);
 			tx.commit();
 
-			return resp;
+			return 0;
 		}
 		catch (Exception e)
 		{
@@ -1383,5 +1381,9 @@ public class PersistenciaHotelAndes
 	public void cancelarReservasServicios(long numIdentidad, String tipoDocumento) {
 
 		sqlReservaServicio.cancelarReservasServicios(pmf.getPersistenceManager(), numIdentidad, tipoDocumento);
+	}
+
+	public void cancelarConvencion(Long idConvencion) {
+		sqlConvencion.eliminaConvencionPorId(pmf.getPersistenceManager(), idConvencion);
 	}
 }
