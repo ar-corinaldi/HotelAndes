@@ -1236,10 +1236,6 @@ public class PersistenciaHotelAndes
 			double cuentaHab = ((BigDecimal) datos[1]).doubleValue();
 			long tipoHab = ((BigDecimal)datos[2]).longValue();
 			h.add(new Habitaciones(numHab,  cuentaHab, tipoHab));
-			double cuentaHab = ((BigDecimal) datos[1]).doubleValue();
-			long tipoHab = ((BigDecimal)datos[2]).longValue();
-
-			h.add(new Habitaciones(numHab, cuentaHab, tipoHab));
 		}
 		return h;
 	}
