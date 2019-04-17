@@ -1257,9 +1257,9 @@ public class PersistenciaHotelAndes
 		return sqlConvencion.darConvencionPorId(pmf.getPersistenceManager(), idConvencion);
 	}
 
-	public void cancelarReservas(long NUM_IDENTIDAD, String TIPO_DOCUMENTO ) 
+	public void eliminarReservas(long NUM_IDENTIDAD, String TIPO_DOCUMENTO ) 
 	{
-		sqlReserva.cancelarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
+		sqlReserva.eliminarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
 	}
 
 	public List<Object> darUsuariosConvencion(Long idConvencion) {
@@ -1383,5 +1383,14 @@ public class PersistenciaHotelAndes
 			}
 			pm.close();
 		}
+	}
+
+	public void terminarMantenimientoHab(Long num_identidad, String tipo_documento, int numHab) {
+
+		sqlReserva.terminarMantenimiento(pmf.getPersistenceManager(), num_identidad, tipo_documento, numHab);
+	}
+
+	public void terminarMantenimientoServ(Long num_identidad, String tipo_documento, int idServ) {
+		sqlReservaServicio.terminarMantenimiento(pmf.getPersistenceManager(), num_identidad, tipo_documento, idServ);
 	}
 }

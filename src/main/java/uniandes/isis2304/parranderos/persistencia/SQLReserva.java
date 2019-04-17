@@ -135,9 +135,9 @@ public class SQLReserva {
 		q.setParameters(id);
 		return q.executeList();
 	}
-
-
-	public long cancelarReservasUsuario(PersistenceManager pm, Long idUsuario, String tipoDocumento) {
+	
+	
+	public long eliminarReservasUsuario(PersistenceManager pm, Long idUsuario, String tipoDocumento) {
 		String sql = "DELETE from Reservas where ID_USUARIO = " +idUsuario + " AND TIPO_DOCUMENTO_USUARIO = '"+ tipoDocumento+ "'" ;
 		Query q =pm.newQuery(SQL, sql);
 		return  (long) q.execute();
@@ -184,6 +184,15 @@ public class SQLReserva {
 		}
 		System.out.println(res);
 		return res;
+	}
+
+	public long terminarMantenimiento(PersistenceManager pm, Long num_identidad, String tipo_documento,
+			int numHab) {
+		String sql = "DELETE from Reservas where ID_USUARIO = " +num_identidad + " AND TIPO_DOCUMENTO_USUARIO = '"+ tipo_documento+ 
+				"' AND ID_HABITACION = "+ numHab ;
+		Query q =pm.newQuery(SQL, sql);
+		return  (long) q.execute();
+		
 	}
 
 	public void registrarLlegadaReserva(PersistenceManager pm, long idUsuario, String tipoDoc, Timestamp ingreso, long idRes) {

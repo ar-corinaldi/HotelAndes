@@ -430,26 +430,26 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				{
 					JOptionPane.showMessageDialog(this, "No hay suficientes habitaciones o servicios", "Error", JOptionPane.WARNING_MESSAGE);
 				} else{
-					
+
 					Convencion conv = parranderos.adicionarConvencion(id, nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
 
-					
+
 					for(int i=0; i<cantidadPersonas-1; i++){
 						Usuarios user = new Usuarios((long) (indice+i+1), "cedula", nombre, nombre, 5, id);
 						parranderos.adicionarUsuario(user);
 						parranderos.adicionarReserva((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
-//						listaUsuarios.add(user)
-//						} 
-//						parranderos.adicionarUsuarios(listaUsuarios);
-//						parranderos.adicionarReservas((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
-//						
+						//						listaUsuarios.add(user)
+						//						} 
+						//						parranderos.adicionarUsuarios(listaUsuarios);
+						//						parranderos.adicionarReservas((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
+						//						
 					} 
 					for(int j=0; j<tiposHab; j++){
 						parranderos.reservarServicios(listaReservaServicio, tiposServ[j]);
 					}
-					
+
 				}
-				
+
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -473,7 +473,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				Object[] datos = (Object[]) object;
 				long NUM_IDENTIDAD = ((BigDecimal) datos [0]).longValue ();
 				String TIPO_DOCUMENTO = ( datos [1]).toString();
-				parranderos.cancelarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+				parranderos.eliminarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
 				parranderos.cancelarReservasServicios(NUM_IDENTIDAD, TIPO_DOCUMENTO);
 				parranderos.eliminarUsuario(NUM_IDENTIDAD, TIPO_DOCUMENTO);
 				System.out.println("eliminando... "+  contador ++);
@@ -487,7 +487,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				String numIdentidadStr = JOptionPane.showInputDialog (this, "Ingrese el numero de identidad del cliente a cancelar", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
 				String TipoDoc = JOptionPane.showInputDialog (this, "Ingrese el tipo de documento", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
 				Long numIdentidad = Long.valueOf(numIdentidadStr);
-				parranderos.cancelarReserva(numIdentidad, TipoDoc);
+				parranderos.eliminarReserva(numIdentidad, TipoDoc);
 				parranderos.cancelarReservasServicios(numIdentidad, TipoDoc);
 				parranderos.eliminarUsuario(numIdentidad, TipoDoc);
 
@@ -499,8 +499,11 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 	public void registrarLlegadaConvencion(){
 		System.out.println("Registrar Llegada Convencion");
-		
+
 	}
+
+
+
 
 	public void registrarSalidaConvencion(){
 		System.out.println("Registrar Salida Convencion");
@@ -529,9 +532,9 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		}
 		return user;
 	}
-	
+
 	public void crearMantenimiento(){
-		
+
 		Usuarios admin = verificarUsuario(ADMINISTRADOR);
 		int num = Integer.parseInt(JOptionPane.showInputDialog(this, "1. Servicio\n2. Habitacion", "Mantenimiento", JOptionPane.OK_OPTION));
 		long servOHab = -1;
@@ -542,7 +545,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		}
 		String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Mantenimiento", JOptionPane.OK_OPTION);
 		String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2019-09-23)", "Mantenimiento", JOptionPane.OK_OPTION);
-		
+
 		Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
 		Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
 		if( servOHab==-1 ){
@@ -552,6 +555,33 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				parranderos.crearMantenimiento( num, admin, entrada, salida, servOHab );
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+		}
+	}
+
+
+
+
+	public void terminarMantenimiento()
+	{
+		Usuarios administrador = verificarUsuario(ADMINISTRADOR);
+		String datos = JOptionPane.showInputDialog (this, "Terminar mantenimiento de que habitaciones o servicios, ingrese los datos de la siguiente manera: \n H201, (para las habitaciones) S1(para los servicios) (con coma y espacio entre los datos) ", "Terminar mantenimiento", JOptionPane.QUESTION_MESSAGE);
+		String[] arreglo = datos.split(", ");
+		for (int i = 0; i < arreglo.length; i++) {
+			String actual = arreglo[i];
+			
+			if(actual.contains("H"))
+			{
+				String numHabStr = actual.substring(1);
+				int numHab = Integer.valueOf(numHabStr);
+				parranderos.terminarMantenimientoHab(administrador.getNum_identidad(), administrador.getTipo_documento(), numHab);
+			}
+			else
+			{
+				
+				String idServSTR = actual.substring(1);
+				int idServ = Integer.valueOf(idServSTR);
+				parranderos.terminarMantenimientoServ(administrador.getNum_identidad(), administrador.getTipo_documento(), idServ);
 			}
 		}
 	}
