@@ -306,7 +306,7 @@ public class HotelAndes
 		pp.eliminarReservas(NumDocumento, TipoDocumento);
 	}
 
-	public List<Object> darUsuariosConvencion(long idConvencion) {
+	public List<Usuarios> darUsuariosConvencion(long idConvencion) {
 		return pp.darUsuariosConvencion(idConvencion);
 	}
 
@@ -319,10 +319,16 @@ public class HotelAndes
 		pp.reservarServicioPorId(lrs, idServ);
 	}
 
-	public void registrarSalidaConvencion(long idConv) {
-		pp.darUsuariosConvencion(idConv);
+	public List<Usuarios> registrarSalidaConvencion(long idConv) {
+		List<Usuarios> listU = pp.darUsuariosConvencion(idConv);
+		registrarSalidaUsuarios(listU);
+		return listU;
 	}
-
+	
+	public void registrarSalidaUsuarios(List<Usuarios> lu){
+		pp.registrarSalidaUsuarios(lu);
+	}
+	
 	public void eliminarUsuario(Long numIdentidad, String tipoDoc) {
 
 		pp.eliminarUsuarioPorId(numIdentidad, tipoDoc);		

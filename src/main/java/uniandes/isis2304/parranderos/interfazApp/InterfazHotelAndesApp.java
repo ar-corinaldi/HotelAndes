@@ -373,7 +373,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 
 	}
-	
+
 	public void adicionarConsumo() throws Exception{
 		try{
 			System.out.println("Adicionar Consumo");
@@ -390,7 +390,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
-		
+
 	}
 
 	public void registrarLlegadaCliente(){
@@ -494,15 +494,13 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		String cancelarTodo = JOptionPane.showInputDialog (this, "Desea cancelar toda la convencion", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
 		if(cancelarTodo.equals("si"))
 		{
-			List<Object> users = 	parranderos.darUsuariosConvencion(idConvencion);
+			List<Usuarios> users = parranderos.darUsuariosConvencion(idConvencion);
 			int contador = 0;
-			for (Object object : users) {
-				Object[] datos = (Object[]) object;
-				long NUM_IDENTIDAD = ((BigDecimal) datos [0]).longValue ();
-				String TIPO_DOCUMENTO = ( datos [1]).toString();
-				parranderos.eliminarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
-				parranderos.cancelarReservasServicios(NUM_IDENTIDAD, TIPO_DOCUMENTO);
-				parranderos.eliminarUsuario(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+			for (Usuarios user : users) {
+
+				parranderos.eliminarReserva(user.getNum_identidad(), user.getTipo_documento());
+				parranderos.cancelarReservasServicios(user.getNum_identidad(), user.getTipo_documento());
+				parranderos.eliminarUsuario(user.getNum_identidad(), user.getTipo_documento());
 				System.out.println("eliminando... "+  contador ++);
 			}
 			parranderos.cancelarConvencion(idConvencion);
@@ -536,11 +534,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		System.out.println("Registrar Salida Convencion");
 		Usuarios organizador = verificarUsuario(ORGANIZADOR);
 		long idConv = Long.valueOf(JOptionPane.showInputDialog (this, "Id convencion?", "Terminar convencion", JOptionPane.QUESTION_MESSAGE));
-		Convencion c = (Convencion) parranderos.darConvencion(idConv);
-		if( c.getNum_personas() == organizador.getNum_identidad() && c.getTipo_documento_usuario().equals(organizador.getTipo_documento()))
-			parranderos.registrarSalidaConvencion(idConv);
-		else 
-			JOptionPane.showMessageDialog(this, "El organizador no creo tal convencion", "Error", JOptionPane.WARNING_MESSAGE);
+		parranderos.registrarSalidaConvencion(idConv);
 	}
 
 	public Usuarios verificarUsuario( long tipoUsuario ){

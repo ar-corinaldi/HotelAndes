@@ -959,6 +959,38 @@ public class PersistenciaHotelAndes
 		}
 	}
 
+	public long eliminarUsuarios ( List<Usuarios> lu ) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			long resp = 0;
+			tx.begin();
+			for (Usuarios user : lu) {
+				resp += sqlUsuario.eliminarUsuarioPorId (pm, user.getNum_identidad(), user.getTipo_documento());
+
+			}
+			tx.commit();
+
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
 	/**
 	 * Método que consulta todas las tuplas en la tabla Bebida
 	 * @return La lista de objetos Bebida, construidos con base en las tuplas de la tabla BEBIDA
@@ -1265,7 +1297,7 @@ public class PersistenciaHotelAndes
 		sqlReserva.eliminarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
 	}
 
-	public List<Object> darUsuariosConvencion(Long idConvencion) {
+	public List<Usuarios> darUsuariosConvencion(Long idConvencion) {
 		return sqlUsuario.darUsuariosConvencion( pmf.getPersistenceManager(), idConvencion);
 	}
 
@@ -1427,8 +1459,42 @@ public class PersistenciaHotelAndes
 	}
 
 	public Producto darProductoPorId(long idProd) {
-		
+
 		return sqlProducto.darProductoPorId(pmf.getPersistenceManager(), idProd);
+	}
+
+	public void registrarSalidaUsuarios(List<Usuarios> lu) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			for (Usuarios user : lu) {
+				System.out.println();
+				sqlReserva.registrarSalidaReserva(pm, user.getNum_identidad(), user.getTipo_documento(), new Timestamp(System.currentTimeMillis()), user.getNum_identidad());
+				Reservas r = darReservaPorId(user.getNum_identidad());
+				sqlHabitacion.agregarConsumoHabitacion(pm, r.getId_habitacion(), 0.0);
+			}
+			tx.commit();
+			System.out.println("Se registra con exito la salida de todos los usuarios");
+
+			return;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}		
+
 	}
 
 

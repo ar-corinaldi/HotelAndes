@@ -77,7 +77,7 @@
 					"event": "registrarLlegadaConvencion"
 				},
 				{
-					"label": "Terminar Convencion",
+					"label": "Registrar Salida",
 					"event": "registrarSalidaConvencion"
 				}
 			]
