@@ -1355,6 +1355,36 @@ public class PersistenciaHotelAndes
 		}
 	}
 
+	public void registrarLlegadaReserva(long idUsuario, String tipoDoc, Timestamp ingreso, long idRes) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			long resp = 0;
+			tx.begin();
+			System.out.println("Antes del sql");
+			sqlReserva.registrarLlegadaReserva(pm, idUsuario, tipoDoc,ingreso, idRes);
+			System.out.println("Reserva con id: "+idRes+" ha sido editada");
+			tx.commit();
+
+			return;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
 	public void terminarMantenimientoHab(Long num_identidad, String tipo_documento, int numHab) {
 
 		sqlReserva.terminarMantenimiento(pmf.getPersistenceManager(), num_identidad, tipo_documento, numHab);

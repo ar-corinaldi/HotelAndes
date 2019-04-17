@@ -359,7 +359,7 @@ public class HotelAndes
 			else if( r.getCheck_in() == null ){
 				adicionarReserva(indiceUltimoUsuario()+1, 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
 			}
-			else{
+			else if( r.getCheck_in() != null && r.getCheck_out() == null ){
 				System.out.println("Entra");
 				moverUsuario( h );
 			}
@@ -379,6 +379,10 @@ public class HotelAndes
 			pp.moverUsuario(nueva, h);
 			System.out.println("Su habitacion ");
 		}
+	}
+
+	public void registrarLlegadaReserva(long idUser, String tipoDoc,Timestamp ingreso, long idRes) {
+		pp.registrarLlegadaReserva(idUser, tipoDoc, ingreso, idRes);
 	}
 
 	public void terminarMantenimientoHab(Long num_identidad, String tipo_documento, int numHab) {

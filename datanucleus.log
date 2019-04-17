@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 11:17:55,450 (main) DEBUG [DataNucleus.General] - Using PluginRegistry org.datanucleus.plugin.NonManagedPluginRegistry
 11:17:55,477 (main) DEBUG [DataNucleus.General] - Registering bundle org.datanucleus.api.jdo version 5.1.7 at URL file:/C:/Users/allan/OneDrive/Documents/Andes/CuartoSemestre/Sistrans/HotelAndes/lib/datanucleus-api-jdo-5.1.7.jar.
 11:17:55,494 (main) DEBUG [DataNucleus.General] - Loading extension points and extensions from plug-in file jar:file:/C:/Users/allan/OneDrive/Documents/Andes/CuartoSemestre/Sistrans/HotelAndes/lib/datanucleus-api-jdo-5.1.7.jar!/plugin.xml.
@@ -18758,3 +18759,5 @@ With the Partitioning, OLAP, Advanced Analytics and Real Application Testing opt
 14:08:39,629 (AWT-EventQueue-0) DEBUG [DataNucleus.Datastore] - Cerrando PreparedStatement "org.datanucleus.store.rdbms.ParamLoggingPreparedStatement@2320c34a"
 14:08:39,630 (AWT-EventQueue-0) DEBUG [DataNucleus.Connection] - ManagedConnection VA A COMMIT : "org.datanucleus.store.rdbms.ConnectionFactoryImpl$ManagedConnectionImpl@220570ee [conn=org.datanucleus.store.rdbms.datasource.dbcp2.PoolingDataSource$PoolGuardConnectionWrapper@2954b504, commitOnRelease=true, closeOnRelease=true, closeOnTxnEnd=true]"
 14:08:39,638 (AWT-EventQueue-0) DEBUG [DataNucleus.Connection] - ManagedConnection CERRADO : "org.datanucleus.store.rdbms.ConnectionFactoryImpl$ManagedConnectionImpl@220570ee [conn=org.datanucleus.store.rdbms.datasource.dbcp2.PoolingDataSource$PoolGuardConnectionWrapper@2954b504, commitOnRelease=true, closeOnRelease=true, closeOnTxnEnd=true]" 
+=======
+>>>>>>> andres
