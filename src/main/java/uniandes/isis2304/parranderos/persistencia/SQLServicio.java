@@ -93,11 +93,10 @@ public class SQLServicio {
 	 * @param idServicio - El identificador del Servicio
 	 * @return El objeto Hotel que tiene el identificador dado
 	 */
-	public Servicios darServicioPorId (PersistenceManager pm, long idServicio) 
+	public Object darServicioPorId (PersistenceManager pm, long idServicio) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + "SERVICIOS" + " WHERE id = "+idServicio);
-		q.setResultClass(Servicios.class);
-		return (Servicios) q.executeUnique();
+		return (Object) q.executeUnique();
 	}
 
 
@@ -119,13 +118,5 @@ public class SQLServicio {
 		
 		return (Object) q.executeUnique();
 	}
-
-//DEPRECIEATED XD
-//	public long reservarServicioPorId(PersistenceManager pm, int reservado,
-//			long id) {
-//		Query q = pm.newQuery(SQL, "UPDATE " + "SERVICIOS" + " SET reservado = "+ reservado 
-//				+" WHERE id = "+id);
-//		return (long) q.executeUnique();
-//	}
 
 }

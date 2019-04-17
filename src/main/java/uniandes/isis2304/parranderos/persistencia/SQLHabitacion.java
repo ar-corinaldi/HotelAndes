@@ -95,24 +95,23 @@ public class SQLHabitacion
 		return (List<Habitaciones>) q.executeList();
 	}
 
-//Depreciated
-//	public long ocuparHabitacionPorId(PersistenceManager pm, int ocupada, long num_hab) {
-//		Query q = pm.newQuery(SQL, "UPDATE " + "HABITACIONES" + " SET ocupada= "+ ocupada 
-//				+" WHERE num_hab = "+num_hab);
-//		return (long) q.executeUnique();
-//	}
-
-
 	public List<Object> darHabitacionesDisponibles(
 			PersistenceManager pm, long tipo, int cantidad) {
 		//		SELECT *
 		//		FROM HABITACIONES 
 		//		WHERE tipo_habitacion = 5 AND ocupada=0
 		//		FETCH FIRST 30 ROWS ONLY;
-		String sql = "SELECT * FROM HABITACIONES WHERE TIPO_HABITACION = "+ tipo+ 
-				" FETCH FIRST "+cantidad+ " ROWS ONLY";
+		String sql = "SELECT * FROM HABITACIONES WHERE TIPO_HABITACION = "+ tipo +" "
+				+ "FETCH FIRST "+cantidad+ " ROWS ONLY";
 		Query q = pm.newQuery(SQL, sql);
-		
 		return (List<Object>) q.executeList();
+	}
+
+
+	public void moverUsuario(long numHab, double nuevaCuenta, long tipoHab) {
+		String sql = "UPDATE HABITACIONES ";
+		sql += "SET CUENTA_HABITACION = "+nuevaCuenta + " ";
+		sql += "WHERE num_habitacion = "+numHab; 
+		
 	}
 }
