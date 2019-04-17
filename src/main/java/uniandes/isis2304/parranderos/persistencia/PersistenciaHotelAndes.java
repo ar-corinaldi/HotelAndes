@@ -1334,10 +1334,9 @@ public class PersistenciaHotelAndes
 		double costo = ((BigDecimal) datos[3]).doubleValue();
 		int cargadoHab = ((BigDecimal)datos[4]).intValue();
 		int capacidad = ((BigDecimal)datos[5]).intValue();
-		int reservado = ((BigDecimal)datos[6]).intValue();
-		long tipoServicios = ((BigDecimal) datos [0]).longValue();
+		long tipoServicios = ((BigDecimal) datos [6]).longValue();
 
-		Servicios s = new Servicios(id, nombre, descripcion, costo, cargadoHab, capacidad, reservado, tipoServicios);
+		Servicios s = new Servicios(id, nombre, descripcion, costo, cargadoHab, capacidad,  tipoServicios);
 		return s;
 	}
 	

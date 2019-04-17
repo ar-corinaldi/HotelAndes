@@ -16,7 +16,6 @@ public interface VOServicio {
 	
 	public int getCargado_habitacion();
 	
-	public int getReservado();
 	
 	public long getTipo_servicios();
 		

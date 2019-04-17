@@ -102,7 +102,6 @@ CREATE TABLE SERVICIOS
   costo NUMBER NOT NULL,
   cargado_habitacion NUMBER NOT NULL,
   capacidad NUMBER NOT NULL,
-  reservado NUMBER NOT NULL,
   tipo_servicios NUMBER NOT NULL
 );
 

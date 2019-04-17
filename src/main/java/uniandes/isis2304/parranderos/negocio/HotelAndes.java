@@ -355,4 +355,9 @@ public class HotelAndes
 	public void registrarSalidaConvencion(long idConv) {
 		pp.darUsuariosConvencion(idConv);
 	}
+
+	public void eliminarUsuario(Long numIdentidad, String tipoDoc) {
+
+		pp.eliminarUsuarioPorId(numIdentidad, tipoDoc);		
+	}
 }

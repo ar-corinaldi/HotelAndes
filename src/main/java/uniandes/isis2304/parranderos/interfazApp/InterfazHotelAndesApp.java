@@ -447,8 +447,9 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				Object[] datos = (Object[]) object;
 				long NUM_IDENTIDAD = ((BigDecimal) datos [0]).longValue ();
 				String TIPO_DOCUMENTO = ( datos [1]).toString();
-				parranderos.cancelarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
-				parranderos.cancelarReservasServicios(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+//				parranderos.cancelarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+//				parranderos.cancelarReservasServicios(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+				parranderos.eliminarUsuario(NUM_IDENTIDAD, TIPO_DOCUMENTO);
 				System.out.println("eliminando... "+  contador ++);
 				
 			
@@ -464,6 +465,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				Long numIdentidad = Long.valueOf(numIdentidadStr);
 				parranderos.cancelarReserva(numIdentidad, TipoDoc);
 				parranderos.cancelarReservasServicios(numIdentidad, TipoDoc);
+				parranderos.eliminarUsuario(numIdentidad, TipoDoc);
+
 				System.out.println("eliminando... "+  i);
 
 			}

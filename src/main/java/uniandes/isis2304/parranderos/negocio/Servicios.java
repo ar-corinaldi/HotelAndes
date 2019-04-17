@@ -26,7 +26,6 @@ public class Servicios implements VOServicio{
 
 	private double costo;
 	
-	private int reservado;
 	
 	private long id_tipo_servicios;
 	
@@ -38,13 +37,8 @@ public class Servicios implements VOServicio{
 		this.cargado_habitacion = cargado_habitacion;
 	}
 
-	public int getReservado() {
-		return reservado;
-	}
+	
 
-	public void setReservado(int reservado) {
-		this.reservado = reservado;
-	}
 
 	public long getTipo_servicios() {
 		return id_tipo_servicios;
@@ -65,13 +59,12 @@ public class Servicios implements VOServicio{
 		descripcion = "";
 		costo = 0.0;
 		capacidad = 0;
-		reservado = 0;
 		setTipo_servicios(0);
 	}
 	
 	public Servicios(long id, String nombre,
 			String descripcion,   double costo, int cargado_habitacion, int capacidad,
-			int reservado, long tipoServicio) {
+			 long tipoServicio) {
 		super();
 		this.id = id;
 		this.cargado_habitacion = cargado_habitacion;
@@ -79,7 +72,6 @@ public class Servicios implements VOServicio{
 		this.descripcion = descripcion;
 		this.costo = costo;
 		this.capacidad = capacidad;
-		this.reservado = reservado;
 		this.id_tipo_servicios = tipoServicio;
 	}
 
@@ -133,7 +125,7 @@ public class Servicios implements VOServicio{
 		return "Servicios [id=" + id + ", cargado_habitacion="
 				+ cargado_habitacion + ", nombre=" + nombre + ", descripcion="
 				+ descripcion + ", capacidad=" + capacidad + ", costo=" + costo
-				+ ", reservado=" + reservado + ", tipo_servicios="
+				+ ", tipo_servicios="
 				+ id_tipo_servicios + "]";
 	}
 	
