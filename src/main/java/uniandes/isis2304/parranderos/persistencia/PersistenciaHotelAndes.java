@@ -35,7 +35,6 @@ import uniandes.isis2304.parranderos.negocio.ReservaServicio;
 import uniandes.isis2304.parranderos.negocio.Reservas;
 import uniandes.isis2304.parranderos.negocio.Servicios;
 import uniandes.isis2304.parranderos.negocio.TipoHabitacion;
-import uniandes.isis2304.parranderos.negocio.TipoPlanConsumo;
 import uniandes.isis2304.parranderos.negocio.TipoServicio;
 import uniandes.isis2304.parranderos.negocio.TipoUsuario;
 import uniandes.isis2304.parranderos.negocio.Usuarios;
@@ -127,7 +126,6 @@ public class PersistenciaHotelAndes
 	/**
 	 * Atributo para el acceso a la tabla TipoPlanConsumo de la base de datos
 	 */
-	private SQLTipoPlanConsumo sqlTipoPlanConsumo;
 
 	/**
 	 * Atributo para el acceso a la tabla TipoUsuario de la base de datos
@@ -183,7 +181,6 @@ public class PersistenciaHotelAndes
 		tablas.add ("RESERVAS_SERVICIOS");
 		tablas.add ("SERVICIOS");
 		tablas.add ("TIPO_HABITACIONES");
-		tablas.add ("TIPO_PLANES_DE_CONSUMO");
 		tablas.add("TIPO_SERVICIOS");
 		tablas.add ("TIPO_USUARIOS");
 		tablas.add ("USUARIOS");
@@ -270,7 +267,6 @@ public class PersistenciaHotelAndes
 		sqlReservaServicio = new SQLReservaServicio(this);
 		sqlServicio = new SQLServicio(this);
 		sqlTipoHabitacion = new SQLTipoHabitacion(this);
-		sqlTipoPlanConsumo = new SQLTipoPlanConsumo(this);		
 		sqlTipoUsuario = new SQLTipoUsuario(this);
 		sqlTipoServicio = new SQLTipoServicio(this);
 		sqlUsuario = new SQLUsuario(this);
@@ -355,32 +351,27 @@ public class PersistenciaHotelAndes
 		return tablas.get(10);
 	}
 
-	/**
-	 * @return La cadena de caracteres con el nombre de la tabla de TipoPlanConsumo de Hotelandes
-	 */
-	public String darTablaTipoPlanConsumo() {
-		return tablas.get(11);
-	}
+	
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla TipoServicio de HotelAndes
 	 */
 	public String darTablaTipoServicio(){
-		return tablas.get(12);
+		return tablas.get(11);
 	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla TipoUsuario de HotelAndes
 	 */
 	public String darTablaTipoUsuario(){
-		return tablas.get(13);
+		return tablas.get(12);
 	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla de Usuario de Hotelandes
 	 */
 	public String darTablaUsuario() {
-		return tablas.get(14);
+		return tablas.get(13);
 	}
 
 	/**
@@ -505,76 +496,15 @@ public class PersistenciaHotelAndes
 	 * @param idBebida - El identificador de la bebida - Debe haber una bebida con ese identificador
 	 * @return Un objeto GUSTAN con la información dada. Null si ocurre alguna Excepción
 	 */
-	public TipoPlanConsumo adicionarTipoPlanConsumo(long id, String nombre) 
-	{
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx=pm.currentTransaction();
-		try
-		{
-			tx.begin();
-			long tuplasInsertadas = sqlTipoPlanConsumo.adicionarTipoPlanConsumo(pm, id, nombre);
-			tx.commit();
-
-			return new TipoPlanConsumo(id, nombre);
-		}
-		catch (Exception e)
-		{
-			//        	e.printStackTrace();
-			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return null;
-		}
-		finally
-		{
-			if (tx.isActive())
-			{
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
-
+	
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla GUSTAN, dados los identificadores de bebedor y bebida
 	 * @param idBebedor - El identificador del bebedor
 	 * @param idBebida - El identificador de la bebida
 	 * @return El número de tuplas eliminadas. -1 si ocurre alguna Excepción
 	 */
-	public long eliminarTipoPlanConsumo(long id) 
-	{
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx=pm.currentTransaction();
-		try
-		{
-			tx.begin();
-			long resp = sqlTipoPlanConsumo.eliminarTipoPlanConsumoPorId(pm, id)  ;      
-			tx.commit();
-
-			return resp;
-		}
-		catch (Exception e)
-		{
-			//        	e.printStackTrace();
-			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return -1;
-		}
-		finally
-		{
-			if (tx.isActive())
-			{
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
-
-	/**
-	 * Método que consulta todas las tuplas en la tabla GUSTAN
-	 * @return La lista de objetos GUSTAN, construidos con base en las tuplas de la tabla GUSTAN
-	 */
-	public List<PlanConsumo> darTipoPlanConsumo()
-	{
-		return sqlTipoPlanConsumo.darTiposPlanConsumo(pmf.getPersistenceManager());
-	}
+	
+	
 
 	/* ****************************************************************
 	 * 			Métodos para manejar los TIPO_SERVICIO
