@@ -61,3 +61,9 @@ ORA-02291: integrity constraint (ISIS2304B101910.FK_USUARIOS_CONVENCION) violate
 16:12:32,074 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
 16:12:32,100 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
 >>>>>>> PruebMerge
+17:29:40,146 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+17:29:40,147 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+17:29:40,174 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+17:34:47,634 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+17:34:47,635 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+17:34:47,660 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD

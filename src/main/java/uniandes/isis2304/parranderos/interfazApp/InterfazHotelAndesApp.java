@@ -442,13 +442,15 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		if(cancelarTodo.equals("si"))
 		{
 			List<Object> users = 	parranderos.darUsuariosConvencion(idConvencion);
-
+			int contador = 0;
 			for (Object object : users) {
 				Object[] datos = (Object[]) object;
 				long NUM_IDENTIDAD = ((BigDecimal) datos [0]).longValue ();
 				String TIPO_DOCUMENTO = ( datos [1]).toString();
 				parranderos.cancelarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
 				parranderos.cancelarReservasServicios(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+				System.out.println("eliminando... "+  contador ++);
+				
 			
 
 			}
@@ -462,6 +464,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				Long numIdentidad = Long.valueOf(numIdentidadStr);
 				parranderos.cancelarReserva(numIdentidad, TipoDoc);
 				parranderos.cancelarReservasServicios(numIdentidad, TipoDoc);
+				System.out.println("eliminando... "+  i);
+
 			}
 		}
 	}
@@ -474,7 +478,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		System.out.println("Registrar Salida Convencion");
 		Usuarios organizador = verificarUsuario(ORGANIZADOR);
 		long idConv = Long.valueOf(JOptionPane.showInputDialog (this, "Id convencion?", "Terminar convencion", JOptionPane.QUESTION_MESSAGE));
-		Convencion c = parranderos.darConvencion(idConv);
+		Convencion c = (Convencion) parranderos.darConvencion(idConv);
 		if( c.getNum_personas() == organizador.getNum_identidad() && c.getTipo_documento_usuario().equals(organizador.getTipo_documento()))
 			parranderos.registrarSalidaConvencion(idConv);
 		else 

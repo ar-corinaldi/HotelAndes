@@ -1353,6 +1353,7 @@ public class PersistenciaHotelAndes
 	public List<Object> darUsuariosConvencion(Long idConvencion) {
 		return sqlUsuario.darUsuariosConvencion( pmf.getPersistenceManager(), idConvencion);
 	}
+	
 	public long reservarServicioPorId(int reservado, long id) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
@@ -1361,6 +1362,24 @@ public class PersistenciaHotelAndes
 			tx.begin();
 			long resp = sqlServicio.reservarServicioPorId(pm, reservado, id);
 			tx.commit();
+
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
 
 	public void cancelarReservasServicios(long numIdentidad, String tipoDocumento) {
 
