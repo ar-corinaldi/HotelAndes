@@ -1393,4 +1393,23 @@ public class PersistenciaHotelAndes
 	public void terminarMantenimientoServ(Long num_identidad, String tipo_documento, int idServ) {
 		sqlReservaServicio.terminarMantenimiento(pmf.getPersistenceManager(), num_identidad, tipo_documento, idServ);
 	}
+
+	public List<Object> buscarBuenosClientesPorConsumo() {
+
+
+		List<Object> buenos = sqlConsumo.buscarBuenosClientes(pmf.getPersistenceManager());
+		LinkedList<Object> clientes = new LinkedList<Object>();
+		for (Object object : buenos) {
+			Object[] cliente = (Object[]) object;
+			if(((BigDecimal) cliente [1]).intValue() >= 40)
+			{
+				long id = ((BigDecimal) cliente [1]).longValue();
+				String tipoDoc = ((String) cliente [2]) ;
+				Object[] rest = {id,tipoDoc};
+				clientes.add(rest);
+			}
+		}
+		return clientes;	
+	}
 }
+

@@ -2,6 +2,10 @@ package uniandes.isis2304.parranderos.persistencia;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAmount;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -12,7 +16,7 @@ import uniandes.isis2304.parranderos.negocio.Usuarios;
 
 
 public class SQLConsumo {
-	
+
 	/* ****************************************************************
 	 * 			Constantes
 	 *****************************************************************/
@@ -21,7 +25,7 @@ public class SQLConsumo {
 	 * Se renombra ac� para facilitar la escritura de las sentencias
 	 */
 	private final static String SQL = PersistenciaHotelAndes.SQL;
-	
+
 	/* ****************************************************************
 	 * 			Atributos
 	 *****************************************************************/
@@ -30,7 +34,7 @@ public class SQLConsumo {
 	 */
 	private PersistenciaHotelAndes pp;
 
-	
+
 
 	/* ****************************************************************
 	 * 			M�todos
@@ -43,7 +47,7 @@ public class SQLConsumo {
 	public SQLConsumo(PersistenciaHotelAndes pp) {
 		this.pp = pp;
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para adicionar un Consumo a la base de datos de HotelAndes
 	 * @param pm - El manejador de persistencia
@@ -59,14 +63,14 @@ public class SQLConsumo {
 		String fechaTS = "TO_TIMESTAMP('"+fecha.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 
 		Query q = pm.newQuery(SQL, "INSERT INTO " +  "CONSUMOS" + "(id, fecha, id_usuario, tipo_documento_usuario, id_producto, id_habitacion) values ("+ id +", "
-        		+ fechaTS+", "
-        		+ id_usuario +", '"
-        		+ tipo_documento_usuario+"', "
-        		+ id_producto+", "
-        		+ id_habitacion+")");
-        return (long) q.executeUnique();
+				+ fechaTS+", "
+				+ id_usuario +", '"
+				+ tipo_documento_usuario+"', "
+				+ id_producto+", "
+				+ id_habitacion+")");
+		return (long) q.executeUnique();
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para eliminar UN Consumo de la base de datos de HotelAndes, por su identificador
 	 * @param pm - El manejador de persistencia
@@ -75,11 +79,11 @@ public class SQLConsumo {
 	 */
 	public long eliminarConsumoPorId (PersistenceManager pm, long idConsumo)
 	{
-        Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaConsumo() + " WHERE id = ?");
-        q.setParameters(idConsumo);
-        return (long) q.executeUnique();
+		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaConsumo() + " WHERE id = ?");
+		q.setParameters(idConsumo);
+		return (long) q.executeUnique();
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para encontrar la informaci�n de UN Consumo de la 
 	 * base de datos de HotelAndes, por su identificador
@@ -94,7 +98,7 @@ public class SQLConsumo {
 		q.setParameters(idConsumo);
 		return (Consumo) q.executeUnique();
 	}
-	
+
 	public List<Consumo> darConsumos(PersistenceManager pm){
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaConsumo());
 		q.setResultClass(Consumo.class);
@@ -107,9 +111,27 @@ public class SQLConsumo {
 		String sql = "SELECT * "
 				+ "FROM CONSUMOS "
 				+ "WHERE id_usuario = "+user.getNum_identidad()+ " AND tipo_documento_usuario = '"+user.getTipo_documento() +"'";
-        
+
 		Query q = pm.newQuery(SQL, sql);
 		System.out.println(sql);
 		return q.executeList();
+	}
+
+	public List<Object> buscarBuenosClientes(PersistenceManager pm) {
+
+		String fecha = LocalDate.now().minusYears(1).toString();
+		String fechaTS = "TO_TIMESTAMP('"+fecha+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+
+
+		String sql = "Select sum(precio) as suma, cons.id_usuario, cons.tipo_documento_usuario"
+				+ " from consumos cons inner join productos  prod "
+				+ " on prod.id = cons.id_producto"
+				+ " where cons.fecha > "+fechaTS 
+				+ " group by cons.id_usuario, cons.tipo_documento_usuario ";
+
+		Query q = pm.newQuery(SQL, sql);
+
+		return q.executeList();
+
 	}
 }

@@ -54,8 +54,13 @@
 				{
 					"label": "Registrar Consumo",
 					"event": "registrarConvencion"
+				},		
+				{
+					"label": "Buenos Clientes",
+					"event": "buenosClientes"
 				}
 			]
+			
 		},	
 		{ "menuTitle": "Organizador",
 		  "options":

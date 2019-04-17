@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
@@ -564,12 +565,13 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 	public void terminarMantenimiento()
 	{
+
 		Usuarios administrador = verificarUsuario(ADMINISTRADOR);
 		String datos = JOptionPane.showInputDialog (this, "Terminar mantenimiento de que habitaciones o servicios, ingrese los datos de la siguiente manera: \n H201, (para las habitaciones) S1(para los servicios) (con coma y espacio entre los datos) ", "Terminar mantenimiento", JOptionPane.QUESTION_MESSAGE);
 		String[] arreglo = datos.split(", ");
 		for (int i = 0; i < arreglo.length; i++) {
 			String actual = arreglo[i];
-			
+
 			if(actual.contains("H"))
 			{
 				String numHabStr = actual.substring(1);
@@ -578,13 +580,43 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			}
 			else
 			{
-				
+
 				String idServSTR = actual.substring(1);
 				int idServ = Integer.valueOf(idServSTR);
 				parranderos.terminarMantenimientoServ(administrador.getNum_identidad(), administrador.getTipo_documento(), idServ);
 			}
 		}
 	}
+
+	public void buenosClientes()
+	{
+		try 
+		{
+			System.out.println("buscando buenos clientes...");
+			
+			for (Object id : parranderos.buscarBuenosClientesPorConsumo()) 
+			{
+				Object[] cosa = (Object[])id;
+
+				Usuarios bueno = parranderos.darUsuario(((Long)cosa[0]), (String)cosa[1]);
+				System.out.println("usuario bueno :");
+				System.out.println(bueno);
+			}
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+
+
+
+
+
+
+
+
 	/* ****************************************************************
 	 * 			Métodos administrativos
 	 *****************************************************************/
@@ -837,6 +869,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			e.printStackTrace();
 		} 
 	}
+
+
 
 	/* ****************************************************************
 	 * 			Programa principal

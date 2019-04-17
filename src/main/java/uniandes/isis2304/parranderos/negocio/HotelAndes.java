@@ -395,4 +395,9 @@ public class HotelAndes
 		pp.terminarMantenimientoServ(num_identidad, tipo_documento, idServ);
 		
 	}
+
+	public List<Object> buscarBuenosClientesPorConsumo() {
+		return  pp.buscarBuenosClientesPorConsumo();
+		
+	}
 }
