@@ -31,6 +31,7 @@ import uniandes.isis2304.parranderos.negocio.Consumo;
 import uniandes.isis2304.parranderos.negocio.Convencion;
 import uniandes.isis2304.parranderos.negocio.Habitaciones;
 import uniandes.isis2304.parranderos.negocio.PlanConsumo;
+import uniandes.isis2304.parranderos.negocio.Producto;
 import uniandes.isis2304.parranderos.negocio.ReservaServicio;
 import uniandes.isis2304.parranderos.negocio.Reservas;
 import uniandes.isis2304.parranderos.negocio.Servicios;
@@ -156,6 +157,7 @@ public class PersistenciaHotelAndes
 
 	private SQLReservaServicio sqlReservaServicio;
 
+	private SQLProducto sqlProducto;
 	/* ****************************************************************
 	 * 			Métodos del MANEJADOR DE PERSISTENCIA
 	 *****************************************************************/
@@ -270,7 +272,7 @@ public class PersistenciaHotelAndes
 		sqlTipoUsuario = new SQLTipoUsuario(this);
 		sqlTipoServicio = new SQLTipoServicio(this);
 		sqlUsuario = new SQLUsuario(this);
-
+		sqlProducto = new SQLProducto(this);
 		sqlUtil = new SQLUtil(this);
 	}
 
@@ -793,7 +795,7 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion) 
+	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion, double consumo) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
@@ -801,6 +803,7 @@ public class PersistenciaHotelAndes
 		{
 			tx.begin();            
 			long tuplasInsertadas = sqlConsumo.adicionarConsumo(pm, id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion);
+			sqlHabitacion.agregarConsumoHabitacion(pm, id_habitacion, consumo);
 			tx.commit();
 
 			log.trace ("insercionconsumo: " + id + ": " + tuplasInsertadas + " tuplas insertadas");
@@ -936,6 +939,38 @@ public class PersistenciaHotelAndes
 		{
 			tx.begin();
 			long resp = sqlUsuario.eliminarUsuarioPorId (pm, id, tipoDoc);
+			tx.commit();
+
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
+	public long eliminarUsuarios ( List<Usuarios> lu ) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			long resp = 0;
+			tx.begin();
+			for (Usuarios user : lu) {
+				resp += sqlUsuario.eliminarUsuarioPorId (pm, user.getNum_identidad(), user.getTipo_documento());
+
+			}
 			tx.commit();
 
 			return resp;
@@ -1262,7 +1297,7 @@ public class PersistenciaHotelAndes
 		sqlReserva.eliminarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
 	}
 
-	public List<Object> darUsuariosConvencion(Long idConvencion) {
+	public List<Usuarios> darUsuariosConvencion(Long idConvencion) {
 		return sqlUsuario.darUsuariosConvencion( pmf.getPersistenceManager(), idConvencion);
 	}
 
@@ -1333,8 +1368,8 @@ public class PersistenciaHotelAndes
 		{
 			long resp = 0;
 			tx.begin();
-			sqlHabitacion.moverUsuario(nueva.getNum_hab(), anterior.getCuenta_habitacion(), nueva.getTipo_habitacion());
-			sqlHabitacion.moverUsuario(anterior.getNum_hab(), 0.0, anterior.getTipo_habitacion());
+			sqlHabitacion.moverUsuario(pm, nueva.getNum_hab(), anterior.getCuenta_habitacion(), nueva.getTipo_habitacion());
+			sqlHabitacion.moverUsuario(pm, anterior.getNum_hab(), 0.0, anterior.getTipo_habitacion());
 			tx.commit();
 
 			return;
@@ -1385,6 +1420,35 @@ public class PersistenciaHotelAndes
 		}
 	}
 
+	public void registrarSalidaReserva(Long num_identidad,
+			String tipo_documento, Timestamp salida, long idRes) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			sqlReserva.registrarLlegadaReserva(pm, num_identidad, tipo_documento, salida, idRes);
+			System.out.println("Reserva con id: "+idRes+" ha sido editada");
+			tx.commit();
+
+			return;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}		
+	}
+
 	public void terminarMantenimientoHab(Long num_identidad, String tipo_documento, int numHab) {
 
 		sqlReserva.terminarMantenimiento(pmf.getPersistenceManager(), num_identidad, tipo_documento, numHab);
@@ -1393,6 +1457,49 @@ public class PersistenciaHotelAndes
 	public void terminarMantenimientoServ(Long num_identidad, String tipo_documento, int idServ) {
 		sqlReservaServicio.terminarMantenimiento(pmf.getPersistenceManager(), num_identidad, tipo_documento, idServ);
 	}
+
+	public Producto darProductoPorId(long idProd) {
+
+		return sqlProducto.darProductoPorId(pmf.getPersistenceManager(), idProd);
+	}
+
+	public void registrarSalidaUsuarios(List<Usuarios> lu) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			for (Usuarios user : lu) {
+				System.out.println();
+				sqlReserva.registrarSalidaReserva(pm, user.getNum_identidad(), user.getTipo_documento(), new Timestamp(System.currentTimeMillis()), user.getNum_identidad());
+				Reservas r = darReservaPorId(user.getNum_identidad());
+				sqlHabitacion.agregarConsumoHabitacion(pm, r.getId_habitacion(), 0.0);
+			}
+			tx.commit();
+			System.out.println("Se registra con exito la salida de todos los usuarios");
+
+			return;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}		
+
+	}
+
+
+
+
 
 	public List<Object> buscarBuenosClientesPorConsumo() {
 

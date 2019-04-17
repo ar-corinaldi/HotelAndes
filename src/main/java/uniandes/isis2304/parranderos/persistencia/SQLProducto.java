@@ -1,5 +1,6 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -80,10 +81,19 @@ public class SQLProducto {
 	 */
 	public Producto darProductoPorId (PersistenceManager pm, long idProducto) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaProducto () + " WHERE id = ?");
-		q.setResultClass(Producto.class);
-		q.setParameters(idProducto);
-		return (Producto) q.executeUnique();
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "PRODUCTOS" + " WHERE id = "+idProducto);
+		Object o =q.executeUnique();
+		if( o == null ) return null;
+		else{
+			
+			Object[] datos = (Object[]) o;
+			String nombre = datos[1].toString();
+			String descripcion = datos[2]==null? null:datos[2].toString();
+			double precio = ((BigDecimal) datos[3]).doubleValue();
+			long idServ= ((BigDecimal) datos[4]).longValue();
+			return  new Producto(idProducto, nombre, descripcion, precio, idServ);
+		}
+			
 	}
 	
 	/**

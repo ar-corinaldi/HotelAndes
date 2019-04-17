@@ -108,10 +108,21 @@ public class SQLHabitacion
 	}
 
 
-	public void moverUsuario(long numHab, double nuevaCuenta, long tipoHab) {
+	public void moverUsuario(PersistenceManager pm, long numHab, double nuevaCuenta, long tipoHab) {
 		String sql = "UPDATE HABITACIONES ";
 		sql += "SET CUENTA_HABITACION = "+nuevaCuenta + " ";
 		sql += "WHERE num_habitacion = "+numHab; 
-		
+		Query q = pm.newQuery(SQL, sql);
+		q.executeUnique();
+	}
+
+
+	public void agregarConsumoHabitacion(PersistenceManager pm, long idHab,
+			double consumo) {
+		String sql = "UPDATE HABITACIONES ";
+		sql += "SET CUENTA_HABITACION = "+consumo + " ";
+		sql += "WHERE num_hab = "+idHab; 
+		Query q = pm.newQuery(SQL, sql);
+		q.executeUnique();
 	}
 }

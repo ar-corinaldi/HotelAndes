@@ -18,6 +18,8 @@ public class Producto implements VOProducto{
 	
 	private String descripcion;
 	
+	private long id_servicio;
+	
 	private Servicios servicio;
 	
 	/******************************************************************************
@@ -32,12 +34,12 @@ public class Producto implements VOProducto{
 		servicio = null;
 	}
 	
-	public Producto(long id, String nombre, double costo, String descripcion, Servicios servicio) {
+	public Producto(long id, String nombre,  String descripcion, double costo, long idServ) {
 		this.id = id;
 		this.nombre = nombre;
 		this.costo = costo;
 		this.descripcion = descripcion;
-		this.servicio = servicio;
+		setId_servicio(idServ);
 	}
 	
 	/******************************************************************************
@@ -89,6 +91,14 @@ public class Producto implements VOProducto{
 		return "Producto [id=" + id + ", nombre=" + nombre + ", costo=" + costo
 				+ ", descripcion=" + descripcion + ", servicios=" + servicio
 				+ "]";
+	}
+
+	public long getId_servicio() {
+		return id_servicio;
+	}
+
+	public void setId_servicio(long id_servicio) {
+		this.id_servicio = id_servicio;
 	}
 
 }

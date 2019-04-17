@@ -1,5 +1,8 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -7,6 +10,8 @@ import javax.jdo.Query;
 import javax.swing.JOptionPane;
 
 import uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp;
+import uniandes.isis2304.parranderos.negocio.Habitaciones;
+import uniandes.isis2304.parranderos.negocio.Reservas;
 import uniandes.isis2304.parranderos.negocio.Usuarios;
 
 public class SQLUsuario {
@@ -112,11 +117,32 @@ public class SQLUsuario {
 		return (List<Usuarios>) q.executeList();
 	}
 	
-	public List<Object> darUsuariosConvencion(PersistenceManager pm, Long idConvencion) {
+	public List<Usuarios> darUsuariosConvencion(PersistenceManager pm, Long idConvencion) {
 		String sql = "SELECT * FROM USUARIOS WHERE ID_CONVENCION = " + idConvencion;
 		Query q = pm.newQuery(SQL, sql);
+		System.out.println(sql);
+		List<Object> list= (List<Object>) q.executeList();
+		List<Usuarios> listU = new LinkedList<Usuarios>();
+		for (Object o : list) {
+			Object[] datos = (Object[]) o;
+			Usuarios user= null;
+			if( o!=null ){
+				long numIden = ((BigDecimal) datos[0]).longValue();
+				String tipoDoc = datos[1].toString();
+				String nombre= datos[2].toString();
+				String apellido = datos[3].toString();
+
+				long tipoUsuario= ((BigDecimal) datos[4]).longValue();
+				long idConven= ((BigDecimal) datos[5]).longValue();
+
+				user = new Usuarios(numIden, tipoDoc, nombre, apellido, tipoUsuario, idConven);
+				System.out.println(user);
+				listU.add(user);
+			}
+		}
 		
-		return q.executeList();
+		System.out.println("Sirven las listas?: "+listU);
+		return listU;
 	}
 
 		public Object indiceUltimoUsuario(PersistenceManager pm){
