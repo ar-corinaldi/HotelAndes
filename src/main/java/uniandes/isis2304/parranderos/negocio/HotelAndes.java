@@ -190,22 +190,19 @@ public class HotelAndes
 	 *****************************************************************/
 	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion, Usuarios user) throws Exception
 	{
-		Consumo con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion);
-		System.out.println(con);
-		if( con != null ){
-			System.out.println("Entra");
-			user.getConsumos().add(con);
-			System.out.println(id_usuario);
-			System.out.println(tipo_documento_usuario);
-			List<Consumo> l = pp.adicionarConsumoUsuario(con, user);
-			//			for (Consumo consumo : l) {
-			//				System.out.println(l);
-			//			}
+		Producto prod = pp.darProductoPorId(idProd);
+		Consumo con = null;
+		System.out.println(prod);
+		if( prod!= null ){
+			Habitaciones hab = pp.darHabitacionPorId(id_habitacion);
+			double nuevaCuenta = hab.getCuenta_habitacion() + prod.getCosto();
+			con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion, nuevaCuenta);
+			System.out.println(con);
+			System.out.println("Cambio de la cuenta de la hab: "+hab.getNum_hab() + " cuenta: "+hab.getCuenta_habitacion());
 		}
 		else{
-			throw new Exception( "O el usuario no existe, o el id del consumo es nulo, o ya estaba reservado el servicio." );
+			throw new Exception("Producto "+ idProd +" no existe");
 		}
-
 		return con;
 	}
 
@@ -342,17 +339,17 @@ public class HotelAndes
 	public void cancelarConvencion(Long idConvencion) {
 		pp.cancelarConvencion(idConvencion);
 	}
-	
+
 	public void crearMantenimiento(int num, Usuarios admin, Timestamp entrada,
 			Timestamp salida, long id) throws Exception {
 		if( num==1 ){
 			Servicios s = pp.darServicioPorId(id);
-			
+
 		}
 		else if( num==2 ){
 			Habitaciones h = pp.darHabitacionPorId(id);
 			Reservas r = pp.darReservaXFechasYNumHab(entrada, salida, id);
-			
+
 			if( r==null ){
 				adicionarReserva(indiceUltimoUsuario()+1, 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
 			}
@@ -365,7 +362,7 @@ public class HotelAndes
 			}
 		}
 	}
-	
+
 	public void moverUsuario( Habitaciones h ) throws Exception{
 		List<Habitaciones> list = verificarHabitacionesDisponibles(h.getTipo_habitacion(), 1);
 		long i = h.getTipo_habitacion();
@@ -385,6 +382,12 @@ public class HotelAndes
 		pp.registrarLlegadaReserva(idUser, tipoDoc, ingreso, idRes);
 	}
 
+	public void registrarSalidaReserva(Long num_identidad,
+			String tipo_documento, Timestamp salida, long idRes) {
+		pp.registrarSalidaReserva(num_identidad, tipo_documento, salida, idRes);
+
+	}
+
 	public void terminarMantenimientoHab(Long num_identidad, String tipo_documento, int numHab) {
 
 		pp.terminarMantenimientoHab(num_identidad, tipo_documento, numHab);
@@ -393,6 +396,7 @@ public class HotelAndes
 	public void terminarMantenimientoServ(Long num_identidad, String tipo_documento, int idServ) {
 
 		pp.terminarMantenimientoServ(num_identidad, tipo_documento, idServ);
-		
+
 	}
+
 }

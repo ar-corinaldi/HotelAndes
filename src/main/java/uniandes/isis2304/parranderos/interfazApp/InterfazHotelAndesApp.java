@@ -373,6 +373,25 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 
 	}
+	
+	public void adicionarConsumo() throws Exception{
+		try{
+			System.out.println("Adicionar Consumo");
+			Usuarios empleado = verificarUsuario(EMPLEADO);
+			Usuarios cliente = verificarUsuario(CLIENTE);
+			long id = Long.valueOf(JOptionPane.showInputDialog (this, "id del consumo?", "Adicionar consumo", JOptionPane.OK_OPTION));
+			Timestamp fecha = new Timestamp(System.currentTimeMillis());
+			long idProducto = Long.valueOf(JOptionPane.showInputDialog(this, "id del producto?", "Adicionar servicio", JOptionPane.OK_OPTION));
+			long idHab = Long.valueOf(JOptionPane.showInputDialog(this, "numero habitacion?", "Adicionar servicio", JOptionPane.OK_OPTION));
+			parranderos.adicionarConsumo(id, fecha, cliente.getNum_identidad(), cliente.getTipo_documento(), idProducto, idHab, cliente);
+
+		}
+		catch( Exception e ){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
+		
+	}
 
 	public void registrarLlegadaCliente(){
 		System.out.println("Registrar Llegada Cliente");
@@ -381,6 +400,14 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		long idRes = Long.valueOf(JOptionPane.showInputDialog(this, "Id de la reserva?", "Llegada Cliente", JOptionPane.OK_OPTION));
 		parranderos.registrarLlegadaReserva(cliente.getNum_identidad(), cliente.getTipo_documento(), new Timestamp(System.currentTimeMillis()), idRes);
 
+	}
+
+	public void registrarSalidaCliente(){
+		System.out.println("Registrar Salida Cliente");
+		Usuarios recepcionista = verificarUsuario(RECEPCIONISTA);
+		Usuarios cliente = verificarUsuario(CLIENTE);
+		long idRes = Long.valueOf(JOptionPane.showInputDialog(this, "Id de la reserva?", "Llegada Cliente", JOptionPane.OK_OPTION));
+		parranderos.registrarSalidaReserva(cliente.getNum_identidad(), cliente.getTipo_documento(), new Timestamp(System.currentTimeMillis()), idRes);
 	}
 
 	public void registrarConsumoCliente(){
@@ -569,7 +596,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		String[] arreglo = datos.split(", ");
 		for (int i = 0; i < arreglo.length; i++) {
 			String actual = arreglo[i];
-			
+
 			if(actual.contains("H"))
 			{
 				String numHabStr = actual.substring(1);
@@ -578,7 +605,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			}
 			else
 			{
-				
+
 				String idServSTR = actual.substring(1);
 				int idServ = Integer.valueOf(idServSTR);
 				parranderos.terminarMantenimientoServ(administrador.getNum_identidad(), administrador.getTipo_documento(), idServ);

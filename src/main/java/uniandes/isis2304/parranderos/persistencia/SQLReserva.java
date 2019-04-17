@@ -195,11 +195,11 @@ public class SQLReserva {
 		
 	}
 
-	public void registrarLlegadaReserva(PersistenceManager pm, long idUsuario, String tipoDoc, Timestamp ingreso, long idRes) {
-		String ingresoTS = "TO_TIMESTAMP('"+ingreso.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+	public void registrarLlegadaReserva(PersistenceManager pm, long idUsuario, String tipoDoc, Timestamp salida, long idRes) {
+		String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 
 		String sql = "UPDATE RESERVAS ";
-		sql += "SET check_in = "+ingresoTS+" ";
+		sql += "SET check_out = "+salidaTS+" ";
 		sql += "WHERE id = "+idRes+" AND id_usuario = "+idUsuario+ " AND tipo_documento_usuario = '"+tipoDoc+"'";
 		System.out.println(sql);
 		Query q = pm.newQuery(SQL, sql);
