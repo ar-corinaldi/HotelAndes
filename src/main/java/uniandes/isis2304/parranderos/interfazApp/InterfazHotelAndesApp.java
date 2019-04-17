@@ -426,26 +426,26 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				{
 					JOptionPane.showMessageDialog(this, "No hay suficientes habitaciones o servicios", "Error", JOptionPane.WARNING_MESSAGE);
 				} else{
-					
+
 					Convencion conv = parranderos.adicionarConvencion(id, nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
 
-					
+
 					for(int i=0; i<cantidadPersonas-1; i++){
 						Usuarios user = new Usuarios((long) (indice+i+1), "cedula", nombre, nombre, 5, id);
 						parranderos.adicionarUsuario(user);
 						parranderos.adicionarReserva((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
-//						listaUsuarios.add(user)
-//						} 
-//						parranderos.adicionarUsuarios(listaUsuarios);
-//						parranderos.adicionarReservas((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
-//						
+						//						listaUsuarios.add(user)
+						//						} 
+						//						parranderos.adicionarUsuarios(listaUsuarios);
+						//						parranderos.adicionarReservas((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
+						//						
 					} 
 					for(int j=0; j<tiposHab; j++){
 						parranderos.reservarServicios(listaReservaServicio, tiposServ[j]);
 					}
-					
+
 				}
-				
+
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -495,11 +495,11 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 	public void registrarLlegadaConvencion(){
 		System.out.println("Registrar Llegada Convencion");
-		
+
 	}
-	
-	
-	
+
+
+
 
 	public void registrarSalidaConvencion(){
 		System.out.println("Registrar Salida Convencion");
@@ -528,9 +528,9 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		}
 		return user;
 	}
-	
+
 	public void crearMantenimiento(){
-		
+
 		Usuarios admin = verificarUsuario(ADMINISTRADOR);
 		int num = Integer.parseInt(JOptionPane.showInputDialog(this, "1. Servicio\n2. Habitacion", "Mantenimiento", JOptionPane.OK_OPTION));
 		long servOHab = -1;
@@ -541,7 +541,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		}
 		String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Mantenimiento", JOptionPane.OK_OPTION);
 		String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2019-09-23)", "Mantenimiento", JOptionPane.OK_OPTION);
-		
+
 		Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
 		Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
 		if( servOHab==-1 ){
@@ -554,23 +554,31 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			}
 		}
 	}
-	
-	
+
+
+
+
 	public void terminarMantenimiento()
 	{
-		Usuarios organizador = verificarUsuario(ORGANIZADOR);
-		String bul = JOptionPane.showInputDialog (this, "Terminar mantenimiento de habitacion o servicio?", "Terminar mantenimiento", JOptionPane.QUESTION_MESSAGE);
-		if(bul.equals("habitacion"))
-		{
-			String numHabStr = JOptionPane.showInputDialog (this, "Dar numero de habitacion", "Terminar mantenimiento", JOptionPane.QUESTION_MESSAGE);
-			int numHab = Integer.valueOf(numHabStr);
-			parranderos.terminarMantenimientoHab(organizador.getNum_identidad(), organizador.getTipo_documento(), numHab);
-		}
-		else
-		{
-			String idServSTR = JOptionPane.showInputDialog (this, "Dar id de servicio", "Terminar mantenimiento", JOptionPane.QUESTION_MESSAGE);
-			int idServ = Integer.valueOf(idServSTR);
-			parranderos.terminarMantenimientoServ(organizador.getNum_identidad(), organizador.getTipo_documento(), idServ);
+		Usuarios administrador = verificarUsuario(ADMINISTRADOR);
+		String datos = JOptionPane.showInputDialog (this, "Terminar mantenimiento de que habitaciones o servicios, ingrese los datos de la siguiente manera: \n H201, (para las habitaciones) S1(para los servicios) (con coma y espacio entre los datos) ", "Terminar mantenimiento", JOptionPane.QUESTION_MESSAGE);
+		String[] arreglo = datos.split(", ");
+		for (int i = 0; i < arreglo.length; i++) {
+			String actual = arreglo[i];
+			
+			if(actual.contains("H"))
+			{
+				String numHabStr = actual.substring(1);
+				int numHab = Integer.valueOf(numHabStr);
+				parranderos.terminarMantenimientoHab(administrador.getNum_identidad(), administrador.getTipo_documento(), numHab);
+			}
+			else
+			{
+				
+				String idServSTR = actual.substring(1);
+				int idServ = Integer.valueOf(idServSTR);
+				parranderos.terminarMantenimientoServ(administrador.getNum_identidad(), administrador.getTipo_documento(), idServ);
+			}
 		}
 	}
 	/* ****************************************************************
