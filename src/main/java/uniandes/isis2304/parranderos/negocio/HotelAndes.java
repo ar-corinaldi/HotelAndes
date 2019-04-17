@@ -176,22 +176,8 @@ public class HotelAndes
 	 *****************************************************************/
 	public Reservas adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user, long idPlanCons) throws Exception{
 		Habitaciones habitacion = pp.darHabitacionPorId(numHab);
-		if( habitacion.getOcupada() == Habitaciones.SE_OCUPA )
-			throw new Exception( "Habitacion " + habitacion.getNum_hab() +" ya esta ocupada" );
-		else
-			habitacion.setOcupada(Habitaciones.SE_OCUPA);
-
 		Reservas reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion, idPlanCons);
-		if( reserva!= null ){
-			System.out.println("Habitacion desocupada");
-			pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, habitacion.getNum_hab());
-			System.out.println("Habitacion ocupada");
-			System.out.print("Crea la reserva: ");
-			System.out.println(reserva);
-
-			System.out.println(pp.darReservaPorId(reserva.getId()));
-		}
-		else throw new Exception("Reserva nula: "+reserva);
+		System.out.println(pp.darReservaPorId(reserva.getId()));
 		return reserva;
 	}
 
@@ -211,9 +197,9 @@ public class HotelAndes
 			System.out.println(id_usuario);
 			System.out.println(tipo_documento_usuario);
 			List<Consumo> l = pp.adicionarConsumoUsuario(con, user);
-//			for (Consumo consumo : l) {
-//				System.out.println(l);
-//			}
+			//			for (Consumo consumo : l) {
+			//				System.out.println(l);
+			//			}
 		}
 		else{
 			throw new Exception( "O el usuario no existe, o el id del consumo es nulo, o ya estaba reservado el servicio." );
@@ -239,7 +225,7 @@ public class HotelAndes
 	public Usuarios adicionarUsuario(Usuarios user)
 	{
 		Usuarios userDB = pp.adicionarUsuario(user.getNum_identidad(), user.getTipo_documento(), user.getNombre(), user.getApellido(), user.getTipo_usuario(), user.getId_convencion());
-		System.out.println(userDB);
+		System.out.println("Adiciona usuario: "+userDB.getNum_identidad());
 		return userDB;
 	}
 
@@ -304,24 +290,18 @@ public class HotelAndes
 	}
 
 	public List<Habitaciones> verificarHabitacionesDisponibles(long tipo, int cantidad) {
-		boolean rta = false;
 		List<Habitaciones> l = pp.verificarHabitacionesDisponibles(tipo, cantidad);
-		System.out.println("Habitaciones Disponibles: "+l.size());
-		rta = l.size() == cantidad;
 		return l;
 	}
 
-	public Servicios verificarServiciosDisponibles(long tipo, int cantidad) {
-		Servicios s = pp.verificarServiciosDisponibles(tipo, cantidad);
-		boolean rta = s.getCapacidad() >= cantidad;
-		System.out.println("Capacidad del servicio: "+ s.getCapacidad());
-		return s;
+	public boolean verificarServiciosDisponibles(long tipo, int cantidad, Timestamp entrada, Timestamp salida) {
+		return pp.verificarServiciosDisponibles(tipo, cantidad, entrada, salida);
 	}
-	
+
 	public Object darConvencion(long idConvencion) {
 		Object conv = pp.darConvencion(idConvencion);
 		return  conv;
-		
+
 	}
 
 	public void cancelarReserva(long NumDocumento, String TipoDocumento) {
@@ -337,19 +317,8 @@ public class HotelAndes
 		pp.cancelarReservasServicios(numIdentidad, tipoDocumento);		
 	}
 
-	public void reservarHabitaciones(List<Habitaciones> l) {
-		for (Habitaciones h : l) {
-			pp.ocuparHabitacionPorId(Habitaciones.SE_OCUPA, h.getNum_hab());
-			System.out.println("Se ocupo la habitacion con numero: "+h.getNum_hab());
-		}
-	}
-
-	public void reservarServicios(List<Servicios> ls) {
-		for (Servicios s : ls) {
-			
-			pp.reservarServicioPorId(Servicios.SI_RESERVADO, s.getId());
-			System.out.println("Se reserva el servicio: "+s.getId());
-		}
+	public void reservarServicios(List<ReservaServicio> lrs, long idServ) {
+		pp.reservarServicioPorId(lrs, idServ);
 	}
 
 	public void registrarSalidaConvencion(long idConv) {
@@ -359,5 +328,13 @@ public class HotelAndes
 	public void eliminarUsuario(Long numIdentidad, String tipoDoc) {
 
 		pp.eliminarUsuarioPorId(numIdentidad, tipoDoc);		
+	}
+
+	public List<Habitaciones> darHabitacionesDisponibles(int cantidad, long tipoHab, Timestamp entrada, Timestamp salida){
+		return pp.darHabitacionesDisponibles(cantidad, tipoHab, entrada, salida);
+	}
+
+	public long indiceUltimoUsuario() {
+		return pp.indiceUltimoUsuario();
 	}
 }

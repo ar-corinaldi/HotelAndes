@@ -98,13 +98,12 @@ public class SQLUsuario {
 	 * @param num_identidad - El numero de identidad del usuario	 
 	 * @return El objeto Usuario que tiene el identificador dado
 	 */
-	public Usuarios darUsuarioPorId (PersistenceManager pm, long num_identidad, String tipo_documento) 
+	public Object darUsuarioPorId (PersistenceManager pm, long num_identidad, String tipo_documento) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + "USUARIOS" + " WHERE num_identidad = "+num_identidad 
 				+ " AND tipo_documento = '"+tipo_documento+"'");
-		q.setResultClass(Usuarios.class);
 		Object o = q.executeUnique();
-		return (Usuarios) o;
+		return (Object) o;
 	}
 
 	public List<Usuarios> darUsuarios(PersistenceManager pm){
@@ -119,4 +118,15 @@ public class SQLUsuario {
 		
 		return q.executeList();
 	}
+
+		public Object indiceUltimoUsuario(PersistenceManager pm){
+//			SELECT max(num_identidad)
+//			FROM USUARIOS 
+//			WHERE num_identidad <= 1000
+			String sql = "SELECT MAX(num_identidad) FROM USUARIOS WHERE num_identidad <= 1000";
+			Query q = pm.newQuery(SQL, sql);
+			Object o = q.executeUnique();
+			
+			return o;
+		}
 }

@@ -75,8 +75,8 @@ public class SQLReservaServicio {
 	 */
 	public long eliminarReservaServicioPorId (PersistenceManager pm, long idReservaServicio)
 	{
-        Query q = pm.newQuery(SQL, "DELETE FROM " + "RESERVAS_SERVICIOS"+ " WHERE id = " + idReservaServicio);
-        return (long) q.executeUnique();
+		Query q = pm.newQuery(SQL, "DELETE FROM " + "RESERVAS_SERVICIOS"+ " WHERE id = " + idReservaServicio);
+		return (long) q.executeUnique();
 	}
 
 	/**
@@ -103,7 +103,22 @@ public class SQLReservaServicio {
 			String tipoDocumento) {
 		String sql = "DELETE FROM RESERVAS_SERVICIOS WHERE id_usuario = "+ numIdentidad + "	AND tipo_documento_usuario = '" + tipoDocumento+ "'";
 		Query q = pm.newQuery(SQL,sql);
-        return (long) q.executeUnique();
+		return (long) q.executeUnique();
 
+	}
+
+	public Object verificarDisponibilidad(PersistenceManager pm, long tipo, int cantidad,
+			Timestamp entrada, Timestamp salida) {
+		String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+
+		String sql =  "SELECT ser.id, ser.nombre, ser.descripcion, ser.costo, ser.cargado_habitacion, ser.capacidad, ser.tipo_servicios ";
+		sql += "FROM  RESERVAS_SERVICIOS, SERVICIOS ser ";
+		sql += "WHERE RESERVAS_SERVICIOS.fecha_inicial BETWEEN "+entradaTS+ " AND "+salidaTS+" AND ser.tipo_servicios = "+tipo + " ";
+		sql += "FETCH FIRST 1 ROW ONLY";		
+		System.out.println(sql);
+		Query q = pm.newQuery(SQL, sql);
+
+		return (Object) q.executeUnique();
 	}
 }

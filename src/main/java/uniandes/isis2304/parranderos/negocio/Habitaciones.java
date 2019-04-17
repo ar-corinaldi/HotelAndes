@@ -36,6 +36,12 @@ public class Habitaciones implements VOHabitacion{
 		this.ocupada = ocupada;
 	}
 	
+	public Habitaciones( long num_hab, double cuenta_habitacion, long tipo_habitacion) {
+		this.tipo_habitacion = tipo_habitacion;
+		this.cuenta_habitacion = cuenta_habitacion;
+		this.num_hab = num_hab;
+	}
+	
 	public Habitaciones( String num_hab, String ocupada, String cuenta_habitacion, String tipo_habitacion ){
 		this.tipo_habitacion = Long.valueOf(tipo_habitacion);
 		this.cuenta_habitacion = Double.valueOf(cuenta_habitacion);

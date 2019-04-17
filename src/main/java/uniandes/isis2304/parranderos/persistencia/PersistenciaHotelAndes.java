@@ -791,33 +791,6 @@ public class PersistenciaHotelAndes
 		}
 	}
 
-	public long ocuparHabitacionPorId( int ocupada, long numHab ){
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx=pm.currentTransaction();
-		try
-		{
-			tx.begin();
-			long resp = sqlHabitacion.ocuparHabitacionPorId(pm, ocupada, numHab);
-			tx.commit();
-
-			return resp;
-		}
-		catch (Exception e)
-		{
-			//        	e.printStackTrace();
-			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return -1;
-		}
-		finally
-		{
-			if (tx.isActive())
-			{
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
-
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla Bebida, dado el identificador de la bebida
 	 * Adiciona entradas al log de la aplicación
@@ -1071,9 +1044,14 @@ public class PersistenciaHotelAndes
 	 */
 	public Usuarios darUsuarioPorId (long id, String tipoDoc)
 	{
-		Usuarios usuario = sqlUsuario.darUsuarioPorId (pmf.getPersistenceManager(), id, tipoDoc);
-		System.out.println(usuario);
-		return usuario;
+		Object[] data = (Object[])sqlUsuario.darUsuarioPorId (pmf.getPersistenceManager(), id, tipoDoc);
+		String nombre = data[2].toString();
+		String apellido = data[3].toString();
+		long tipoUsuario =  ((BigDecimal)data[4]).longValue();
+		long idConvencion = ((BigDecimal) data[5]).longValue();
+		Usuarios u = new Usuarios(id, tipoDoc, nombre, apellido, tipoUsuario, idConvencion);
+		
+		return u;
 	}
 
 
@@ -1194,9 +1172,18 @@ public class PersistenciaHotelAndes
 	 * @param idTipoBebida - El identificador del tipo de bebida
 	 * @return El objeto TipoBebida, construido con base en las tuplas de la tabla TIPOBEBIDA con el identificador dado
 	 */
-	public Servicios darServicioPorId (long id)
+	public Servicios darServicioPorId (long idServ)
 	{
-		return sqlServicio.darServicioPorId (pmf.getPersistenceManager(), id);
+		Object o = sqlServicio.darServicioPorId (pmf.getPersistenceManager(), idServ);
+		Object[] datos = (Object[]) o;
+		long id = ((BigDecimal) datos [0]).longValue ();
+		String nombre = datos [1].toString();
+		String descripcion = datos[2]==null? null:datos[2].toString();
+		double costo = ((BigDecimal)datos[3]).doubleValue();
+		int cargadoHab = ((BigDecimal) datos[4]).intValue();
+		int capacidad = ((BigDecimal) datos[5]).intValue();
+		long tipoServs = ((BigDecimal)datos[6]).longValue();
+		return new Servicios(id, nombre, descripcion, costo, cargadoHab, capacidad, tipoServs);
 	}
 
 
@@ -1317,27 +1304,20 @@ public class PersistenciaHotelAndes
 		for (Object object : l) {
 			Object[] datos = (Object[]) object;
 			long numHab = ((BigDecimal) datos [0]).longValue ();
-			int ocupada = ((BigDecimal) datos [1]).intValue ();
-			double cuentaHab = ((BigDecimal) datos[2]).doubleValue();
-			long tipoHab = ((BigDecimal)datos[3]).longValue();
-			h.add(new Habitaciones(numHab, ocupada, cuentaHab, tipoHab));
+			double cuentaHab = ((BigDecimal) datos[1]).doubleValue();
+			long tipoHab = ((BigDecimal)datos[2]).longValue();
+
+			h.add(new Habitaciones(numHab, cuentaHab, tipoHab));
 		}
 		return h;
 	}
 
-	public Servicios verificarServiciosDisponibles(long tipo, int cantidad) {
-		Object object = sqlServicio.darServiciosDisponibles(pmf.getPersistenceManager(), tipo, cantidad);
+	public boolean verificarServiciosDisponibles(long tipo, int cantidad, Timestamp entrada, Timestamp salida) {
+		Object object = sqlReservaServicio.verificarDisponibilidad(pmf.getPersistenceManager(), tipo, cantidad, entrada, salida);
+		System.out.println("Verificacion de servicios disponibles");
+		//sqlServicio.darServiciosDisponibles(pmf.getPersistenceManager(), tipo, cantidad);
 		Object[] datos = (Object[]) object;
-		long id = ((BigDecimal) datos [0]).longValue ();
-		String nombre = datos[1].toString();
-		String descripcion = datos[2]==null ? null: datos[2].toString();
-		double costo = ((BigDecimal) datos[3]).doubleValue();
-		int cargadoHab = ((BigDecimal)datos[4]).intValue();
-		int capacidad = ((BigDecimal)datos[5]).intValue();
-		long tipoServicios = ((BigDecimal) datos [6]).longValue();
-
-		Servicios s = new Servicios(id, nombre, descripcion, costo, cargadoHab, capacidad,  tipoServicios);
-		return s;
+		return object==null? true:false;
 	}
 	
 	public Object darConvencion(long idConvencion) {
@@ -1353,13 +1333,18 @@ public class PersistenciaHotelAndes
 		return sqlUsuario.darUsuariosConvencion( pmf.getPersistenceManager(), idConvencion);
 	}
 	
-	public long reservarServicioPorId(int reservado, long id) {
+	public long reservarServicioPorId( List<ReservaServicio> lrs, long idServ) {
 		PersistenceManager pm = pmf.getPersistenceManager();
+		System.out.println("Reserva Servicio para el servicio: "+idServ);
 		Transaction tx=pm.currentTransaction();
 		try
 		{
+			long resp = 0;
 			tx.begin();
-			long resp = sqlServicio.reservarServicioPorId(pm, reservado, id);
+			for (ReservaServicio rs : lrs) {
+				resp += sqlReservaServicio.adicionarReservaServicio(pm, rs.getId(), rs.getFecha_inicial(), rs.getFecha_final(), rs.getId_usuario(), rs.getTipo_documento_usuario(), idServ);
+			}
+			
 			tx.commit();
 
 			return resp;
@@ -1383,5 +1368,24 @@ public class PersistenciaHotelAndes
 	public void cancelarReservasServicios(long numIdentidad, String tipoDocumento) {
 
 		sqlReservaServicio.cancelarReservasServicios(pmf.getPersistenceManager(), numIdentidad, tipoDocumento);
+	}
+	
+	public List<Habitaciones> darHabitacionesDisponibles(int cantidad, long tipoHab, Timestamp entrada, Timestamp salida){
+		List<Habitaciones> rta = new LinkedList<Habitaciones>();
+		List<Object> objects = sqlReserva.darHabitacionesDisponibles( pmf.getPersistenceManager(), cantidad, tipoHab, entrada, salida);
+		for (Object object : objects) {
+			Object[] data = (Object[]) object;
+			long numHab = ((BigDecimal)data[0]).longValue();
+			double cuentaHab = ((BigDecimal) data[1]).doubleValue();
+			Habitaciones hab = new Habitaciones(numHab, cuentaHab, tipoHab);
+			rta.add(hab);
+			System.out.println(hab);
+		}
+		return rta;
+	}
+
+	public long indiceUltimoUsuario() {
+		String s = sqlUsuario.indiceUltimoUsuario(pmf.getPersistenceManager())==null ? "1":sqlUsuario.indiceUltimoUsuario(pmf.getPersistenceManager()).toString() ;
+		return Long.valueOf(s);
 	}
 }

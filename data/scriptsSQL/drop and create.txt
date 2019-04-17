@@ -36,7 +36,6 @@ CREATE TABLE CONVENCIONES
 CREATE TABLE HABITACIONES
 ( 
   num_hab NUMBER NOT NULL,
-  ocupada NUMBER NOT NULL,
   cuenta_habitacion NUMBER NOT NULL,
   tipo_habitacion NUMBER NOT NULL
 );

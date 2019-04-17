@@ -8,12 +8,6 @@ public class Servicios implements VOServicio{
 	public final static int SI_CAR_HAB = 1;
 	public final static int NO_CAR_HAB = 0;
 	
-	public final static int SI_RESERVADO = 1;
-	public final static int NO_RESERVADO = 0;
-
-	
-	
-	
 	private long id;
 
 	private int cargado_habitacion;
@@ -25,7 +19,6 @@ public class Servicios implements VOServicio{
 	private int capacidad;
 
 	private double costo;
-	
 	
 	private long id_tipo_servicios;
 	
@@ -128,5 +121,5 @@ public class Servicios implements VOServicio{
 				+ ", tipo_servicios="
 				+ id_tipo_servicios + "]";
 	}
-	
+
 }

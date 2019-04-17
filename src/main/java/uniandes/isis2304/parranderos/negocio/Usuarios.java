@@ -59,7 +59,6 @@ public class Usuarios implements VOUsuario{
 		this.apellido = apellido;
 		this.tipo_usuario = tipo_usuario;
 		this.setId_convencion(id_convencion);
-		setConsumos(new ArrayList<>());
 	}
 	
 	public Usuarios(String num_identidad, String tipo_documento, String nombre, String apellido, String tipo_usuario, String id_convencion){

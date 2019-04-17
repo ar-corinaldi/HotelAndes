@@ -70,17 +70,6 @@ public class SQLReserva {
         		+ id_habitacion+", "
         		+ id_plan_consumo+")");
         
-        System.out.println("INSERT INTO " + "RESERVAS" + "(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion, id_plan_consumo) values ("+id +", "
-        		+ numPersonas+", "
-        		+ entradaTS+", "
-        		+ salidaTS+", "
-        		+ checkIn+", "
-        		+ checkOut+", "
-        		+ idUsuario+", '"
-        		+ tipoDoc+"', "
-        		+ id_habitacion+", "
-        		+ id_plan_consumo+")");
-        
         return (long) q.executeUnique();
 	}
 	
@@ -107,7 +96,6 @@ public class SQLReserva {
 	public Reservas darReservaPorId (PersistenceManager pm, long idReserva) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + "RESERVAS" + " WHERE id = "+idReserva);
-		System.out.println("SELECT * FROM " + "RESERVAS" + " WHERE id = "+idReserva);
 		q.setResultClass(Reservas.class);
 		Object o = null;
 		o = q.executeUnique();
@@ -148,5 +136,20 @@ public class SQLReserva {
 		String sql = "DELETE from Reservas where ID_USUARIO = " +idUsuario + " AND TIPO_DOCUMENTO_USUARIO = '"+ tipoDocumento+ "'" ;
 		Query q =pm.newQuery(SQL, sql);
 		return  (long) q.execute();
+	}
+	
+	public List<Object> darHabitacionesDisponibles(PersistenceManager pm, int cantidad, long tipoHab, Timestamp entrada, Timestamp salida){
+//		SELECT hab.num_hab, hab.cuenta_habitacion, hab.tipo_habitacion
+//		FROM RESERVAS, HABITACIONES HAB
+//		WHERE entrada NOT BETWEEN TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND hab.tipo_habitacion = 3;
+		String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		String sql =  "SELECT hab.num_hab, hab.cuenta_habitacion, hab.tipo_habitacion ";
+		sql += "FROM  RESERVAS, HABITACIONES hab ";
+		sql += "WHERE RESERVAS.entrada NOT BETWEEN "+entradaTS+ " AND "+salidaTS+" AND hab.tipo_habitacion = "+tipoHab+ " ";
+		sql += "FETCH FIRST "+cantidad+ " ROWS ONLY";
+		Query q = pm.newQuery(SQL, sql);
+		
+		return (List<Object>) q.executeList();
 	}
 }

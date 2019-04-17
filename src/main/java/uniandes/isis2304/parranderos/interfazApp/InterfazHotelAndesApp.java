@@ -306,12 +306,17 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		int numPersonas = Integer.valueOf(JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION));
 		String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Adicionar reserva", JOptionPane.OK_OPTION);
 		String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2019-09-23)", "Adicionar reserva", JOptionPane.OK_OPTION);
-		long numHab = Long.valueOf(JOptionPane.showInputDialog (this, "habitacion id?", "Adicionar reserva", JOptionPane.OK_OPTION));
+		long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "tipo hab?", "Adicionar reserva", JOptionPane.OK_OPTION));
 		long idPlanCons = Long.valueOf(JOptionPane.showInputDialog (this, "plan consumo id?(0 si no tiene)", "Adicionar reserva", JOptionPane.OK_OPTION));
 		try {
 			Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
 			Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
-			parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, cliente.getNum_identidad(), cliente.getTipo_documento(), numHab, cliente, idPlanCons);
+			List<Habitaciones> habs = parranderos.verificarHabitacionesDisponibles(tipo, 1);
+			if( habs.size()==1 ) {
+				Habitaciones hab = habs.get(0);
+				parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, cliente.getNum_identidad(), cliente.getTipo_documento(), hab.getNum_hab(), cliente, idPlanCons);
+			}else 
+				throw new Exception("La no hay habitaciones dispoinbles del tipo: "+tipo);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 		}
@@ -383,51 +388,62 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		} else{
 			try {
 				boolean sePuede = true;
+				int[] tiposServ = new int[20];
+				int indice = (int)parranderos.indiceUltimoUsuario();
 				long id = Long.valueOf(JOptionPane.showInputDialog (this, "id convencion?", "Registrar convencion", JOptionPane.QUESTION_MESSAGE));
 				String nombre = JOptionPane.showInputDialog (this, "Nombre?", "Registra convencion", JOptionPane.QUESTION_MESSAGE);
-				int cantidadPersonas = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad personas?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
+				int cantidadPersonas = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad personas?\nRecuerda que solo se generaran\n"+(1000-indice), "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 				long idPlanCons = Long.valueOf(JOptionPane.showInputDialog (this, "Plan de consumo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 				String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Adicionar convencion", JOptionPane.OK_OPTION);
 				String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2019-09-23)", "Adicionar convencion", JOptionPane.OK_OPTION);
-
 				int tiposHab = Integer.parseInt(JOptionPane.showInputDialog (this, "Cuantos tipos de habitacion?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
-
-				List<Habitaciones> l= null;
+				Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
+				Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
+				List<Habitaciones> listaDeListasDeHabs= new LinkedList<Habitaciones>();
+				List<ReservaServicio> listaReservaServicio = new LinkedList<ReservaServicio>();
 				for( int i=0; i<tiposHab && sePuede; i++ ){
 					long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 					int cantidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad del tipo "+tipo +"?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
-					l = parranderos.verificarHabitacionesDisponibles(tipo, cantidad);
-					sePuede = l.size() == cantidad;
+					List<Habitaciones> actual = parranderos.darHabitacionesDisponibles(cantidad, tipo, entrada, salida);
+					listaDeListasDeHabs.addAll(actual);
+					sePuede = actual.size() == cantidad;
 				}
 				tiposHab = Integer.parseInt(JOptionPane.showInputDialog (this, "Cuantos tipos de servicio?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
-				List<Servicios> ls = new LinkedList<Servicios>();
 				for( int i=0; i<tiposHab && sePuede; i++ ){
 					long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
-					Servicios s = parranderos.verificarServiciosDisponibles(tipo, cantidadPersonas); 
-					ls.add(s);
-					sePuede = sePuede && s.getCapacidad() > cantidadPersonas;
+					Servicios s = parranderos.darServicio(tipo);
+					System.out.println(s.getCapacidad());
+					boolean b2 = s.getCapacidad()>=cantidadPersonas;
+					System.out.println(b2);
+					sePuede = sePuede && b2;
+					sePuede = sePuede && parranderos.verificarServiciosDisponibles(tipo, cantidadPersonas, entrada, salida); 
+					listaReservaServicio.add(new ReservaServicio(indice+i+1, entrada, salida, organizador.getNum_identidad(), organizador.getTipo_documento(), tipo));
+					tiposServ[i]=(int) tipo;
 				}
 				if(!sePuede)
 				{
 					JOptionPane.showMessageDialog(this, "No hay suficientes habitaciones o servicios", "Error", JOptionPane.WARNING_MESSAGE);
 				} else{
-					Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
-					Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
+					
 					Convencion conv = parranderos.adicionarConvencion(id, nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
 
 					
-					for(int i=0; i<cantidadPersonas; i++){
-						Usuarios user = new Usuarios((long) (i+1), "cedula", nombre, nombre, 5, id);
+					for(int i=0; i<cantidadPersonas-1; i++){
+						Usuarios user = new Usuarios((long) (indice+i+1), "cedula", nombre, nombre, 5, id);
 						parranderos.adicionarUsuario(user);
-						parranderos.adicionarReserva((long)i+1, 1, entrada, salida, null, null, (long)(i+1), "cedula", l.get(i).getNum_hab(), user, idPlanCons);
+						parranderos.adicionarReserva((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
+						
 					} 
+					for(int j=0; j<tiposHab; j++){
+						parranderos.reservarServicios(listaReservaServicio, tiposServ[j]);
+					}
+					
 				}
-				parranderos.reservarHabitaciones(l);
-				parranderos.reservarServicios(ls);
+				
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(this,"Organizador no existe", "Error", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this,e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 
@@ -493,7 +509,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		String numIden = JOptionPane.showInputDialog (this, "numero identificacion?", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
 		String tipoDoc = JOptionPane.showInputDialog (this, "tipo documento?\ncedula\npasaporte", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
 		try {
-			user = parranderos.darUsuario(Integer.valueOf(numIden), tipoDoc);
+			user = parranderos.darUsuario(Long.valueOf(numIden), tipoDoc);
 			if( user == null && user.getTipo_usuario() == tipoUsuario){
 				JOptionPane.showMessageDialog(this, "Error solo los recepcionistas tienen acceso o no esta registrado en la base de datos");
 			}
