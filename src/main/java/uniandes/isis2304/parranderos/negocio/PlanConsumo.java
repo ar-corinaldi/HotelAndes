@@ -14,7 +14,6 @@ public class PlanConsumo implements VOPlanConsumo{
 
 	private String descripcion;
 
-	private long tipoPlanConsumo;
 	
 	
 	/******************************************************************************
@@ -25,15 +24,12 @@ public class PlanConsumo implements VOPlanConsumo{
 		id = 0;
 		descuento = 0;
 		descripcion = "";
-		tipoPlanConsumo = 0;
 	}
 	
-	public PlanConsumo(long id, double descuento, String descripcion,
-			long tipoPlanConsumo) {
+	public PlanConsumo(long id, double descuento, String descripcion) {
 		this.id = id;
 		this.descuento = descuento;
 		this.descripcion = descripcion;
-		this.tipoPlanConsumo = tipoPlanConsumo;
 	}
 
 	/******************************************************************************
@@ -64,21 +60,13 @@ public class PlanConsumo implements VOPlanConsumo{
 		this.descripcion = descripcion;
 	}
 
-	public long getTipoPlanConsumo() {
-		return tipoPlanConsumo;
-	}
-
-	public void setTipoPlanConsumo(long tipoPlanConsumo) {
-		this.tipoPlanConsumo = tipoPlanConsumo;
-	}
-
+	
 
 
 	@Override
 	public String toString() {
 		return "PlanConsumo [id=" + id + ", descuento=" + descuento
-				+ ", descripcion=" + descripcion + ", tipoPlanConsumo="
-				+ tipoPlanConsumo +  "]";
+				+ ", descripcion=" + descripcion + "]";
 	}
 	
 }

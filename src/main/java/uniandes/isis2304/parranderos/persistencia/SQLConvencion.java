@@ -71,8 +71,7 @@ public class SQLConvencion {
 	 */
 	public long eliminaConvencionPorId (PersistenceManager pm, long idConvencion)
 	{
-       Query q = pm.newQuery(SQL, "DELETE FROM " +"CONVENCIONES" + " WHERE id = ?");
-       q.setParameters(idConvencion);
+       Query q = pm.newQuery(SQL, "DELETE FROM " +"CONVENCIONES" + " WHERE id = " + idConvencion);
        return (long) q.executeUnique();
 	}
 	

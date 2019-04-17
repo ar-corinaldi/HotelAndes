@@ -85,7 +85,6 @@ class SQLUtil
         Query qReserva = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaReserva());
         Query qServicio = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaServicio());
         Query qTipoHabitacion = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaTipoHabitacion());
-        Query qTipoPlanConsumo = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaTipoPlanConsumo());
         Query qTipoUsuario = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaTipoUsuario());
         Query qUsuario = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaUsuario());
 
@@ -97,11 +96,10 @@ class SQLUtil
         long reservaEliminados = (long) qReserva.executeUnique ();
         long servicioEliminados = (long) qServicio.executeUnique ();
         long tipoHabitacionEliminados = (long) qTipoHabitacion.executeUnique ();
-        long tipoPlanConsumoEliminados = (long) qTipoPlanConsumo.executeUnique ();
         long tipoUsuarioEliminados = (long) qTipoUsuario.executeUnique ();
         long usuarioEliminados = (long) qUsuario.executeUnique ();
         return new long[] {consumoEliminados, habitacionEliminados, hotelEliminadas, planConsumoEliminadas, 
-        		reservaEliminados, servicioEliminados, tipoHabitacionEliminados, tipoPlanConsumoEliminados, 
+        		reservaEliminados, servicioEliminados, tipoHabitacionEliminados,  
         		tipoUsuarioEliminados, usuarioEliminados};
 	}
 

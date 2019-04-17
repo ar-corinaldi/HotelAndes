@@ -35,7 +35,6 @@ import uniandes.isis2304.parranderos.negocio.ReservaServicio;
 import uniandes.isis2304.parranderos.negocio.Reservas;
 import uniandes.isis2304.parranderos.negocio.Servicios;
 import uniandes.isis2304.parranderos.negocio.TipoHabitacion;
-import uniandes.isis2304.parranderos.negocio.TipoPlanConsumo;
 import uniandes.isis2304.parranderos.negocio.TipoServicio;
 import uniandes.isis2304.parranderos.negocio.TipoUsuario;
 import uniandes.isis2304.parranderos.negocio.Usuarios;
@@ -127,7 +126,6 @@ public class PersistenciaHotelAndes
 	/**
 	 * Atributo para el acceso a la tabla TipoPlanConsumo de la base de datos
 	 */
-	private SQLTipoPlanConsumo sqlTipoPlanConsumo;
 
 	/**
 	 * Atributo para el acceso a la tabla TipoUsuario de la base de datos
@@ -183,7 +181,6 @@ public class PersistenciaHotelAndes
 		tablas.add ("RESERVAS_SERVICIOS");
 		tablas.add ("SERVICIOS");
 		tablas.add ("TIPO_HABITACIONES");
-		tablas.add ("TIPO_PLANES_DE_CONSUMO");
 		tablas.add("TIPO_SERVICIOS");
 		tablas.add ("TIPO_USUARIOS");
 		tablas.add ("USUARIOS");
@@ -270,7 +267,6 @@ public class PersistenciaHotelAndes
 		sqlReservaServicio = new SQLReservaServicio(this);
 		sqlServicio = new SQLServicio(this);
 		sqlTipoHabitacion = new SQLTipoHabitacion(this);
-		sqlTipoPlanConsumo = new SQLTipoPlanConsumo(this);		
 		sqlTipoUsuario = new SQLTipoUsuario(this);
 		sqlTipoServicio = new SQLTipoServicio(this);
 		sqlUsuario = new SQLUsuario(this);
@@ -355,32 +351,27 @@ public class PersistenciaHotelAndes
 		return tablas.get(10);
 	}
 
-	/**
-	 * @return La cadena de caracteres con el nombre de la tabla de TipoPlanConsumo de Hotelandes
-	 */
-	public String darTablaTipoPlanConsumo() {
-		return tablas.get(11);
-	}
+	
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla TipoServicio de HotelAndes
 	 */
 	public String darTablaTipoServicio(){
-		return tablas.get(12);
+		return tablas.get(11);
 	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla TipoUsuario de HotelAndes
 	 */
 	public String darTablaTipoUsuario(){
-		return tablas.get(13);
+		return tablas.get(12);
 	}
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla de Usuario de Hotelandes
 	 */
 	public String darTablaUsuario() {
-		return tablas.get(14);
+		return tablas.get(13);
 	}
 
 	/**
@@ -505,76 +496,15 @@ public class PersistenciaHotelAndes
 	 * @param idBebida - El identificador de la bebida - Debe haber una bebida con ese identificador
 	 * @return Un objeto GUSTAN con la información dada. Null si ocurre alguna Excepción
 	 */
-	public TipoPlanConsumo adicionarTipoPlanConsumo(long id, String nombre) 
-	{
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx=pm.currentTransaction();
-		try
-		{
-			tx.begin();
-			long tuplasInsertadas = sqlTipoPlanConsumo.adicionarTipoPlanConsumo(pm, id, nombre);
-			tx.commit();
-
-			return new TipoPlanConsumo(id, nombre);
-		}
-		catch (Exception e)
-		{
-			//        	e.printStackTrace();
-			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return null;
-		}
-		finally
-		{
-			if (tx.isActive())
-			{
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
-
+	
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla GUSTAN, dados los identificadores de bebedor y bebida
 	 * @param idBebedor - El identificador del bebedor
 	 * @param idBebida - El identificador de la bebida
 	 * @return El número de tuplas eliminadas. -1 si ocurre alguna Excepción
 	 */
-	public long eliminarTipoPlanConsumo(long id) 
-	{
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx=pm.currentTransaction();
-		try
-		{
-			tx.begin();
-			long resp = sqlTipoPlanConsumo.eliminarTipoPlanConsumoPorId(pm, id)  ;      
-			tx.commit();
-
-			return resp;
-		}
-		catch (Exception e)
-		{
-			//        	e.printStackTrace();
-			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return -1;
-		}
-		finally
-		{
-			if (tx.isActive())
-			{
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
-
-	/**
-	 * Método que consulta todas las tuplas en la tabla GUSTAN
-	 * @return La lista de objetos GUSTAN, construidos con base en las tuplas de la tabla GUSTAN
-	 */
-	public List<PlanConsumo> darTipoPlanConsumo()
-	{
-		return sqlTipoPlanConsumo.darTiposPlanConsumo(pmf.getPersistenceManager());
-	}
+	
+	
 
 	/* ****************************************************************
 	 * 			Métodos para manejar los TIPO_SERVICIO
@@ -758,22 +688,21 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Habitaciones adicionarHabitacion(int num_hab, boolean ocupada, long tipo_habitacion, double cuenta_habitacion) 
+	public Habitaciones adicionarHabitacion(int num_hab,  long tipo_habitacion, double cuenta_habitacion) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			int ocupadaSQL = 0;
-			if( ocupada ) ocupadaSQL = 1;
-			long tuplasInsertadas = sqlHabitacion.adicionarHabitacion(pm, num_hab, ocupadaSQL, cuenta_habitacion, tipo_habitacion);
+
+			long tuplasInsertadas = sqlHabitacion.adicionarHabitacion(pm, num_hab, cuenta_habitacion, tipo_habitacion);
 			tx.commit();
 
 			log.trace ("insercionconsumo: " + num_hab + ": " + tuplasInsertadas + " tuplas insertadas");
 			Habitaciones habitacion = sqlHabitacion.darHabitacionPorId(pm, num_hab);
 
-			return  new Habitaciones(num_hab, ocupadaSQL,cuenta_habitacion, tipo_habitacion );
+			return  new Habitaciones(num_hab, cuenta_habitacion, tipo_habitacion );
 		}
 		catch (Exception e)
 		{
@@ -1306,6 +1235,9 @@ public class PersistenciaHotelAndes
 			long numHab = ((BigDecimal) datos [0]).longValue ();
 			double cuentaHab = ((BigDecimal) datos[1]).doubleValue();
 			long tipoHab = ((BigDecimal)datos[2]).longValue();
+			h.add(new Habitaciones(numHab,  cuentaHab, tipoHab));
+			double cuentaHab = ((BigDecimal) datos[1]).doubleValue();
+			long tipoHab = ((BigDecimal)datos[2]).longValue();
 
 			h.add(new Habitaciones(numHab, cuentaHab, tipoHab));
 		}
@@ -1319,14 +1251,14 @@ public class PersistenciaHotelAndes
 		Object[] datos = (Object[]) object;
 		return object==null? true:false;
 	}
-	
+
 	public Object darConvencion(long idConvencion) {
 		return sqlConvencion.darConvencionPorId(pmf.getPersistenceManager(), idConvencion);
 	}
 
 	public void cancelarReservas(long NUM_IDENTIDAD, String TIPO_DOCUMENTO ) 
 	{
-			sqlReserva.cancelarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
+		sqlReserva.cancelarReservasUsuario( pmf.getPersistenceManager(), NUM_IDENTIDAD, TIPO_DOCUMENTO);
 	}
 
 	public List<Object> darUsuariosConvencion(Long idConvencion) {
@@ -1347,7 +1279,7 @@ public class PersistenciaHotelAndes
 			
 			tx.commit();
 
-			return resp;
+			return 0;
 		}
 		catch (Exception e)
 		{
@@ -1387,5 +1319,9 @@ public class PersistenciaHotelAndes
 	public long indiceUltimoUsuario() {
 		String s = sqlUsuario.indiceUltimoUsuario(pmf.getPersistenceManager())==null ? "1":sqlUsuario.indiceUltimoUsuario(pmf.getPersistenceManager()).toString() ;
 		return Long.valueOf(s);
+	}
+
+	public void cancelarConvencion(Long idConvencion) {
+		sqlConvencion.eliminaConvencionPorId(pmf.getPersistenceManager(), idConvencion);
 	}
 }

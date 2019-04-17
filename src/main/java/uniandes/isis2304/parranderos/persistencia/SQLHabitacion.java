@@ -53,11 +53,11 @@ public class SQLHabitacion
 	 * @param idHotel - El identificador del hotel
 	 * @return El n�mero de tuplas insertadas
 	 */
-	public long adicionarHabitacion(PersistenceManager pm, int numHab, int ocupada, double cuenta_habitacion, long tipo_habitacion)
+	public long adicionarHabitacion(PersistenceManager pm, int numHab, double cuenta_habitacion, long tipo_habitacion)
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaHabitacion() + "(num_hab, ocupada, cuenta_habitacion, "
-				+ "tipo_habitacion) values(?, ?, ?, ?)");
-		q.setParameters(numHab, ocupada,cuenta_habitacion, tipo_habitacion);
+		Query q = pm.newQuery(SQL, "INSERT INTO "+ ph.darTablaHabitacion() + "(num_hab,  cuenta_habitacion, "
+				+ "tipo_habitacion) values(?, ?, ?)");
+		q.setParameters(numHab, cuenta_habitacion, tipo_habitacion);
 		return (long)q.executeUnique();
 	}
 

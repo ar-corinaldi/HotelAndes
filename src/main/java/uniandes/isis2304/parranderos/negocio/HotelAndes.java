@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import com.google.gson.JsonObject;
 
+import oracle.net.aso.i;
 import uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes;
 
 /**
@@ -231,8 +232,8 @@ public class HotelAndes
 
 
 
-	public Habitaciones adicionarHabitacion(int numHab , boolean ocupada, double cuenta_habitacion, long tipo_habitacion){
-		Habitaciones h = pp.adicionarHabitacion(numHab, ocupada, tipo_habitacion, cuenta_habitacion);		
+	public Habitaciones adicionarHabitacion(int numHab ,  double cuenta_habitacion, long tipo_habitacion){
+		Habitaciones h = pp.adicionarHabitacion(numHab,  tipo_habitacion, cuenta_habitacion);		
 		return h;
 	}
 
@@ -336,5 +337,9 @@ public class HotelAndes
 
 	public long indiceUltimoUsuario() {
 		return pp.indiceUltimoUsuario();
+	}
+
+	public void cancelarConvencion(Long idConvencion) {
+		pp.cancelarConvencion(idConvencion);
 	}
 }
