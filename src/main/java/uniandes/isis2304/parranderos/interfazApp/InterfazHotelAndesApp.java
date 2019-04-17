@@ -85,6 +85,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	 */
 	private static final String CONFIG_TABLAS = "./src/main/resources/config/TablasBD_A.json"; 
 
+	public static final long ADMINISTRADOR = 2;
+
 	public static final long RECEPCIONISTA = 3;
 
 	public static final long EMPLEADO = 4;
@@ -432,7 +434,11 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 						Usuarios user = new Usuarios((long) (indice+i+1), "cedula", nombre, nombre, 5, id);
 						parranderos.adicionarUsuario(user);
 						parranderos.adicionarReserva((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
-						
+//						listaUsuarios.add(user)
+//						} 
+//						parranderos.adicionarUsuarios(listaUsuarios);
+//						parranderos.adicionarReservas((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
+//						
 					} 
 					for(int j=0; j<tiposHab; j++){
 						parranderos.reservarServicios(listaReservaServicio, tiposServ[j]);
@@ -489,6 +495,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 	public void registrarLlegadaConvencion(){
 		System.out.println("Registrar Llegada Convencion");
+		
 	}
 
 	public void registrarSalidaConvencion(){
@@ -517,6 +524,32 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 		}
 		return user;
+	}
+	
+	public void crearMantenimiento(){
+		
+		Usuarios admin = verificarUsuario(ADMINISTRADOR);
+		int num = Integer.parseInt(JOptionPane.showInputDialog(this, "1. Servicio\n2. Habitacion", "Mantenimiento", JOptionPane.OK_OPTION));
+		long servOHab = -1;
+		if( num==1 ){
+			servOHab = Long.valueOf(JOptionPane.showInputDialog(this, "id del servicio?", "Mantenimiento", JOptionPane.OK_OPTION));
+		}else if( num==2 ){
+			servOHab = Long.valueOf(JOptionPane.showInputDialog(this, "Numero de la habitacion?", "Mantenimiento", JOptionPane.OK_OPTION));
+		}
+		String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Mantenimiento", JOptionPane.OK_OPTION);
+		String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2019-09-23)", "Mantenimiento", JOptionPane.OK_OPTION);
+		
+		Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
+		Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
+		if( servOHab==-1 ){
+			JOptionPane.showMessageDialog(this, "Error ponga 1 o 2");
+		} else{
+			try {
+				parranderos.crearMantenimiento( num, admin, entrada, salida, servOHab );
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	/* ****************************************************************
 	 * 			Métodos administrativos

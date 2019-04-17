@@ -419,3 +419,63 @@ ORA-00001: unique constraint (ISIS2304B101910.SYS_C00581460) violated
 10:48:23,088 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
 10:48:23,089 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
 10:48:23,102 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:21:12,073 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:21:12,076 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:21:12,111 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:25:48,559 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:25:48,561 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:25:48,593 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:28:57,633 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:28:57,635 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:28:57,678 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:31:49,511 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:31:49,514 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:31:49,554 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:32:18,766 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:32:18,767 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:32:18,789 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:32:46,027 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : null
+
+12:35:07,561 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:35:07,562 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:35:07,596 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:35:36,945 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : null
+
+12:36:59,992 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:36:59,993 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:37:00,022 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:37:35,474 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : null
+
+12:48:44,286 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:48:44,287 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:48:44,321 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:49:50,641 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error executing SQL query "INSERT INTO RESERVAS(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion, id_plan_consumo) values (29, 1, TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), 2019-09-16 06:00:00.0, 2019-09-23 12:00:00.0, 22342, 'pasaporte', 301, 0)".
+Missing IN or OUT parameter at index:: 1
+12:52:50,997 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:52:50,998 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:52:51,023 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:53:25,248 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:53:25,251 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:53:25,342 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:53:51,144 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error executing SQL query "INSERT INTO RESERVAS(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion, id_plan_consumo) values (29, 1, TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), 2019-09-16 06:00:00.0, 2019-09-23 12:00:00.0, 22342, 'pasaporte', 301, 0)".
+Missing IN or OUT parameter at index:: 1
+12:54:08,775 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:54:08,775 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:54:08,797 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:56:50,740 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:56:50,741 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:56:50,765 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:57:22,153 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error executing SQL query "INSERT INTO RESERVAS(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion, id_plan_consumo) values (29, 1, TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), 2019-09-16 06:00:00.0, 2019-09-23 12:00:00.0, 22342, 'pasaporte', 301, 0)".
+Missing IN or OUT parameter at index:: 1
+12:57:39,570 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:57:39,571 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:57:39,595 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+13:01:23,161 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error executing SQL query "INSERT INTO RESERVAS(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion, id_plan_consumo) values (29, 1, TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), 22342, 'pasaporte', 300, 0)".
+ORA-00001: unique constraint (ISIS2304B101910.SYS_C00581459) violated
+
+13:07:29,505 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+13:07:29,506 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+13:07:29,527 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+13:08:08,397 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+13:08:08,397 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+13:08:08,419 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD

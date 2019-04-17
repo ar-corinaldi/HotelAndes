@@ -178,7 +178,7 @@ public class HotelAndes
 	public Reservas adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user, long idPlanCons) throws Exception{
 		Habitaciones habitacion = pp.darHabitacionPorId(numHab);
 		Reservas reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion, idPlanCons);
-		System.out.println(pp.darReservaPorId(reserva.getId()));
+		System.out.println(reserva);
 		return reserva;
 	}
 
@@ -341,5 +341,43 @@ public class HotelAndes
 
 	public void cancelarConvencion(Long idConvencion) {
 		pp.cancelarConvencion(idConvencion);
+	}
+	
+	public void crearMantenimiento(int num, Usuarios admin, Timestamp entrada,
+			Timestamp salida, long id) throws Exception {
+		if( num==1 ){
+			Servicios s = pp.darServicioPorId(id);
+			
+		}
+		else if( num==2 ){
+			Habitaciones h = pp.darHabitacionPorId(id);
+			Reservas r = pp.darReservaXFechasYNumHab(entrada, salida, id);
+			
+			if( r==null ){
+				adicionarReserva(indiceUltimoUsuario()+1, 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
+			}
+			else if( r.getCheck_in() == null ){
+				adicionarReserva(indiceUltimoUsuario()+1, 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
+			}
+			else{
+				System.out.println("Entra");
+				moverUsuario( h );
+			}
+		}
+	}
+	
+	public void moverUsuario( Habitaciones h ) throws Exception{
+		List<Habitaciones> list = verificarHabitacionesDisponibles(h.getTipo_habitacion(), 1);
+		long i = h.getTipo_habitacion();
+		while( !list.isEmpty() && i > 1 ){
+			list = verificarHabitacionesDisponibles(i--, 1);
+		}
+		if( i==1 )
+			throw new Exception("No hay habitaciones disponibles");
+		else{
+			Habitaciones nueva = list.get(0);
+			pp.moverUsuario(nueva, h);
+			System.out.println("Su habitacion ");
+		}
 	}
 }

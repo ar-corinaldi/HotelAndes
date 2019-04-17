@@ -351,7 +351,7 @@ public class PersistenciaHotelAndes
 		return tablas.get(10);
 	}
 
-	
+
 
 	/**
 	 * @return La cadena de caracteres con el nombre de la tabla TipoServicio de HotelAndes
@@ -496,15 +496,15 @@ public class PersistenciaHotelAndes
 	 * @param idBebida - El identificador de la bebida - Debe haber una bebida con ese identificador
 	 * @return Un objeto GUSTAN con la información dada. Null si ocurre alguna Excepción
 	 */
-	
+
 	/**
 	 * Método que elimina, de manera transaccional, una tupla en la tabla GUSTAN, dados los identificadores de bebedor y bebida
 	 * @param idBebedor - El identificador del bebedor
 	 * @param idBebida - El identificador de la bebida
 	 * @return El número de tuplas eliminadas. -1 si ocurre alguna Excepción
 	 */
-	
-	
+
+
 
 	/* ****************************************************************
 	 * 			Métodos para manejar los TIPO_SERVICIO
@@ -979,7 +979,7 @@ public class PersistenciaHotelAndes
 		long tipoUsuario =  ((BigDecimal)data[4]).longValue();
 		long idConvencion = ((BigDecimal) data[5]).longValue();
 		Usuarios u = new Usuarios(id, tipoDoc, nombre, apellido, tipoUsuario, idConvencion);
-		
+
 		return u;
 	}
 
@@ -1080,6 +1080,11 @@ public class PersistenciaHotelAndes
 	public Reservas darReservaPorId (long id)
 	{
 		return sqlReserva.darReservaPorId (pmf.getPersistenceManager(), id);
+	}
+
+	public Reservas darReservaXFechasYNumHab( Timestamp entrada, Timestamp salida, long numHab ){
+
+		return sqlReserva.darReservaXFechasYNumHab(pmf.getPersistenceManager(), entrada, salida, numHab);
 	}
 
 	/* ****************************************************************
@@ -1260,7 +1265,7 @@ public class PersistenciaHotelAndes
 	public List<Object> darUsuariosConvencion(Long idConvencion) {
 		return sqlUsuario.darUsuariosConvencion( pmf.getPersistenceManager(), idConvencion);
 	}
-	
+
 	public long reservarServicioPorId( List<ReservaServicio> lrs, long idServ) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		System.out.println("Reserva Servicio para el servicio: "+idServ);
@@ -1272,7 +1277,7 @@ public class PersistenciaHotelAndes
 			for (ReservaServicio rs : lrs) {
 				resp += sqlReservaServicio.adicionarReservaServicio(pm, rs.getId(), rs.getFecha_inicial(), rs.getFecha_final(), rs.getId_usuario(), rs.getTipo_documento_usuario(), idServ);
 			}
-			
+
 			tx.commit();
 
 			return 0;
@@ -1297,7 +1302,7 @@ public class PersistenciaHotelAndes
 
 		sqlReservaServicio.cancelarReservasServicios(pmf.getPersistenceManager(), numIdentidad, tipoDocumento);
 	}
-	
+
 	public List<Habitaciones> darHabitacionesDisponibles(int cantidad, long tipoHab, Timestamp entrada, Timestamp salida){
 		List<Habitaciones> rta = new LinkedList<Habitaciones>();
 		List<Object> objects = sqlReserva.darHabitacionesDisponibles( pmf.getPersistenceManager(), cantidad, tipoHab, entrada, salida);
@@ -1319,5 +1324,34 @@ public class PersistenciaHotelAndes
 
 	public void cancelarConvencion(Long idConvencion) {
 		sqlConvencion.eliminaConvencionPorId(pmf.getPersistenceManager(), idConvencion);
+	}
+
+	public void moverUsuario(Habitaciones nueva, Habitaciones anterior) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			long resp = 0;
+			tx.begin();
+			sqlHabitacion.moverUsuario(nueva.getNum_hab(), anterior.getCuenta_habitacion(), nueva.getTipo_habitacion());
+			sqlHabitacion.moverUsuario(anterior.getNum_hab(), 0.0, anterior.getTipo_habitacion());
+			tx.commit();
+
+			return;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 }

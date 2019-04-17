@@ -77,7 +77,16 @@
 					"event": "registrarSalidaConvencion"
 				}
 			]
-		},	
+		},
+		{ "menuTitle": "Administrador",
+		  "options":
+			[
+				{
+					"label": "Hacer mantenimiento",
+					"event": "crearMantenimiento"
+				}
+			]
+		},		
 		{ "menuTitle": "Mantenimiento",
 		  "options":
 			[

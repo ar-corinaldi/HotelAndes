@@ -106,4 +106,12 @@ public class SQLHabitacion
 		Query q = pm.newQuery(SQL, sql);
 		return (List<Object>) q.executeList();
 	}
+
+
+	public void moverUsuario(long numHab, double nuevaCuenta, long tipoHab) {
+		String sql = "UPDATE HABITACIONES ";
+		sql += "SET CUENTA_HABITACION = "+nuevaCuenta + " ";
+		sql += "WHERE num_habitacion = "+numHab; 
+		
+	}
 }
