@@ -56,8 +56,7 @@ CREATE TABLE PLANES_DE_CONSUMO
   descripcion VARCHAR2(500),
   descuento NUMBER NOT NULL,
   fecha_inicio TIMESTAMP,
-  fecha_final TIMESTAMP,
-  tipo_plan_consumo NUMBER NOT NULL
+  fecha_final TIMESTAMP
 );
 
 CREATE TABLE PRODUCTOS
@@ -112,11 +111,6 @@ CREATE TABLE TIPO_HABITACIONES
   capacidad INTEGER NOT NULL
 );
 
-CREATE TABLE TIPO_PLANES_DE_CONSUMO
-( 
-  id NUMBER NOT NULL,
-  nombre VARCHAR(50) NOT NULL
-);
 
 CREATE TABLE TIPO_SERVICIOS
 ( 
@@ -138,4 +132,28 @@ CREATE TABLE USUARIOS
   apellido VARCHAR2(50) NOT NULL,
   tipo_usuario NUMBER NOT NULL,
   id_convencion NUMBER
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE TIPO_PLANES_DE_CONSUMO
+( 
+  id NUMBEsR NOT NULL,
+  nombre VARCHAR(50) NOT NULL
 );

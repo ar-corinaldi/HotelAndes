@@ -325,8 +325,8 @@ public class HotelAndes
 		
 	}
 
-	public void cancelarReserva(long NumDocumento, String TipoDocumento) {
-		pp.cancelarReservas(NumDocumento, TipoDocumento);
+	public void eliminarReserva(long NumDocumento, String TipoDocumento) {
+		pp.eliminarReservas(NumDocumento, TipoDocumento);
 	}
 
 	public List<Object> darUsuariosConvencion(long idConvencion) {
@@ -364,5 +364,16 @@ public class HotelAndes
 
 	public void cancelarConvencion(Long idConvencion) {
 		pp.cancelarConvencion(idConvencion);
+	}
+
+	public void terminarMantenimientoHab(Long num_identidad, String tipo_documento, int numHab) {
+
+		pp.terminarMantenimientoHab(num_identidad, tipo_documento, numHab);
+	}
+
+	public void terminarMantenimientoServ(Long num_identidad, String tipo_documento, int idServ) {
+
+		pp.terminarMantenimientoServ(num_identidad, tipo_documento, idServ);
+		
 	}
 }

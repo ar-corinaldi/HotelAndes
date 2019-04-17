@@ -447,7 +447,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				Object[] datos = (Object[]) object;
 				long NUM_IDENTIDAD = ((BigDecimal) datos [0]).longValue ();
 				String TIPO_DOCUMENTO = ( datos [1]).toString();
-				parranderos.cancelarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+				parranderos.eliminarReserva(NUM_IDENTIDAD, TIPO_DOCUMENTO);
 				parranderos.cancelarReservasServicios(NUM_IDENTIDAD, TIPO_DOCUMENTO);
 				parranderos.eliminarUsuario(NUM_IDENTIDAD, TIPO_DOCUMENTO);
 				System.out.println("eliminando... "+  contador ++);
@@ -461,7 +461,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				String numIdentidadStr = JOptionPane.showInputDialog (this, "Ingrese el numero de identidad del cliente a cancelar", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
 				String TipoDoc = JOptionPane.showInputDialog (this, "Ingrese el tipo de documento", "Cancelar convencion", JOptionPane.QUESTION_MESSAGE);
 				Long numIdentidad = Long.valueOf(numIdentidadStr);
-				parranderos.cancelarReserva(numIdentidad, TipoDoc);
+				parranderos.eliminarReserva(numIdentidad, TipoDoc);
 				parranderos.cancelarReservasServicios(numIdentidad, TipoDoc);
 				parranderos.eliminarUsuario(numIdentidad, TipoDoc);
 
@@ -474,6 +474,9 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	public void registrarLlegadaConvencion(){
 		System.out.println("Registrar Llegada Convencion");
 	}
+	
+	
+	
 
 	public void registrarSalidaConvencion(){
 		System.out.println("Registrar Salida Convencion");
@@ -501,6 +504,25 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 		}
 		return user;
+	}
+	
+	
+	public void terminarMantenimiento()
+	{
+		Usuarios organizador = verificarUsuario(ORGANIZADOR);
+		String bul = JOptionPane.showInputDialog (this, "Terminar mantenimiento de habitacion o servicio?", "Terminar mantenimiento", JOptionPane.QUESTION_MESSAGE);
+		if(bul.equals("habitacion"))
+		{
+			String numHabStr = JOptionPane.showInputDialog (this, "Dar numero de habitacion", "Terminar mantenimiento", JOptionPane.QUESTION_MESSAGE);
+			int numHab = Integer.valueOf(numHabStr);
+			parranderos.terminarMantenimientoHab(organizador.getNum_identidad(), organizador.getTipo_documento(), numHab);
+		}
+		else
+		{
+			String idServSTR = JOptionPane.showInputDialog (this, "Dar id de servicio", "Terminar mantenimiento", JOptionPane.QUESTION_MESSAGE);
+			int idServ = Integer.valueOf(idServSTR);
+			parranderos.terminarMantenimientoServ(organizador.getNum_identidad(), organizador.getTipo_documento(), idServ);
+		}
 	}
 	/* ****************************************************************
 	 * 			Métodos administrativos

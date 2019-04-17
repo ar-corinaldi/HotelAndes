@@ -106,4 +106,12 @@ public class SQLReservaServicio {
         return (long) q.executeUnique();
 
 	}
+
+	public long terminarMantenimiento(PersistenceManager pm, Long num_identidad, String tipo_documento,
+			int idServ) {
+		String sql = "DELETE FROM RESERVAS_SERVICIOS WHERE id_usuario = "+ num_identidad + "	AND tipo_documento_usuario = '" + tipo_documento+ 
+				"' AND ID_SERVICIO = "+idServ;
+		Query q = pm.newQuery(SQL,sql);
+        return (long) q.executeUnique();		
+	}
 }

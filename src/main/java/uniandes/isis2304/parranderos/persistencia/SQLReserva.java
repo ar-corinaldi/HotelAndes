@@ -144,9 +144,18 @@ public class SQLReserva {
 	}
 	
 	
-	public long cancelarReservasUsuario(PersistenceManager pm, Long idUsuario, String tipoDocumento) {
+	public long eliminarReservasUsuario(PersistenceManager pm, Long idUsuario, String tipoDocumento) {
 		String sql = "DELETE from Reservas where ID_USUARIO = " +idUsuario + " AND TIPO_DOCUMENTO_USUARIO = '"+ tipoDocumento+ "'" ;
 		Query q =pm.newQuery(SQL, sql);
 		return  (long) q.execute();
+	}
+
+	public long terminarMantenimiento(PersistenceManager pm, Long num_identidad, String tipo_documento,
+			int numHab) {
+		String sql = "DELETE from Reservas where ID_USUARIO = " +num_identidad + " AND TIPO_DOCUMENTO_USUARIO = '"+ tipo_documento+ 
+				"' AND ID_HABITACION = "+ numHab ;
+		Query q =pm.newQuery(SQL, sql);
+		return  (long) q.execute();
+		
 	}
 }
