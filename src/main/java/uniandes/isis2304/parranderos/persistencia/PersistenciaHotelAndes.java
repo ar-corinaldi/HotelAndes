@@ -43,6 +43,7 @@ import uniandes.isis2304.parranderos.negocio.Usuarios;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sun.org.apache.xml.internal.security.encryption.AgreementMethod;
 
 /**
  * Clase para el manejador de persistencia del proyecto Parranderos
@@ -1044,6 +1045,14 @@ public class PersistenciaHotelAndes
 		{
 			tx.begin();            
 			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, id, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
+			double cuenta =0;
+			if( hab.getTipo_habitacion() == 1) cuenta = 1000;
+			else if( hab.getTipo_habitacion() == 2) cuenta = 500;
+			else if( hab.getTipo_habitacion() == 3) cuenta = 200;
+			else if( hab.getTipo_habitacion() == 4) cuenta = 100;
+			else if( hab.getTipo_habitacion() == 2) cuenta = 750;
+
+			sqlHabitacion.agregarConsumoHabitacion(pm, hab.getNum_hab(), cuenta);
 			tx.commit();
 			return new Reservas(id, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
 		}
@@ -1121,7 +1130,11 @@ public class PersistenciaHotelAndes
 
 		return sqlReserva.darReservaXFechasYNumHab(pmf.getPersistenceManager(), entrada, salida, numHab);
 	}
-
+	
+	public ReservaServicio darReservaServicioXFechasYidSer(Timestamp entrada,
+			Timestamp salida, long id) {
+		return sqlReservaServicio.darReservaServicioXFechasYidSer(pmf.getPersistenceManager(), entrada, salida, id);
+	}
 	/* ****************************************************************
 	 * 			M�todos para manejar los SERVICIOS
 	 *****************************************************************/
@@ -1349,6 +1362,7 @@ public class PersistenciaHotelAndes
 			rta.add(hab);
 			System.out.println(hab);
 		}
+		System.out.println(rta.size());
 		return rta;
 	}
 
@@ -1371,7 +1385,6 @@ public class PersistenciaHotelAndes
 			sqlHabitacion.moverUsuario(pm, nueva.getNum_hab(), anterior.getCuenta_habitacion(), nueva.getTipo_habitacion());
 			sqlHabitacion.moverUsuario(pm, anterior.getNum_hab(), 0.0, anterior.getTipo_habitacion());
 			tx.commit();
-
 			return;
 		}
 		catch (Exception e)
@@ -1470,7 +1483,6 @@ public class PersistenciaHotelAndes
 		{
 			tx.begin();
 			for (Usuarios user : lu) {
-				System.out.println();
 				sqlReserva.registrarSalidaReserva(pm, user.getNum_identidad(), user.getTipo_documento(), new Timestamp(System.currentTimeMillis()), user.getNum_identidad());
 				Reservas r = darReservaPorId(user.getNum_identidad());
 				sqlHabitacion.agregarConsumoHabitacion(pm, r.getId_habitacion(), 0.0);
@@ -1496,6 +1508,8 @@ public class PersistenciaHotelAndes
 		}		
 
 	}
+
+	
 
 
 

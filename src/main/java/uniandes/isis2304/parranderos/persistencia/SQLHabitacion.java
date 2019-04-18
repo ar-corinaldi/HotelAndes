@@ -101,7 +101,7 @@ public class SQLHabitacion
 		//		FROM HABITACIONES 
 		//		WHERE tipo_habitacion = 5 AND ocupada=0
 		//		FETCH FIRST 30 ROWS ONLY;
-		String sql = "SELECT * FROM HABITACIONES WHERE TIPO_HABITACION = "+ tipo +" "
+		String sql = "SELECT * FROM HABITACIONES WHERE TIPO_HABITACION = "+ tipo +" AND CUENTA_HABITACION = 0 "
 				+ "FETCH FIRST "+cantidad+ " ROWS ONLY";
 		Query q = pm.newQuery(SQL, sql);
 		return (List<Object>) q.executeList();
@@ -111,8 +111,9 @@ public class SQLHabitacion
 	public void moverUsuario(PersistenceManager pm, long numHab, double nuevaCuenta, long tipoHab) {
 		String sql = "UPDATE HABITACIONES ";
 		sql += "SET CUENTA_HABITACION = "+nuevaCuenta + " ";
-		sql += "WHERE num_habitacion = "+numHab; 
+		sql += "WHERE num_hab = "+numHab; 
 		Query q = pm.newQuery(SQL, sql);
+		System.out.println(sql);
 		q.executeUnique();
 	}
 

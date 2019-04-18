@@ -439,17 +439,16 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 					int cantidad = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad del tipo "+tipo +"?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 					List<Habitaciones> actual = parranderos.darHabitacionesDisponibles(cantidad, tipo, entrada, salida);
 					listaDeListasDeHabs.addAll(actual);
-					sePuede = actual.size() == cantidad;
+					sePuede = actual.size() >= cantidad;
+					System.out.println("Se puede? "+sePuede);
 				}
 				tiposHab = Integer.parseInt(JOptionPane.showInputDialog (this, "Cuantos tipos de servicio?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 				for( int i=0; i<tiposHab && sePuede; i++ ){
 					long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 					Servicios s = parranderos.darServicio(tipo);
-					System.out.println(s.getCapacidad());
+					System.out.println("Capacidad: "+s.getCapacidad());
 					boolean b2 = s.getCapacidad()>=cantidadPersonas;
-					System.out.println(b2);
 					sePuede = sePuede && b2;
-					sePuede = sePuede && parranderos.verificarServiciosDisponibles(tipo, cantidadPersonas, entrada, salida); 
 					listaReservaServicio.add(new ReservaServicio(indice+i+1, entrada, salida, organizador.getNum_identidad(), organizador.getTipo_documento(), tipo));
 					tiposServ[i]=(int) tipo;
 				}
@@ -554,9 +553,10 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		return user;
 	}
 
-	public void crearMantenimiento(){
+	public void crearMantenimiento() throws Exception {
 
 		Usuarios admin = verificarUsuario(ADMINISTRADOR);
+		if( admin == null )throw new Exception("Admin es null");
 		int num = Integer.parseInt(JOptionPane.showInputDialog(this, "1. Servicio\n2. Habitacion", "Mantenimiento", JOptionPane.OK_OPTION));
 		long servOHab = -1;
 		if( num==1 ){

@@ -53,8 +53,8 @@ public class Reservas implements VOReserva{
 		this.num_personas = numPersonas;
 		this.entrada = entrada;
 		this.salida = salida;
-		check_in = null;
-		check_out = null;
+		check_in = checkIn;
+		check_out = checkOut;
 		setTipo_documento_usuario(tipoDoc);
 		this.setTipo_documento_usuario(tipoDoc);
 		this.setId_habitacion(idHab);

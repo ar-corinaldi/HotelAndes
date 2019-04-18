@@ -1,5 +1,6 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -112,10 +113,8 @@ public class SQLReservaServicio {
 		String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 		String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 
-		String sql =  "SELECT ser.id, ser.nombre, ser.descripcion, ser.costo, ser.cargado_habitacion, ser.capacidad, ser.tipo_servicios ";
-		sql += "FROM  RESERVAS_SERVICIOS, SERVICIOS ser ";
-		sql += "WHERE RESERVAS_SERVICIOS.fecha_inicial BETWEEN "+entradaTS+ " AND "+salidaTS+" AND ser.tipo_servicios = "+tipo + " ";
-		sql += "FETCH FIRST 1 ROW ONLY";		
+		String sql = "SELECT * FROM SERVICIOS WHERE TIPO_SERVICIOS = "+ tipo +" FETCH FIRST "+cantidad+ " ROWS ONLY";
+	
 		System.out.println(sql);
 		Query q = pm.newQuery(SQL, sql);
 
@@ -128,5 +127,31 @@ public class SQLReservaServicio {
 				"' AND ID_SERVICIO = "+idServ;
 		Query q = pm.newQuery(SQL,sql);
         return (long) q.executeUnique();		
+	}
+
+	public ReservaServicio darReservaServicioXFechasYidSer(
+			PersistenceManager pm, Timestamp entrada,
+			Timestamp salida, long idSer) {
+		String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		String sql =  "SELECT * ";
+		sql += "FROM  RESERVAS_SERVICIOS ";
+		sql += "WHERE fecha_inicial >= "+entradaTS+ " AND fecha_final <= "+salidaTS+" AND id_servicio = "+idSer+ " ";
+		sql += "FETCH FIRST 1 ROW ONLY";
+		Query q = pm.newQuery(SQL, sql);
+		Object o =q.executeUnique();
+		Object[] datos = (Object[]) o;
+		ReservaServicio rs = null;
+		if( o!=null ){
+			long id = ((BigDecimal) datos[0]).longValue();
+			Timestamp checkIn= null;
+			if( datos[1] != null ) checkIn = Timestamp.valueOf(datos[1].toString());
+			Timestamp checkOut= null;
+			if( datos[2] != null ) checkOut = Timestamp.valueOf(datos[2].toString());
+			long pUsuario = ((BigDecimal) datos[3]).longValue();
+			String tipoDoc = datos[4].toString();
+			rs= new ReservaServicio(id, checkIn, checkOut, pUsuario, tipoDoc, idSer);
+		}
+		return rs;
 	}
 }

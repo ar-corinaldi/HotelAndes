@@ -150,11 +150,11 @@ public class SQLReserva {
 		String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 		String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 		String sql =  "SELECT hab.num_hab, hab.cuenta_habitacion, hab.tipo_habitacion ";
-		sql += "FROM  RESERVAS, HABITACIONES hab ";
-		sql += "WHERE RESERVAS.entrada <"+entradaTS+ " AND RESERVAS.salida >"+salidaTS+" AND hab.tipo_habitacion = "+tipoHab+ " ";
+		sql += "FROM  HABITACIONES hab ";
+		sql += "WHERE hab.tipo_habitacion = "+tipoHab+ " ";
 		sql += "FETCH FIRST "+cantidad+ " ROWS ONLY";
 		Query q = pm.newQuery(SQL, sql);
-
+		System.out.println(sql);
 		return (List<Object>) q.executeList();
 	}
 
@@ -166,6 +166,7 @@ public class SQLReserva {
 		String sql =  "SELECT * ";
 		sql += "FROM  RESERVAS ";
 		sql += "WHERE RESERVAS.entrada >= "+entradaTS+ " AND RESERVAS.salida <= "+salidaTS+" AND RESERVAS.id_habitacion = "+numHab+ " ";
+		sql += "FETCH FIRST 1 ROW ONLY";
 		Query q = pm.newQuery(SQL, sql);
 		Object o =q.executeUnique();
 		Object[] datos = (Object[]) o;
@@ -174,15 +175,14 @@ public class SQLReserva {
 			long id = ((BigDecimal) datos[0]).longValue();
 			int numPersonas = ((BigDecimal) datos[1]).intValue();
 			Timestamp checkIn= null;
-			if( datos[2] != null ) checkIn = Timestamp.valueOf(datos[2].toString());
+			if( datos[4] != null ) checkIn = Timestamp.valueOf(datos[4].toString());
 			Timestamp checkOut= null;
-			if( datos[3] != null ) checkOut = Timestamp.valueOf(datos[3].toString());
-			long pUsuario = ((BigDecimal) datos[4]).longValue();
-			String tipoDoc = datos[5].toString();
-			long idPlanCons= ((BigDecimal) datos[6]).longValue();
+			if( datos[5] != null ) checkOut = Timestamp.valueOf(datos[5].toString());
+			long pUsuario = ((BigDecimal) datos[6]).longValue();
+			String tipoDoc = datos[7].toString();
+			long idPlanCons= ((BigDecimal) datos[9]).longValue();
 			res= new Reservas(id, numPersonas, entrada, salida, checkIn, checkOut, pUsuario, tipoDoc, numHab, idPlanCons);
 		}
-		System.out.println(res);
 		return res;
 	}
 
