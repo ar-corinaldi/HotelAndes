@@ -1358,6 +1358,7 @@ public class PersistenciaHotelAndes
 	}
 
 	public void cancelarConvencion(Long idConvencion) {
+		
 		sqlConvencion.eliminaConvencionPorId(pmf.getPersistenceManager(), idConvencion);
 	}
 
@@ -1450,12 +1451,61 @@ public class PersistenciaHotelAndes
 	}
 
 	public void terminarMantenimientoHab(Long num_identidad, String tipo_documento, int numHab) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			sqlReserva.terminarMantenimiento(pmf.getPersistenceManager(), num_identidad, tipo_documento, numHab);
 
-		sqlReserva.terminarMantenimiento(pmf.getPersistenceManager(), num_identidad, tipo_documento, numHab);
+			tx.commit();
+			System.out.println("Se registra con exito la salida de todos los usuarios");
+
+			return;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 
 	public void terminarMantenimientoServ(Long num_identidad, String tipo_documento, int idServ) {
-		sqlReservaServicio.terminarMantenimiento(pmf.getPersistenceManager(), num_identidad, tipo_documento, idServ);
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			sqlReservaServicio.terminarMantenimiento(pm, num_identidad, tipo_documento, idServ);
+
+			tx.commit();
+			System.out.println("Se registra con exito la salida de todos los usuarios");
+
+			return;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}		
 	}
 
 	public Producto darProductoPorId(long idProd) {

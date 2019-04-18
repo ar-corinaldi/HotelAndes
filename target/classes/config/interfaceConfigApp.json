@@ -45,6 +45,10 @@
 				{
 					"label": "Registrar Llegada",
 					"event": "registrarLlegadaCliente"
+				},
+				{
+					"label": "Registrar Salida",
+					"event": "registrarSalidaCliente"
 				}
 			]
 		},
@@ -53,7 +57,7 @@
 			[
 				{
 					"label": "Registrar Consumo",
-					"event": "registrarConvencion"
+					"event": "adicionarConsumo"
 				},		
 				{
 					"label": "Buenos Clientes",
@@ -78,7 +82,7 @@
 					"event": "registrarLlegadaConvencion"
 				},
 				{
-					"label": "Terminar Convencion",
+					"label": "Registrar Salida",
 					"event": "registrarSalidaConvencion"
 				}
 			]
