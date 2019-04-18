@@ -827,3 +827,21 @@ java.sql.SQLException: ORA-01017: invalid username/password; logon denied
 20:29:14,614 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
 20:29:14,683 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
 >>>>>>> andres
+20:37:41,050 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+20:37:41,051 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+20:37:41,080 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+20:38:45,566 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error con la ejecucion de Query de SQL "INSERT INTO CONVENCIONES(id, nombre, cantidad_personas, id_plan_consumo, id_usuario, tipo_documento_usuario) values(666, 'satan', 10, 1, 57012, 'pasaporte')".
+ORA-00001: restricción única (ISIS2304B101910.SYS_C00581454) violada
+
+20:40:59,612 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+20:40:59,613 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+20:40:59,659 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+20:48:43,190 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+20:48:43,191 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+20:48:43,219 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+20:50:23,097 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error con la ejecucion de Query de SQL "INSERT INTO RESERVAS_SERVICIOS(id, fecha_inicial, fecha_final, id_usuario, tipo_documento_usuario, id_servicio) values (29, TO_TIMESTAMP('2019-04-20 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), TO_TIMESTAMP('2019-04-28 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), 57012, 'pasaporte', 11)".
+ORA-00001: restricción única (ISIS2304B101910.SYS_C00581460) violada
+
+21:33:34,896 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+21:33:34,897 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+21:33:34,937 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD

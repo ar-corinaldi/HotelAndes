@@ -1572,7 +1572,7 @@ public class PersistenciaHotelAndes
 		LinkedList<Object> clientes = new LinkedList<Object>();
 		for (Object object : buenos) {
 			Object[] cliente = (Object[]) object;
-			if(((BigDecimal) cliente [1]).intValue() >= 40)
+			if(((BigDecimal) cliente [1]).intValue() >= 15000000)
 			{
 				long id = ((BigDecimal) cliente [1]).longValue();
 				String tipoDoc = ((String) cliente [2]) ;
