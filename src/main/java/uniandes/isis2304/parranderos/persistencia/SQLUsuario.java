@@ -149,7 +149,7 @@ public class SQLUsuario {
 //			SELECT max(num_identidad)
 //			FROM USUARIOS 
 //			WHERE num_identidad <= 1000
-			String sql = "SELECT MAX(num_identidad) FROM USUARIOS WHERE num_identidad <= 1000";
+			String sql = "SELECT MAX(num_identidad) FROM USUARIOS WHERE num_identidad < 998";
 			Query q = pm.newQuery(SQL, sql);
 			Object o = q.executeUnique();
 			

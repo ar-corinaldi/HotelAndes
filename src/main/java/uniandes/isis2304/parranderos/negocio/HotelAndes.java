@@ -350,21 +350,27 @@ public class HotelAndes
 			Timestamp salida, long id) throws Exception {
 		if( num==1 ){
 			Servicios s = pp.darServicioPorId(id);
-
+			ReservaServicio rs = pp.darReservaServicioXFechasYidSer(entrada, salida, id);
+			if( rs==null ){
+				adicionarReservaServicio(indiceUltimoUsuario()+1, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id);
+			}
+			else{
+			}
 		}
 		else if( num==2 ){
 			Habitaciones h = pp.darHabitacionPorId(id);
 			Reservas r = pp.darReservaXFechasYNumHab(entrada, salida, id);
-
+			System.out.println("Reserva: "+r);
 			if( r==null ){
 				adicionarReserva(indiceUltimoUsuario()+1, 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
 			}
 			else if( r.getCheck_in() == null ){
+				System.out.println(indiceUltimoUsuario());
 				adicionarReserva(indiceUltimoUsuario()+1, 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
 			}
 			else if( r.getCheck_in() != null && r.getCheck_out() == null ){
-				System.out.println("Entra");
 				moverUsuario( h );
+				adicionarReserva(indiceUltimoUsuario()+1, 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
 			}
 		}
 	}
@@ -372,15 +378,16 @@ public class HotelAndes
 	public void moverUsuario( Habitaciones h ) throws Exception{
 		List<Habitaciones> list = verificarHabitacionesDisponibles(h.getTipo_habitacion(), 1);
 		long i = h.getTipo_habitacion();
-		while( !list.isEmpty() && i > 1 ){
+		while( list.isEmpty() && i > 1 ){
 			list = verificarHabitacionesDisponibles(i--, 1);
 		}
 		if( i==1 )
 			throw new Exception("No hay habitaciones disponibles");
 		else{
 			Habitaciones nueva = list.get(0);
+			System.out.println(nueva);
 			pp.moverUsuario(nueva, h);
-			System.out.println("Su habitacion ");
+			System.out.println("Su habitacion nueva "+ nueva.getNum_hab());
 		}
 	}
 

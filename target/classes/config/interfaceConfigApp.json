@@ -58,10 +58,13 @@
 				{
 					"label": "Registrar Consumo",
 					"event": "adicionarConsumo"
+<<<<<<< HEAD
 				},		
 				{
 					"label": "Buenos Clientes",
 					"event": "buenosClientes"
+=======
+>>>>>>> andres
 				}
 			]
 			
