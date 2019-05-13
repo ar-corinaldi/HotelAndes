@@ -221,7 +221,6 @@ public class SQLReserva {
 		try{
 			Query q = pm.newQuery(SQL, sql);
 			Object o = q.executeUnique();
-			System.out.println("ENTRO2");
 			long id = ((BigDecimal) o).longValue();
 			return id+1;
 		}
@@ -229,6 +228,5 @@ public class SQLReserva {
 			System.out.println(e.getMessage());
 			return 1;
 		}
-
 	}
 }

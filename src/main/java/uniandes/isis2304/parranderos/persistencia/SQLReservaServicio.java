@@ -154,4 +154,18 @@ public class SQLReservaServicio {
 		}
 		return rs;
 	}
+
+	public long darUltimoId(PersistenceManager pm) {
+		String sql = "SELECT MAX(id) FROM RESERVAS_SERVICIOS";
+		try{
+			Query q = pm.newQuery(SQL, sql);
+			Object o = q.executeUnique();
+			long id = ((BigDecimal) o).longValue();
+			return id+1;
+		}
+		catch( Exception e ){
+			System.out.println(e.getMessage());
+			return 1;
+		}
+	}
 }

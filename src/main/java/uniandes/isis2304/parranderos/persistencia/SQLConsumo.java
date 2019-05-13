@@ -1,5 +1,6 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -133,5 +134,19 @@ public class SQLConsumo {
 
 		return q.executeList();
 
+	}
+
+	public long darUltimoId(PersistenceManager pm) {
+		String sql = "SELECT MAX(id) FROM CONSUMOS";
+		try{
+			Query q = pm.newQuery(SQL, sql);
+			Object o = q.executeUnique();
+			long id = ((BigDecimal) o).longValue();
+			return id+1;
+		}
+		catch( Exception e ){
+			System.out.println(e.getMessage());
+			return 1;
+		}
 	}
 }

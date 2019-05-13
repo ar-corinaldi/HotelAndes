@@ -797,13 +797,14 @@ public class PersistenciaHotelAndes
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
 	 */
 
-	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion, double consumo) 
+	public Consumo adicionarConsumo( Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion, double consumo) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
+			long id = sqlConsumo.darUltimoId(pm);
 			long tuplasInsertadas = sqlConsumo.adicionarConsumo(pm, id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion);
 			sqlHabitacion.agregarConsumoHabitacion(pm, id_habitacion, consumo);
 			tx.commit();
@@ -1222,7 +1223,7 @@ public class PersistenciaHotelAndes
 		return list;
 	}
 
-	public ReservaServicio adicionarReservaServicio(long id,
+	public ReservaServicio adicionarReservaServicio(
 			Timestamp fecha_inicial, Timestamp fecha_final, long num_identidad,
 			String tipo_documento, long idServicio) {
 
@@ -1230,7 +1231,8 @@ public class PersistenciaHotelAndes
 		Transaction tx=pm.currentTransaction();
 		try
 		{
-			tx.begin();            
+			tx.begin();
+			long id = sqlReservaServicio.darUltimoId(pm);
 			long tuplasInsertadas = sqlReservaServicio.adicionarReservaServicio(pm, id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
 			tx.commit();
 			ReservaServicio rs = new ReservaServicio(id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);

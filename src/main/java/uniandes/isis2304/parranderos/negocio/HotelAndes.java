@@ -188,7 +188,7 @@ public class HotelAndes
 	/* ****************************************************************
 	 * 			Atributos
 	 *****************************************************************/
-	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion, Usuarios user) throws Exception
+	public Consumo adicionarConsumo( Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion, Usuarios user) throws Exception
 	{
 		Producto prod = pp.darProductoPorId(idProd);
 		Consumo con = null;
@@ -196,7 +196,7 @@ public class HotelAndes
 		if( prod!= null ){
 			Habitaciones hab = pp.darHabitacionPorId(id_habitacion);
 			double nuevaCuenta = hab.getCuenta_habitacion() + prod.getCosto();
-			con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion, nuevaCuenta);
+			con = pp.adicionarConsumo( fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion, nuevaCuenta);
 			System.out.println(con);
 			System.out.println("Cambio de la cuenta de la hab: "+hab.getNum_hab() + " cuenta: "+hab.getCuenta_habitacion());
 		}
@@ -271,10 +271,10 @@ public class HotelAndes
 		return borrrados;
 	}
 
-	public ReservaServicio adicionarReservaServicio(long id,
-			Timestamp fecha_inicial, Timestamp fecha_final, Long num_identidad,
+	public ReservaServicio adicionarReservaServicio( Timestamp fecha_inicial, 
+			Timestamp fecha_final, Long num_identidad,
 			String tipo_documento, long idServicio) {
-		ReservaServicio rs = pp.adicionarReservaServicio(id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
+		ReservaServicio rs = pp.adicionarReservaServicio(fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
 		System.out.println(rs);
 		return rs;
 	}
@@ -352,7 +352,7 @@ public class HotelAndes
 			Servicios s = pp.darServicioPorId(id);
 			ReservaServicio rs = pp.darReservaServicioXFechasYidSer(entrada, salida, id);
 			if( rs==null ){
-				adicionarReservaServicio(indiceUltimoUsuario()+1, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id);
+				adicionarReservaServicio( entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id);
 			}
 			else{
 			}

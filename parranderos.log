@@ -100,3 +100,6 @@ ORA-00001: unique constraint (ISIS2304B101910.SYS_C00581459) violated
 10:17:20,025 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error executing SQL query "INSERT INTO RESERVAS_SERVICIOS(id, fecha_inicial, fecha_final, id_usuario, tipo_documento_usuario, id_servicio) values (15, TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF'), 57012, 'pasaporte', 2)".
 ORA-00001: unique constraint (ISIS2304B101910.SYS_C00581460) violated
 
+10:26:27,865 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+10:26:27,866 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+10:26:27,895 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD

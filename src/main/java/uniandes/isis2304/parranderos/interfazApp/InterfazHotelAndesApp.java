@@ -356,26 +356,24 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		if( consumoOReservaServicio == 1 ){
 
 			try {
-				long id = Long.valueOf(JOptionPane.showInputDialog (this, "id del consumo?", "Adicionar servicio", JOptionPane.OK_OPTION));
 				long idProd = Long.valueOf(JOptionPane.showInputDialog (this, "id del producto?", "Adicionar servicio", JOptionPane.OK_OPTION));
 				long idHab = Long.valueOf(JOptionPane.showInputDialog (this, "id de la habitacion?", "Adicionar servicio", JOptionPane.OK_OPTION));
 
 				Timestamp fecha = new Timestamp(System.currentTimeMillis());
-				Consumo cons = parranderos.adicionarConsumo(id, fecha, cliente.getNum_identidad(), cliente.getTipo_documento(), idProd, idHab, cliente);
+				Consumo cons = parranderos.adicionarConsumo( fecha, cliente.getNum_identidad(), cliente.getTipo_documento(), idProd, idHab, cliente);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 		}
 		else if( consumoOReservaServicio == 2 ){
-			long id = Long.valueOf(JOptionPane.showInputDialog (this, "id del servicio?", "Adicionar servicio", JOptionPane.OK_OPTION));
 			String inicialStr = JOptionPane.showInputDialog (this, "fecha inicial?\n(Ejm: 2019-09-16)", "Adicionar servicio", JOptionPane.OK_OPTION);
 			String finalStr = JOptionPane.showInputDialog (this, "fecha final?(Ejm: 2019-09-23)", "Adicionar servicio", JOptionPane.OK_OPTION);
 			long idServicio = Long.valueOf(JOptionPane.showInputDialog(this, "Servicio?", "Adicionar servicio", JOptionPane.OK_OPTION));
 
 			Timestamp fecha_inicial = Timestamp.valueOf(inicialStr.trim() + " 06:00:00.00");
 			Timestamp fecha_final = Timestamp.valueOf(finalStr.trim() + " 12:00:00.00");
-			ReservaServicio rs = parranderos.adicionarReservaServicio(id, fecha_inicial, fecha_final, cliente.getNum_identidad(), cliente.getTipo_documento(), idServicio);
+			ReservaServicio rs = parranderos.adicionarReservaServicio(fecha_inicial, fecha_final, cliente.getNum_identidad(), cliente.getTipo_documento(), idServicio);
 		}
 
 
