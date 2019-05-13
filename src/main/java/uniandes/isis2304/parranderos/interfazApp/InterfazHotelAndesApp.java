@@ -330,6 +330,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			}else 
 				throw new Exception("La no hay habitaciones dispoinbles del tipo: "+tipo);
 		} catch (Exception e) {
+			panelDatos.actualizarInterfaz("Hubo un error adicionando el consumo\n");
+			panelDatos.actualizarInterfaz(e.getMessage());
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 		}
 	}
@@ -339,7 +341,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		Usuarios cliente = verificarUsuario(CLIENTE);
 		int consumoOReservaServicio = Integer.valueOf(JOptionPane.showInputDialog (this, "1. Consumo\n2. Servicio", "Adicionar servicio", JOptionPane.OK_OPTION));
 		hacerServicio(consumoOReservaServicio, cliente);
-
+		
 
 
 		//		if(ser == null){
@@ -360,8 +362,13 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				long idHab = Long.valueOf(JOptionPane.showInputDialog (this, "id de la habitacion?", "Adicionar servicio", JOptionPane.OK_OPTION));
 
 				Timestamp fecha = new Timestamp(System.currentTimeMillis());
+				String resultado = "Adicionando consumo";
+				panelDatos.actualizarInterfaz(resultado);
 				Consumo cons = parranderos.adicionarConsumo( fecha, cliente.getNum_identidad(), cliente.getTipo_documento(), idProd, idHab, cliente);
+				resultado = "Añadido el consumo \n"+ cons+ "\nAl usuario: "+cliente.getNum_identidad() ;
+				panelDatos.actualizarInterfaz(resultado);
 			} catch (Exception e) {
+				panelDatos.actualizarInterfaz("Hubo un error adicionando el consumo");
 				e.printStackTrace();
 			}
 
@@ -370,10 +377,13 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			String inicialStr = JOptionPane.showInputDialog (this, "fecha inicial?\n(Ejm: 2019-09-16)", "Adicionar servicio", JOptionPane.OK_OPTION);
 			String finalStr = JOptionPane.showInputDialog (this, "fecha final?(Ejm: 2019-09-23)", "Adicionar servicio", JOptionPane.OK_OPTION);
 			long idServicio = Long.valueOf(JOptionPane.showInputDialog(this, "Servicio?", "Adicionar servicio", JOptionPane.OK_OPTION));
-
+			String resultado = "Adicionando servicio";
+			panelDatos.actualizarInterfaz(resultado);
 			Timestamp fecha_inicial = Timestamp.valueOf(inicialStr.trim() + " 06:00:00.00");
 			Timestamp fecha_final = Timestamp.valueOf(finalStr.trim() + " 12:00:00.00");
 			ReservaServicio rs = parranderos.adicionarReservaServicio(fecha_inicial, fecha_final, cliente.getNum_identidad(), cliente.getTipo_documento(), idServicio);
+			resultado = "Añadido el servicio \n"+ rs+ "\nAl usuario: "+cliente.getNum_identidad() ;
+			panelDatos.actualizarInterfaz(resultado);
 		}
 
 

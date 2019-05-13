@@ -178,7 +178,6 @@ public class HotelAndes
 	public Reservas adicionarReserva(int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user, long idPlanCons) throws Exception{
 		Habitaciones habitacion = pp.darHabitacionPorId(numHab);
 		Reservas reserva = pp.adicionarReserva(numPersonas, entrada, salida, checkIn, checkOut, user, habitacion, idPlanCons);
-		System.out.println(reserva);
 		return reserva;
 	}
 

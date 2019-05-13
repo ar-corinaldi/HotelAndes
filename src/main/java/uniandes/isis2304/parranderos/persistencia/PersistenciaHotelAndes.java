@@ -1038,8 +1038,9 @@ public class PersistenciaHotelAndes
 	 * @param idTipoBebida - El identificador del tipo de bebida (Debe existir en la tabla TipoBebida)
 	 * @param gradoAlcohol - El grado de alcohol de la bebida (mayor que 0)
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepci�n
+	 * @throws Exception 
 	 */
-	public Reservas adicionarReserva(int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuarios user, Habitaciones hab, long idPlanCons) 
+	public Reservas adicionarReserva(int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, Usuarios user, Habitaciones hab, long idPlanCons) throws Exception 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
@@ -1047,7 +1048,7 @@ public class PersistenciaHotelAndes
 		{
 			tx.begin();
 			long newId = sqlReserva.darUltimoId(pm);
-			long tuplasInsertadas = sqlReserva.adicionarReserva(pm, newId, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
+			sqlReserva.adicionarReserva(pm, newId, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
 			double cuenta =0;
 			if( hab.getTipo_habitacion() == 1) cuenta = 1000;
 			else if( hab.getTipo_habitacion() == 2) cuenta = 500;
@@ -1057,13 +1058,13 @@ public class PersistenciaHotelAndes
 
 			sqlHabitacion.agregarConsumoHabitacion(pm, hab.getNum_hab(), cuenta);
 			tx.commit();
-			return new Reservas(numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
+			return new Reservas(newId, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
 		}
 		catch (Exception e)
 		{
-			        	e.printStackTrace();
+//			        	e.printStackTrace();
 			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return null;
+			throw new Exception( e.getMessage() );
 		}
 		finally
 		{

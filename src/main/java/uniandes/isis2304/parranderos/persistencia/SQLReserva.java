@@ -54,7 +54,7 @@ public class SQLReserva {
 	 * @param id_habitacion - El id de la habitacion de la  Reserva
 	 * @return El n�mero de tuplas insertadas
 	 */
-	public long adicionarReserva (PersistenceManager pm, long id, int numPersonas,Timestamp entrada,Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long id_habitacion, long id_plan_consumo) 
+	public long adicionarReserva (PersistenceManager pm, long id, int numPersonas,Timestamp entrada,Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long id_habitacion, long id_plan_consumo) throws Exception 
 	{
 		// TO_TIMESTAMP('2019-09-19 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF')
 		String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
@@ -63,8 +63,7 @@ public class SQLReserva {
 		if( checkIn != null ) checkInTS = "TO_TIMESTAMP('"+checkIn.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 		String checkOutTS = null;
 		if( checkOut != null ) checkOutTS = "TO_TIMESTAMP('"+checkOut.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
-
-		Query q = pm.newQuery(SQL, "INSERT INTO " + "RESERVAS" + "(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion, id_plan_consumo) values ("+id +", "
+		String sql = "INSERT INTO " + "RESERVAS" + "(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion, id_plan_consumo) values ("+id +", "
 				+ numPersonas+", "
 				+ entradaTS+", "
 				+ salidaTS+", "
@@ -73,9 +72,34 @@ public class SQLReserva {
 				+ idUsuario+", '"
 				+ tipoDoc+"', "
 				+ id_habitacion+", "
-				+ id_plan_consumo+")");
+				+ id_plan_consumo+")";
+		System.out.println(sql);
 
-		return (long) q.executeUnique();
+		boolean r = verificarReservaExistente( pm,entradaTS, salidaTS,  id_habitacion);
+		if( r )	{
+			Query q = pm.newQuery(SQL, sql);
+			return (long) q.executeUnique();
+		} 
+		else
+			throw new Exception("No hay habitaciones del tipo solicitado para la fecha");
+	
+	}
+
+	private boolean verificarReservaExistente(PersistenceManager pm, String entradaTS, String salidaTS, long idHab) {
+		String sql = "SELECT RESERVAS.ID FROM RESERVAS ";
+		sql += "WHERE RESERVAS.ENTRADA BETWEEN "+ entradaTS+" AND "+ salidaTS + " AND ";
+		sql += "RESERVAS.SALIDA BETWEEN "+ entradaTS + " AND " + salidaTS + " AND ";
+		sql += "ID_HABITACION = "+idHab;
+		
+		System.out.println(sql);
+		Query q = pm.newQuery(SQL, sql);
+		System.out.println("ENtra1");
+		Object o = q.executeUnique();
+		System.out.println("Entra2");
+		System.out.println(o);
+		boolean b = o == null ?  true :  false;
+		System.out.println(b);
+		return b;
 	}
 
 	/**
