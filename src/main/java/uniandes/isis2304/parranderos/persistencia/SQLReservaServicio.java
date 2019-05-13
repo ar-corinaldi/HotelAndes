@@ -53,19 +53,36 @@ public class SQLReservaServicio {
 	 * @param id_plan_consumo - El identificador del plan de consumo de la  Reserva
 	 * @param id_habitacion - El id de la habitacion de la  Reserva
 	 * @return El n�mero de tuplas insertadas
+	 * @throws Exception 
 	 */
-	public long adicionarReservaServicio (PersistenceManager pm, long id, Timestamp fechaInicial, Timestamp fechaFinal, long idUsuario, String tipoDoc, long idServicio) 
+	public long adicionarReservaServicio (PersistenceManager pm, long id, Timestamp fechaInicial, Timestamp fechaFinal, long idUsuario, String tipoDoc, long idServicio) throws Exception 
 	{
 		String fechaInicialTS = "TO_TIMESTAMP('"+fechaInicial.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 		String fechaFinalTS = "TO_TIMESTAMP('"+fechaFinal.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
-
+		boolean b = verificarReservaServicioExistente(pm, fechaInicialTS, fechaFinalTS, idServicio);
 		Query q = pm.newQuery(SQL, "INSERT INTO " + "RESERVAS_SERVICIOS" + "(id, fecha_inicial, fecha_final, id_usuario, tipo_documento_usuario, id_servicio) values ("+id+", "
 				+ fechaInicialTS+", "
 				+ fechaFinalTS+", "
 				+ idUsuario+", '"
 				+ tipoDoc+"', "
 				+ idServicio+")");
-		return (long) q.executeUnique();
+		if( b ) return (long) q.executeUnique();
+		else throw new Exception("Ya existe una reserva para el servicio "+idServicio + " para esa fecha");
+		
+	}
+	
+	private boolean verificarReservaServicioExistente(PersistenceManager pm, String entradaTS, String salidaTS, long idServ) {
+		String sql = "SELECT id FROM RESERVAS_SERVICIOS ";
+		sql += "WHERE FECHA_INICIAL BETWEEN "+ entradaTS+" AND "+ salidaTS + " AND ";
+		sql += "FECHA_FINAL BETWEEN "+ entradaTS + " AND " + salidaTS + " AND ";
+		sql += "ID_SERVICIO = "+idServ;
+		
+		System.out.println(sql);
+		Query q = pm.newQuery(SQL, sql);
+		Object o = q.executeUnique();
+		boolean b = o == null ?  true :  false;
+		System.out.println(b);
+		return b;
 	}
 
 	/**

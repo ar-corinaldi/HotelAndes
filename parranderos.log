@@ -106,3 +106,25 @@ ORA-00001: unique constraint (ISIS2304B101910.SYS_C00581460) violated
 12:16:27,011 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
 12:16:27,012 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
 12:16:27,033 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:26:45,070 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:26:45,071 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:26:45,092 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+12:27:59,127 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+12:27:59,128 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+12:27:59,150 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+14:52:41,444 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+14:52:41,447 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+14:52:41,476 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+14:53:16,014 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error executing SQL query "SELECT RESERVAS.ID FROM RESERVAS_SERVICIOS WHERE FECHA_INICIAL BETWEEN TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND FECHA_FINAL BETWEEN TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND ID_SERVICIO = 3".
+ORA-00904: "RESERVAS"."ID": invalid identifier
+
+14:58:03,129 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+14:58:03,129 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+14:58:03,151 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+14:58:41,977 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Ya existe una reserva para el servicio 3 para esa fecha
+
+14:59:32,794 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+14:59:32,795 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+14:59:32,816 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+15:00:00,769 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Ya existe una reserva para el servicio 3 para esa fecha
+

@@ -272,7 +272,7 @@ public class HotelAndes
 
 	public ReservaServicio adicionarReservaServicio( Timestamp fecha_inicial, 
 			Timestamp fecha_final, Long num_identidad,
-			String tipo_documento, long idServicio) {
+			String tipo_documento, long idServicio) throws Exception {
 		ReservaServicio rs = pp.adicionarReservaServicio(fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
 		System.out.println(rs);
 		return rs;

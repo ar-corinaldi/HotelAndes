@@ -93,10 +93,7 @@ public class SQLReserva {
 		
 		System.out.println(sql);
 		Query q = pm.newQuery(SQL, sql);
-		System.out.println("ENtra1");
 		Object o = q.executeUnique();
-		System.out.println("Entra2");
-		System.out.println(o);
 		boolean b = o == null ?  true :  false;
 		System.out.println(b);
 		return b;

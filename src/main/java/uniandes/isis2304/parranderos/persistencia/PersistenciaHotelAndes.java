@@ -1226,7 +1226,7 @@ public class PersistenciaHotelAndes
 
 	public ReservaServicio adicionarReservaServicio(
 			Timestamp fecha_inicial, Timestamp fecha_final, long num_identidad,
-			String tipo_documento, long idServicio) {
+			String tipo_documento, long idServicio) throws Exception {
 
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
@@ -1243,7 +1243,7 @@ public class PersistenciaHotelAndes
 		{
 			//        	e.printStackTrace();
 			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return null;
+			throw new Exception(e.getMessage());
 		}
 		finally
 		{
