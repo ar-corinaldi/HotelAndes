@@ -82,7 +82,7 @@ public class SQLReserva {
 		} 
 		else
 			throw new Exception("No hay habitaciones del tipo solicitado para la fecha");
-	
+
 	}
 
 	private boolean verificarReservaExistente(PersistenceManager pm, String entradaTS, String salidaTS, long idHab) {
@@ -90,7 +90,7 @@ public class SQLReserva {
 		sql += "WHERE RESERVAS.ENTRADA BETWEEN "+ entradaTS+" AND "+ salidaTS + " AND ";
 		sql += "RESERVAS.SALIDA BETWEEN "+ entradaTS + " AND " + salidaTS + " AND ";
 		sql += "ID_HABITACION = "+idHab;
-		
+
 		System.out.println(sql);
 		Query q = pm.newQuery(SQL, sql);
 		Object o = q.executeUnique();
@@ -226,15 +226,37 @@ public class SQLReserva {
 		Query q = pm.newQuery(SQL, sql);
 		q.executeUnique();
 	}
-	public void registrarSalidaReserva(PersistenceManager pm, long idUsuario, String tipoDoc, Timestamp salida, long idRes) {
+
+	public void registrarSalidaReserva(PersistenceManager pm, long idUsuario, String tipoDoc, Timestamp salida, long idRes) throws Exception {
 		String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 
+		boolean b = verificaCheckIn(pm, idRes, idUsuario, tipoDoc);
+		
 		String sql = "UPDATE RESERVAS ";
 		sql += "SET check_out = "+salidaTS+" ";
-		sql += "WHERE id = "+idRes+" AND id_usuario = "+idUsuario+ " AND tipo_documento_usuario = '"+tipoDoc+"'";
+		sql += "WHERE id = "+idRes+" AND id_usuario = "+idUsuario+ " AND tipo_documento_usuario = '"+tipoDoc+"' AND check_in IS NOT null";
+		System.out.println(sql);
+		if( b )	{
+			Query q = pm.newQuery(SQL, sql);
+			q.executeUnique();
+		} 
+		else
+			throw new Exception("El usuario no ha hecho el check in o el usuario no se encuentra en la base de datos o la reserva no se encuentra");
+	}
+
+	private boolean verificaCheckIn(PersistenceManager pm, long idRes,
+			long idUsuario, String tipoDoc) {
+		String sql = "SELECT ID FROM RESERVAS ";
+		sql += "WHERE id = "+ idRes +" AND id_usuario = "+ idUsuario + " AND ";
+		sql += "tipo_documento_usuario = '"+ tipoDoc + "' AND ";
+		sql += "check_in IS NOT NULL";
+
 		System.out.println(sql);
 		Query q = pm.newQuery(SQL, sql);
-		q.executeUnique();
+		Object o = q.executeUnique();
+		boolean b = o == null ?  false :  true;
+		System.out.println(b);
+		return b;
 	}
 
 	public long darUltimoId(PersistenceManager pm) {

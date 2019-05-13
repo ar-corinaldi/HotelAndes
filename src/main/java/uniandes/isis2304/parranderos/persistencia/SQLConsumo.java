@@ -62,7 +62,7 @@ public class SQLConsumo {
 	public long adicionarConsumo (PersistenceManager pm, long id, Timestamp fecha, long id_usuario, 
 			String tipo_documento_usuario,long id_producto, long id_habitacion){
 		String fechaTS = "TO_TIMESTAMP('"+fecha.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
-
+//		verificarCheckIn
 		Query q = pm.newQuery(SQL, "INSERT INTO " +  "CONSUMOS" + "(id, fecha, id_usuario, tipo_documento_usuario, id_producto, id_habitacion) values ("+ id +", "
 				+ fechaTS+", "
 				+ id_usuario +", '"

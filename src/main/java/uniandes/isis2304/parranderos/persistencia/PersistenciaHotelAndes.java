@@ -1442,14 +1442,18 @@ public class PersistenciaHotelAndes
 	}
 
 	public void registrarSalidaReserva(Long num_identidad,
-			String tipo_documento, Timestamp salida, long idRes) {
+			String tipo_documento, Timestamp salida, long idRes) throws Exception {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();
-			sqlReserva.registrarLlegadaReserva(pm, num_identidad, tipo_documento, salida, idRes);
+			sqlReserva.registrarSalidaReserva(pm, num_identidad, tipo_documento, salida, idRes);
+			Reservas res = sqlReserva.darReservaPorId(pm, idRes);
+			
 			System.out.println("Reserva con id: "+idRes+" ha sido editada");
+			sqlHabitacion.agregarConsumoHabitacion(pm, res.getId_habitacion(), 0);
+
 			tx.commit();
 
 			return;
@@ -1458,7 +1462,7 @@ public class PersistenciaHotelAndes
 		{
 			//        	e.printStackTrace();
 			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return;
+			throw new Exception(e.getMessage());
 		}
 		finally
 		{

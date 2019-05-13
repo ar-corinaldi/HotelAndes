@@ -408,6 +408,26 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		}
 
 	}
+	
+	public void registrarSalidaCliente(){
+		try{
+			Usuarios recepcionista = verificarUsuario(RECEPCIONISTA);
+
+			Usuarios cliente = verificarUsuario(CLIENTE);
+			String resultado = "El recepcionista "+recepcionista.getNum_identidad() + "\n";
+			resultado += "Da salida al cliente "+cliente.getNum_identidad() + "\n";
+			long idRes = Long.valueOf(JOptionPane.showInputDialog(this, "Id de la reserva?", "Salida Cliente", JOptionPane.OK_OPTION));
+			Timestamp ts = new Timestamp(System.currentTimeMillis());
+			parranderos.registrarSalidaReserva(cliente.getNum_identidad(), cliente.getTipo_documento(), ts, idRes);
+			resultado += "La fecha de llegada fue: "+ ts.toString();
+			panelDatos.actualizarInterfaz(resultado);
+		} catch(Exception e){
+			String resultado = "Hubo un error registrando le llegada del cliente\n"+e.getMessage();
+			panelDatos.actualizarInterfaz(resultado);
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+			//				e.printStackTrace();
+		}
+	}
 
 	public void registrarConsumoCliente(){
 	}

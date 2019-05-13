@@ -395,7 +395,7 @@ public class HotelAndes
 	}
 
 	public void registrarSalidaReserva(Long num_identidad,
-			String tipo_documento, Timestamp salida, long idRes) {
+			String tipo_documento, Timestamp salida, long idRes) throws Exception {
 		pp.registrarSalidaReserva(num_identidad, tipo_documento, salida, idRes);
 
 	}
