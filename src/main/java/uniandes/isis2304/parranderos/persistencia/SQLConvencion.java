@@ -1,5 +1,6 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -95,6 +96,21 @@ public class SQLConvencion {
 		Query q = pm.newQuery(SQL, "SELECT * FROM " +"CONVENCIONES");
 		q.setResultClass(Convencion.class);
 		return (List<Convencion>) q.executeList();
+	}
+
+
+	public long darUltimoId(PersistenceManager pm) {
+		String sql = "SELECT MAX(id) FROM CONVENCIONES";
+		try{
+			Query q = pm.newQuery(SQL, sql);
+			Object o = q.executeUnique();
+			long id = ((BigDecimal) o).longValue();
+			return id+1;
+		}
+		catch( Exception e ){
+			System.out.println(e.getMessage());
+			return 1;
+		}
 	}
 
 }

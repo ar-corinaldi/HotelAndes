@@ -1234,7 +1234,7 @@ public class PersistenciaHotelAndes
 		{
 			tx.begin();
 			long id = sqlReservaServicio.darUltimoId(pm);
-			long tuplasInsertadas = sqlReservaServicio.adicionarReservaServicio(pm, id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
+			sqlReservaServicio.adicionarReservaServicio(pm, id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
 			tx.commit();
 			ReservaServicio rs = new ReservaServicio(id, fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
 			return rs;
@@ -1255,15 +1255,16 @@ public class PersistenciaHotelAndes
 		}
 	}
 
-	public Convencion adicionarConvencion(long id, String nombre2,
+	public Convencion adicionarConvencion( String nombre2,
 			int cantidadPersonas, long idPlanCons, long idUsuario, 
 			String tipo_documento) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
-			tx.begin();            
-			long tuplasInsertadas = sqlConvencion.adicionarConvencion(pm, id, nombre2, cantidadPersonas, idPlanCons, idUsuario, tipo_documento);
+			tx.begin();     
+			long id = sqlConvencion.darUltimoId(pm);
+			sqlConvencion.adicionarConvencion(pm, id, nombre2, cantidadPersonas, idPlanCons, idUsuario, tipo_documento);
 			tx.commit();
 			Convencion con = new Convencion(id, nombre2, cantidadPersonas, idPlanCons, idUsuario, tipo_documento);
 			return con;
@@ -1325,10 +1326,10 @@ public class PersistenciaHotelAndes
 		Transaction tx=pm.currentTransaction();
 		try
 		{
-			long resp = 0;
 			tx.begin();
 			for (ReservaServicio rs : lrs) {
-				resp += sqlReservaServicio.adicionarReservaServicio(pm, rs.getId(), rs.getFecha_inicial(), rs.getFecha_final(), rs.getId_usuario(), rs.getTipo_documento_usuario(), idServ);
+				long id = sqlReservaServicio.darUltimoId(pm);
+				sqlReservaServicio.adicionarReservaServicio(pm, id, rs.getFecha_inicial(), rs.getFecha_final(), rs.getId_usuario(), rs.getTipo_documento_usuario(), idServ);
 			}
 
 			tx.commit();
@@ -1563,12 +1564,6 @@ public class PersistenciaHotelAndes
 		}		
 
 	}
-
-	
-
-
-
-
 
 	public List<Object> buscarBuenosClientesPorConsumo() {
 

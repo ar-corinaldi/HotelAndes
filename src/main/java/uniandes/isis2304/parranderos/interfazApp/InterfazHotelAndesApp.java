@@ -415,7 +415,6 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	}
 
 	public void registrarConvencion(){
-		System.out.println("Registrar Convencion");
 		Usuarios organizador = verificarUsuario(ORGANIZADOR);
 		if( organizador == null){
 			JOptionPane.showMessageDialog(this,"Organizador no existe", "Error", JOptionPane.WARNING_MESSAGE);
@@ -424,7 +423,6 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				boolean sePuede = true;
 				int[] tiposServ = new int[20];
 				int indice = (int)parranderos.indiceUltimoUsuario();
-				long id = Long.valueOf(JOptionPane.showInputDialog (this, "id convencion?", "Registrar convencion", JOptionPane.QUESTION_MESSAGE));
 				String nombre = JOptionPane.showInputDialog (this, "Nombre?", "Registra convencion", JOptionPane.QUESTION_MESSAGE);
 				int cantidadPersonas = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad personas?\nRecuerda que solo se generaran\n"+(1000-indice), "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 				long idPlanCons = Long.valueOf(JOptionPane.showInputDialog (this, "Plan de consumo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
@@ -458,11 +456,11 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(this, "No hay suficientes habitaciones o servicios", "Error", JOptionPane.WARNING_MESSAGE);
 				} else{
 
-					Convencion conv = parranderos.adicionarConvencion(id, nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
+					Convencion conv = parranderos.adicionarConvencion( nombre, cantidadPersonas, idPlanCons, organizador.getNum_identidad(), organizador.getTipo_documento() );
 
 
 					for(int i=0; i<cantidadPersonas-1; i++){
-						Usuarios user = new Usuarios((long) (indice+i+1), "cedula", nombre, nombre, 5, id);
+						Usuarios user = new Usuarios((long) (indice+i+1), "cedula", nombre, nombre, 5, conv.getId());
 						parranderos.adicionarUsuario(user);
 						Reservas r = parranderos.adicionarReserva( 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);				
 

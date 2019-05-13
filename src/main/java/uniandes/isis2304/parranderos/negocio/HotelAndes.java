@@ -278,10 +278,10 @@ public class HotelAndes
 		return rs;
 	}
 
-	public Convencion adicionarConvencion(long id, String nombre2,
+	public Convencion adicionarConvencion( String nombre2,
 			int cantidadPersonas, long idPlanCons, Long num_identidad, String tipo_documento
 			) {
-		Convencion conv = pp.adicionarConvencion(id, nombre2, cantidadPersonas, idPlanCons, num_identidad,  tipo_documento);
+		Convencion conv = pp.adicionarConvencion( nombre2, cantidadPersonas, idPlanCons, num_identidad,  tipo_documento);
 		System.out.println(conv);
 		return conv;
 	}
