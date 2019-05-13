@@ -907,7 +907,7 @@ public class PersistenciaHotelAndes
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion);
+			sqlUsuario.adicionarUsuario(pm, num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion);
 			tx.commit();
 			Usuarios usuario = new Usuarios(num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion);
 			return usuario;
@@ -1265,6 +1265,7 @@ public class PersistenciaHotelAndes
 			tx.begin();     
 			long id = sqlConvencion.darUltimoId(pm);
 			sqlConvencion.adicionarConvencion(pm, id, nombre2, cantidadPersonas, idPlanCons, idUsuario, tipo_documento);
+			
 			tx.commit();
 			Convencion con = new Convencion(id, nombre2, cantidadPersonas, idPlanCons, idUsuario, tipo_documento);
 			return con;
