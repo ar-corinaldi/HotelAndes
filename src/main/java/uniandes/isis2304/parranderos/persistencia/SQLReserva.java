@@ -135,8 +135,8 @@ public class SQLReserva {
 		q.setParameters(id);
 		return q.executeList();
 	}
-	
-	
+
+
 	public long eliminarReservasUsuario(PersistenceManager pm, Long idUsuario, String tipoDocumento) {
 		String sql = "DELETE from Reservas where ID_USUARIO = " +idUsuario + " AND TIPO_DOCUMENTO_USUARIO = '"+ tipoDocumento+ "'" ;
 		Query q =pm.newQuery(SQL, sql);
@@ -192,7 +192,7 @@ public class SQLReserva {
 				"' AND ID_HABITACION = "+ numHab ;
 		Query q =pm.newQuery(SQL, sql);
 		return  (long) q.execute();
-		
+
 	}
 
 	public void registrarLlegadaReserva(PersistenceManager pm, long idUsuario, String tipoDoc, Timestamp llegada, long idRes) {
@@ -214,5 +214,21 @@ public class SQLReserva {
 		System.out.println(sql);
 		Query q = pm.newQuery(SQL, sql);
 		q.executeUnique();
+	}
+
+	public long darUltimoId(PersistenceManager pm) {
+		String sql = "SELECT MAX(id) FROM RESERVAS";
+		try{
+			Query q = pm.newQuery(SQL, sql);
+			Object o = q.executeUnique();
+			System.out.println("ENTRO2");
+			long id = ((BigDecimal) o).longValue();
+			return id+1;
+		}
+		catch( Exception e ){
+			System.out.println(e.getMessage());
+			return 1;
+		}
+
 	}
 }

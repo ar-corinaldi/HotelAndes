@@ -175,9 +175,9 @@ public class HotelAndes
 	/* ****************************************************************
 	 * 			RESERVA
 	 *****************************************************************/
-	public Reservas adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user, long idPlanCons) throws Exception{
+	public Reservas adicionarReserva(int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user, long idPlanCons) throws Exception{
 		Habitaciones habitacion = pp.darHabitacionPorId(numHab);
-		Reservas reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, checkIn, checkOut, user, habitacion, idPlanCons);
+		Reservas reserva = pp.adicionarReserva(numPersonas, entrada, salida, checkIn, checkOut, user, habitacion, idPlanCons);
 		System.out.println(reserva);
 		return reserva;
 	}
@@ -362,15 +362,15 @@ public class HotelAndes
 			Reservas r = pp.darReservaXFechasYNumHab(entrada, salida, id);
 			System.out.println("Reserva: "+r);
 			if( r==null ){
-				adicionarReserva(indiceUltimoUsuario()+1, 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
+				adicionarReserva( 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
 			}
 			else if( r.getCheck_in() == null ){
 				System.out.println(indiceUltimoUsuario());
-				adicionarReserva(indiceUltimoUsuario()+1, 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
+				adicionarReserva( 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
 			}
 			else if( r.getCheck_in() != null && r.getCheck_out() == null ){
 				moverUsuario( h );
-				adicionarReserva(indiceUltimoUsuario()+1, 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
+				adicionarReserva( 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
 			}
 		}
 	}

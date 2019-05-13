@@ -60,6 +60,19 @@ public class Reservas implements VOReserva{
 		this.setId_habitacion(idHab);
 		this.id_plan_consumo = idPlanCons;
 	}
+	
+	public Reservas(int numPersonas,Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long pUsuario, String tipoDoc, long idHab, long idPlanCons) {
+		super();
+		this.num_personas = numPersonas;
+		this.entrada = entrada;
+		this.salida = salida;
+		check_in = checkIn;
+		check_out = checkOut;
+		setTipo_documento_usuario(tipoDoc);
+		this.setTipo_documento_usuario(tipoDoc);
+		this.setId_habitacion(idHab);
+		this.id_plan_consumo = idPlanCons;
+	}
 
 	/******************************************************************************
 	 * METODOS

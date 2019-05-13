@@ -57,6 +57,7 @@ import uniandes.isis2304.parranderos.negocio.Convencion;
 import uniandes.isis2304.parranderos.negocio.Habitaciones;
 import uniandes.isis2304.parranderos.negocio.HotelAndes;
 import uniandes.isis2304.parranderos.negocio.ReservaServicio;
+import uniandes.isis2304.parranderos.negocio.Reservas;
 import uniandes.isis2304.parranderos.negocio.Servicios;
 import uniandes.isis2304.parranderos.negocio.Usuarios;
 import uniandes.isis2304.parranderos.negocio.VOReserva;
@@ -304,22 +305,28 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	}
 
 	public void adicionarReserva(){
-		System.out.println("Adivionar Reserva");
 		Usuarios cliente = verificarUsuario(CLIENTE);
-
-		long id = Long.valueOf(JOptionPane.showInputDialog (this, "id de la reserva?", "Adicionar reserva", JOptionPane.OK_OPTION));
-		int numPersonas = Integer.valueOf(JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION));
-		String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Adicionar reserva", JOptionPane.OK_OPTION);
-		String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2019-09-23)", "Adicionar reserva", JOptionPane.OK_OPTION);
-		long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "tipo hab?", "Adicionar reserva", JOptionPane.OK_OPTION));
-		long idPlanCons = Long.valueOf(JOptionPane.showInputDialog (this, "plan consumo id?(0 si no tiene)", "Adicionar reserva", JOptionPane.OK_OPTION));
 		try {
+			int numPersonas = Integer.valueOf(JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION));
+			String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Adicionar reserva", JOptionPane.OK_OPTION);
+			String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2019-09-23)", "Adicionar reserva", JOptionPane.OK_OPTION);
+			long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "tipo hab?", "Adicionar reserva", JOptionPane.OK_OPTION));
+			long idPlanCons = Long.valueOf(JOptionPane.showInputDialog (this, "plan consumo id?(0 si no tiene)", "Adicionar reserva", JOptionPane.OK_OPTION));
+
 			Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
 			Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
+			String resultado = "Verificando habitaciones disponibles\n";
+			panelDatos.actualizarInterfaz(resultado);
 			List<Habitaciones> habs = parranderos.verificarHabitacionesDisponibles(tipo, 1);
+			resultado += "Hay "+habs.size() + " habitaciones disponibles\n";
+			panelDatos.actualizarInterfaz(resultado);
 			if( habs.size()==1 ) {
 				Habitaciones hab = habs.get(0);
-				parranderos.adicionarReserva(id, numPersonas, entrada, salida, null, null, cliente.getNum_identidad(), cliente.getTipo_documento(), hab.getNum_hab(), cliente, idPlanCons);
+				resultado+="Adicionando reserva\n";
+				Reservas r = parranderos.adicionarReserva( numPersonas, entrada, salida, null, null, cliente.getNum_identidad(), cliente.getTipo_documento(), hab.getNum_hab(), cliente, idPlanCons);
+				resultado+="Reserva adicionada!\n";
+				resultado += r;
+				panelDatos.actualizarInterfaz(resultado);
 			}else 
 				throw new Exception("La no hay habitaciones dispoinbles del tipo: "+tipo);
 		} catch (Exception e) {
@@ -437,12 +444,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 					for(int i=0; i<cantidadPersonas-1; i++){
 						Usuarios user = new Usuarios((long) (indice+i+1), "cedula", nombre, nombre, 5, id);
 						parranderos.adicionarUsuario(user);
-						parranderos.adicionarReserva((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
-						//						listaUsuarios.add(user)
-						//						} 
-						//						parranderos.adicionarUsuarios(listaUsuarios);
-						//						parranderos.adicionarReservas((long)indice+i+1, 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);
-						//						
+						Reservas r = parranderos.adicionarReserva( 1, entrada, salida, null, null, (long)(indice+i+1), "cedula", listaDeListasDeHabs.get(i).getNum_hab(), user, idPlanCons);				
+
 					} 
 					for(int j=0; j<tiposHab; j++){
 						parranderos.reservarServicios(listaReservaServicio, tiposServ[j]);
@@ -592,7 +595,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		try 
 		{
 			System.out.println("buscando buenos clientes...");
-			
+
 			for (Object id : parranderos.buscarBuenosClientesPorConsumo()) 
 			{
 				Object[] cosa = (Object[])id;
