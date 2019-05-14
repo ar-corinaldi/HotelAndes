@@ -204,7 +204,8 @@ public class HotelAndes
 	}
 
 	public Usuarios darUsuario(long id, String tipoDoc) throws Exception{
-		if( tipoDoc == Usuarios.CEDULA || tipoDoc == Usuarios.PASAPORTE ){
+		System.out.println(tipoDoc);
+		if( !(tipoDoc.equals( Usuarios.CEDULA ) || tipoDoc.equals(Usuarios.PASAPORTE)) ){
 			throw new Exception("No existe tal tipo de documento "+tipoDoc);
 		}
 		Usuarios usuario = pp.darUsuarioPorId(id, tipoDoc);

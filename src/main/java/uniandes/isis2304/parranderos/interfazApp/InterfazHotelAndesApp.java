@@ -275,11 +275,24 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		try 
 		{
 			JOptionPane.showConfirmDialog(this, "Antes recuerda que hay 5 tipos de usuario:\n1. gerente\n2.administrador\n3. recepcionista\n4. empleado\n5.cliente", "Adicionar cliente",JOptionPane.INFORMATION_MESSAGE);
-			String num_identidad = JOptionPane.showInputDialog (this, "id?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
-			String tipo_documento = JOptionPane.showInputDialog (this, "tipo doc?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
-			String nombre = JOptionPane.showInputDialog (this, "Nombre?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
-			String apellido = JOptionPane.showInputDialog (this, "Apellido?", "AAdicionar cliente", JOptionPane.QUESTION_MESSAGE);
-			String tipo_usuario = JOptionPane.showInputDialog (this, "tipo usuario?", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
+			String num_identidad = JOptionPane.showInputDialog (this, "Numeor de identificacion?", "Adicionar usuario", JOptionPane.QUESTION_MESSAGE);
+			String tipo_documento = (String) JOptionPane.showInputDialog(this,
+					   "Seleccione la unidad de tiempo",
+					   "Analizar la operacion de Hotel Andes",
+					   JOptionPane.QUESTION_MESSAGE,
+					   null,  // null para icono defecto
+					   new String[] { "cedula", "pasaporte" }, 
+					   "cedula");			String nombre = JOptionPane.showInputDialog (this, "Nombre?", "Adicionar usuario", JOptionPane.QUESTION_MESSAGE);
+			String apellido = JOptionPane.showInputDialog (this, "Apellido?", "AAdicionar usuario", JOptionPane.QUESTION_MESSAGE);
+			String tipo_usuario = (String) JOptionPane.showInputDialog(this,
+					   "Seleccione la unidad de tiempo",
+					   "Analizar la operacion de Hotel Andes",
+					   JOptionPane.QUESTION_MESSAGE,
+					   null,  // null para icono defecto
+					   new String[] { "1. gerente", "2. administrador", "3. recepcionista", 
+					"4. empleado", "5. cliente", "6. organizador" }, 
+					   "1. gerente");
+			tipo_usuario = tipo_usuario.split(". ")[0];
 			String id_convencion = JOptionPane.showInputDialog(this, "Convencion? (0)", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
 			if (num_identidad != null)
 			{
@@ -289,8 +302,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				{
 					throw new Exception ("No se pudo crear un tipo de bebida con nombre: " + nombre);
 				}
-				String resultado = "En adicionarTipoBebida\n\n";
-				resultado += "Tipo de bebida adicionado exitosamente: " + user;
+				String resultado = "En adicionarUsuario\n\n";
+				resultado += "Usuario adicionado exitosamente: " + user;
 				resultado += "\n Operaci�n terminada";
 				panelDatos.actualizarInterfaz(resultado);
 			}
@@ -570,9 +583,16 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			Usuarios user =null;
 			
 			String numIden = JOptionPane.showInputDialog (this, "numero identificacion?", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
-			String tipoDoc = JOptionPane.showInputDialog (this, "tipo documento?\ncedula\npasaporte", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
+			String tipoDoc = (String) JOptionPane.showInputDialog(this,
+					   "Seleccione la unidad de tiempo",
+					   "Analizar la operacion de Hotel Andes",
+					   JOptionPane.QUESTION_MESSAGE,
+					   null,  // null para icono defecto
+					   new String[] { "cedula", "pasaporte" }, 
+					   "cedula");
 			
 			user = parranderos.darUsuario(Long.valueOf(numIden), tipoDoc);
+			
 			if( user.getTipo_usuario() == tipoUsuario ){
 				return user;
 			} 
