@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.jdo.JDODataStoreException;
 import javax.swing.ImageIcon;
@@ -307,10 +308,16 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	public void adicionarReserva(){
 		try {
 			Usuarios cliente = verificarUsuario(CLIENTE);
-
+			
+			int mes1 = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+			int dia1 = ThreadLocalRandom.current().nextInt(1, 15 + 1);
+			
+			int mes2 = ThreadLocalRandom.current().nextInt(mes1, 12 + 1);
+			int dia2 = ThreadLocalRandom.current().nextInt(dia1, 28 + 1);
+			
 			int numPersonas = Integer.valueOf(JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION));
-			String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-09-16)", "Adicionar reserva", JOptionPane.OK_OPTION);
-			String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?(Ejm: 2019-09-23)", "Adicionar reserva", JOptionPane.OK_OPTION);
+			String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-"+mes1+"-"+dia1+")", "Adicionar reserva", JOptionPane.OK_OPTION);
+			String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?\n(Ejm: 2019-"+mes2+"-"+dia2+")", "Adicionar reserva", JOptionPane.OK_OPTION);
 			long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "tipo hab?", "Adicionar reserva", JOptionPane.OK_OPTION));
 			long idPlanCons = Long.valueOf(JOptionPane.showInputDialog (this, "plan consumo id?(0 si no tiene)", "Adicionar reserva", JOptionPane.OK_OPTION));
 
@@ -426,9 +433,6 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 			//				e.printStackTrace();
 		}
-	}
-
-	public void registrarConsumoCliente(){
 	}
 
 	public void registrarConvencion(){
@@ -629,11 +633,55 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				}
 			}
 		} catch(Exception e){
-			panelDatos.actualizarInterfaz("Hubo un error registrando le llegada del cliente\n");
-			panelDatos.actualizarInterfaz(e.getMessage());
+			String resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();
+			panelDatos.actualizarInterfaz(resultado);
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 			//				e.printStackTrace();
 		}
+	}
+	
+	public void analizarOperacionesDeHoteles(){
+		String resultado = "";
+		try{
+			Object seleccion = JOptionPane.showInputDialog(this,
+					   "Seleccione la unidad de tiempo",
+					   "Analizar la operacion de Hotel Andes",
+					   JOptionPane.QUESTION_MESSAGE,
+					   null,  // null para icono defecto
+					   new Object[] { "Semana", "Mes" }, 
+					   "Semana");
+			System.out.println("El usuario ha elegido "+seleccion);
+			resultado = "El usuario ha elegido "+seleccion;
+			
+			String tipoTiempo = seleccion.equals("Semana") ? "WW" : "MM";
+
+			seleccion = JOptionPane.showInputDialog(this,
+					   "Tipo de habitacion",
+					   "Analizar la operacion de Hotel Andes",
+					   JOptionPane.QUESTION_MESSAGE,
+					   null,  // null para icono defecto
+					   new Object[] { 1, 2, 3, 4, 5 }, 
+					   1);
+			
+			int tipoHab = (int) seleccion;
+			System.out.println("El usuario ha elegido "+seleccion);
+			resultado = "El usuario ha elegido el tipo de habitacion"+seleccion;
+			
+			long idServicio = Long.valueOf(JOptionPane.showInputDialog(this, "Servicio (Ejm: 3. (1-12))?", "Adicionar servicio", JOptionPane.OK_OPTION));
+			System.out.println("El usuario ha elegido "+idServicio);
+			resultado = "El usuario ha elegido "+idServicio;
+			
+			Object[] o = parranderos.reqFC6( tipoHab, idServicio, tipoTiempo );
+			resultado = "Con un total de reservas de "+o[0] + ", \nla semana "+o[2] + " tiene la mayor cantidad de demanda";
+		} 
+		catch( Exception e ){
+			resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();
+			panelDatos.actualizarInterfaz(resultado);
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+			//				e.printStackTrace();
+		}
+		
+		panelDatos.actualizarInterfaz(resultado);
 	}
 
 	public void buenosClientes()
@@ -654,7 +702,6 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			//			e.printStackTrace();
 		}
 	}
-
 
 	/* ****************************************************************
 	 * 			Métodos administrativos
@@ -902,10 +949,12 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			Method req = InterfazHotelAndesApp.class.getMethod ( evento );	
 			req.invoke ( this );
 		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		} 
+		catch( Exception e ){
+			String resultado = "El metodo invocado no existe\n" + e.getMessage();
+			panelDatos.actualizarInterfaz(resultado);
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+			//				e.printStackTrace();
+		}
 	}
 
 

@@ -1,7 +1,7 @@
 ﻿{
 	"title": "Aplicación transaccional de HotelAndes",
 	"frameH": 600,
-	"frameW": 800,
+	"frameW": 900,
 	"bannerPath": "./src/main/resources/config/logo.png",
 	"menuBar":
 	[
@@ -58,10 +58,6 @@
 				{
 					"label": "Registrar Consumo",
 					"event": "adicionarConsumo"
-				},		
-				{
-					"label": "Buenos Clientes",
-					"event": "buenosClientes"
 				}
 			]
 			
@@ -93,6 +89,19 @@
 				{
 					"label": "Hacer mantenimiento",
 					"event": "crearMantenimiento"
+				},
+				{
+					"label": "Terminar mantenimiento",
+					"event": "terminarMantenimiento"
+				}
+			]
+		},
+		{ "menuTitle": "Requerimientos de consulta",
+		  "options":
+			[		
+				{
+					"label": "Analizar la operacion de Hotel Andes",
+					"event": "analizarOperacionesDeHoteles"
 				},
 				{
 					"label": "Terminar mantenimiento",

@@ -118,7 +118,7 @@ public class SQLHabitacion
 		sql += "WHERE RESERVAS.ENTRADA BETWEEN " + entradaTS + " AND " + salidaTS + " AND ";
 		sql += "RESERVAS.SALIDA BETWEEN " + entradaTS + " AND " + salidaTS + " )";
 		sql += "FETCH FIRST " + cantidad + " ROWS ONLY";
-		
+		System.out.println(sql);
 		Query q = pm.newQuery(SQL, sql);
 		return (List<Object>) q.executeList();
 	}

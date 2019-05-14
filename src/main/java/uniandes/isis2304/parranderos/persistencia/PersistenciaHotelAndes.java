@@ -1577,7 +1577,7 @@ public class PersistenciaHotelAndes
 
 	public List<Object> buscarBuenosClientesPorConsumo() {
 
-
+		//TODO Hippixxx por fa metale commit a esto asi sea una consulta
 		List<Object> buenos = sqlConsumo.buscarBuenosClientes(pmf.getPersistenceManager());
 		LinkedList<Object> clientes = new LinkedList<Object>();
 		for (Object object : buenos) {
@@ -1591,6 +1591,11 @@ public class PersistenciaHotelAndes
 			}
 		}
 		return clientes;	
+	}
+
+	public Object[] reqFC6(int tipoHab, long idServicio, String tipoTiempo) throws Exception {
+		//TODO Metodo no terminado falta hacer eso con servicios todo lo demas que me piden
+		return sqlReserva.fechasMayorDemanda(pmf.getPersistenceManager(), tipoHab, tipoTiempo );
 	}
 }
 

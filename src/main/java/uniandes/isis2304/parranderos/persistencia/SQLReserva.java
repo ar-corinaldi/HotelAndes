@@ -74,7 +74,7 @@ public class SQLReserva {
 				+ id_habitacion+", "
 				+ id_plan_consumo+")";
 		System.out.println(sql);
-		
+
 		boolean r = verificarReservaExistente( pm,entradaTS, salidaTS,  id_habitacion);
 		if( r )	{
 			Query q = pm.newQuery(SQL, sql);
@@ -231,7 +231,7 @@ public class SQLReserva {
 		String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 
 		boolean b = verificaCheckIn(pm, idRes, idUsuario, tipoDoc);
-		
+
 		String sql = "UPDATE RESERVAS ";
 		sql += "SET check_out = "+salidaTS+" ";
 		sql += "WHERE id = "+idRes+" AND id_usuario = "+idUsuario+ " AND tipo_documento_usuario = '"+tipoDoc+"' AND check_in IS NOT null";
@@ -270,6 +270,49 @@ public class SQLReserva {
 		catch( Exception e ){
 			System.out.println(e.getMessage());
 			return 1;
+		}
+	}
+
+	/**
+	 * 
+	 * @param pm
+	 * @param tipoHab
+	 * @param tipoTiempo
+	 * @return Retorna en pos 0 cuantas fueron las reservas hechas de la semana mas visitada
+	 * En pos 1 retorna la fecha de la cual se hicieron mas reservas
+	 * En pos 2 retorna el numero de semana
+	 * @throws Exception 
+	 */
+	public Object[] fechasMayorDemanda(PersistenceManager pm, int tipoHab, String tipoTiempo) throws Exception {
+		//		SELECT COUNT(to_number(to_char(entrada,'WW'))) as contador, entrada as Semanas_Mayor_Demanda, to_number(to_char(entrada,'WW')) as Semana
+		//		FROM RESERVAS
+		//		GROUP BY to_number(to_char(entrada,'WW')), entrada;
+		
+		//TODO hacer lo mismo con el mes
+		//TODO hacer lo mismo con el mes
+		//TODO hacer lo mismo con el mes
+		
+		String sql = "SELECT COUNT(to_number(to_char(entrada,'" + tipoTiempo + "'))) as contador, entrada as Semanas_Mayor_Demanda, to_number(to_char(entrada,'" + tipoTiempo + "')) as Semana ";
+		sql += "FROM RESERVAS ";
+//		sql += "WHERE ";
+		sql += "GROUP BY to_number(to_char(entrada,'" + tipoTiempo + "')), entrada";
+		System.out.println(sql);
+
+		Object[] rta = new Object[3];
+		Reservas res = null;
+		List<Object> l;
+		try{
+			Query q = pm.newQuery(SQL, sql);
+
+			l = q.executeList();
+			Object[] datos = (Object[]) l.get(l.size()-1);
+			rta[0] = ((BigDecimal) datos[0]).intValue();
+			rta[1] = Timestamp.valueOf(datos[1].toString());
+			rta[2] = ((BigDecimal) datos[2]).intValue();
+			return rta;
+		} 
+		catch( Exception e ) {
+			throw new Exception(e.getMessage());
 		}
 	}
 }

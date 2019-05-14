@@ -181,12 +181,10 @@ public class HotelAndes
 		return reserva;
 	}
 
-
-
-
 	/* ****************************************************************
 	 * 			Atributos
 	 *****************************************************************/
+	
 	public Consumo adicionarConsumo( Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion, Usuarios user) throws Exception
 	{
 		Producto prod = pp.darProductoPorId(idProd);
@@ -414,5 +412,9 @@ public class HotelAndes
 	public List<Object> buscarBuenosClientesPorConsumo() {
 		return  pp.buscarBuenosClientesPorConsumo();
 		
+	}
+
+	public Object[] reqFC6(int tipoHab, long idServicio, String tipoTiempo) throws Exception {
+		return pp.reqFC6(tipoHab, idServicio, tipoTiempo);
 	}
 }
