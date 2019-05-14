@@ -1,5 +1,6 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -96,13 +97,28 @@ public class SQLHabitacion
 	}
 
 	public List<Object> darHabitacionesDisponibles(
-			PersistenceManager pm, long tipo, int cantidad) {
-		//		SELECT *
-		//		FROM HABITACIONES 
-		//		WHERE tipo_habitacion = 5 AND ocupada=0
-		//		FETCH FIRST 30 ROWS ONLY;
-		String sql = "SELECT * FROM HABITACIONES WHERE TIPO_HABITACION = "+ tipo +" AND CUENTA_HABITACION = 0 "
-				+ "FETCH FIRST "+cantidad+ " ROWS ONLY";
+			PersistenceManager pm, long tipo, int cantidad, Timestamp entrada, Timestamp salida) {
+
+		String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+		//		SELECT hab.num_hab, hab.cuenta_habitacion, hab.tipo_habitacion
+		//		FROM HABITACIONES hab, Reservas res
+		//		WHERE hab.tipo_habitacion = 2 AND hab.num_hab NOT IN (SELECT id_habitacion 
+		//		FROM RESERVAS 
+		//		WHERE RESERVAS.ENTRADA BETWEEN TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND 
+		//		RESERVAS.SALIDA BETWEEN TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') )
+		//		FETCH FIRST 10 ROWS ONLY;
+		
+		System.err.println("QUERRY CALIENTE!!");
+		
+		String sql = "SELECT hab.num_hab, hab.cuenta_habitacion, hab.tipo_habitacion ";
+		sql += "FROM HABITACIONES hab, Reservas res ";
+		sql += "WHERE hab.tipo_habitacion = " +tipo+ " AND ";
+		sql += "hab.num_hab NOT IN (SELECT id_habitacion FROM RESERVAS ";
+		sql += "WHERE RESERVAS.ENTRADA BETWEEN " + entradaTS + " AND " + salidaTS + " AND ";
+		sql += "RESERVAS.SALIDA BETWEEN " + entradaTS + " AND " + salidaTS + " )";
+		sql += "FETCH FIRST " + cantidad + " ROWS ONLY";
+		
 		Query q = pm.newQuery(SQL, sql);
 		return (List<Object>) q.executeList();
 	}

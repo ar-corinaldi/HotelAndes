@@ -318,9 +318,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
 			String resultado = "Verificando habitaciones disponibles\n";
 			panelDatos.actualizarInterfaz(resultado);
-			List<Habitaciones> habs = parranderos.verificarHabitacionesDisponibles(tipo, 1);
+			List<Habitaciones> habs = parranderos.verificarHabitacionesDisponibles(tipo, 1, entrada, salida);
 			resultado += "Hay "+habs.size() + " habitaciones disponibles\n";
-			panelDatos.actualizarInterfaz(resultado);
 			if( habs.size()==1 ) {
 				Habitaciones hab = habs.get(0);
 				resultado+="Adicionando reserva\n";
@@ -439,6 +438,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 			boolean sePuede = true;
 			int[] tiposServ = new int[20];
+
+			//Pidiendo datos necesarios
 			int indice = (int)parranderos.indiceUltimoUsuario();
 			String nombre = JOptionPane.showInputDialog (this, "Nombre?", "Registra convencion", JOptionPane.QUESTION_MESSAGE);
 			int cantidadPersonas = Integer.parseInt(JOptionPane.showInputDialog (this, "Cantidad personas?\nRecuerda que solo se generaran\n"+(1000-indice), "Registra convencion", JOptionPane.QUESTION_MESSAGE));
@@ -448,8 +449,10 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			int tiposHab = Integer.parseInt(JOptionPane.showInputDialog (this, "Cuantos tipos de habitacion?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 			Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
 			Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 12:00:00.00");
+			
 			List<Habitaciones> listaDeListasDeHabs= new LinkedList<Habitaciones>();
 			List<ReservaServicio> listaReservaServicio = new LinkedList<ReservaServicio>();
+			
 			panelDatos.actualizarInterfaz("Verificando que las habitaciones y los servicios tengan suficiente espacio para la convencion");
 			for( int i=0; i<tiposHab && sePuede; i++ ){
 				long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
@@ -462,7 +465,6 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			for( int i=0; i<tiposHab && sePuede; i++ ){
 				long tipo = Long.valueOf(JOptionPane.showInputDialog (this, "Tipo?", "Registra convencion", JOptionPane.QUESTION_MESSAGE));
 				Servicios s = parranderos.darServicio(tipo);
-				System.out.println("Capacidad: "+s.getCapacidad());
 				boolean b2 = s.getCapacidad()>=cantidadPersonas;
 				sePuede = sePuede && b2;
 				listaReservaServicio.add(new ReservaServicio(indice+i+1, entrada, salida, organizador.getNum_identidad(), organizador.getTipo_documento(), tipo));
@@ -560,13 +562,21 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 	}
 
 	public Usuarios verificarUsuario( long tipoUsuario ) throws NumberFormatException, Exception{
-		Usuarios user =null;
-		String numIden = JOptionPane.showInputDialog (this, "numero identificacion?", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
-		String tipoDoc = JOptionPane.showInputDialog (this, "tipo documento?\ncedula\npasaporte", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
-		user = parranderos.darUsuario(Long.valueOf(numIden), tipoDoc);
-		if( user.getTipo_usuario() == tipoUsuario ){
-			return user;
-		} else throw new Exception("El usuario no es del tipo "+tipoUsuario );
+		try{
+			Usuarios user =null;
+			
+			String numIden = JOptionPane.showInputDialog (this, "numero identificacion?", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
+			String tipoDoc = JOptionPane.showInputDialog (this, "tipo documento?\ncedula\npasaporte", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
+			
+			user = parranderos.darUsuario(Long.valueOf(numIden), tipoDoc);
+			if( user.getTipo_usuario() == tipoUsuario ){
+				return user;
+			} 
+			else throw new Exception("El usuario no es del tipo "+tipoUsuario );
+		}
+		catch( Exception e ){
+			throw new Exception(e.getMessage());
+		}
 	}
 
 	public void crearMantenimiento() throws Exception {

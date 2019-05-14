@@ -478,7 +478,12 @@ public class PersistenciaHotelAndes
 
 
 	public TipoHabitacion darTipoHabitacion(long idTipo) {
-		return sqlTipoHabitacion.darTipoHabitacionPorId(pmf.getPersistenceManager(), idTipo);
+		try {
+			return sqlTipoHabitacion.darTipoHabitacionPorId(pmf.getPersistenceManager(), idTipo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
@@ -1049,14 +1054,14 @@ public class PersistenciaHotelAndes
 			tx.begin();
 			long newId = sqlReserva.darUltimoId(pm);
 			sqlReserva.adicionarReserva(pm, newId, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
-			double cuenta =0;
-			if( hab.getTipo_habitacion() == 1) cuenta = 1000;
-			else if( hab.getTipo_habitacion() == 2) cuenta = 500;
-			else if( hab.getTipo_habitacion() == 3) cuenta = 200;
-			else if( hab.getTipo_habitacion() == 4) cuenta = 100;
-			else if( hab.getTipo_habitacion() == 2) cuenta = 750;
+			TipoHabitacion th = sqlTipoHabitacion.darTipoHabitacionPorId(pm, hab.getTipo_habitacion());
+			
+			int cap = th.getCapacidad();
+			if(cap < numPersonas){
+				throw new Exception("Demasiadas personas para el tipo de habitacion: "+numPersonas + "\nSolo caben "+ cap);
+			}
 
-			sqlHabitacion.agregarConsumoHabitacion(pm, hab.getNum_hab(), cuenta);
+			sqlHabitacion.agregarConsumoHabitacion(pm, hab.getNum_hab(), th.getCosto());
 			tx.commit();
 			return new Reservas(newId, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
 		}
@@ -1287,8 +1292,8 @@ public class PersistenciaHotelAndes
 
 	}
 
-	public List<Habitaciones> verificarHabitacionesDisponibles(long tipo, int cantidad) {
-		List<Object> l = sqlHabitacion.darHabitacionesDisponibles(pmf.getPersistenceManager(), tipo, cantidad);
+	public List<Habitaciones> verificarHabitacionesDisponibles(long tipo, int cantidad, Timestamp entrada, Timestamp salida) {
+		List<Object> l = sqlHabitacion.darHabitacionesDisponibles(pmf.getPersistenceManager(), tipo, cantidad, entrada, salida);
 		LinkedList<Habitaciones> h = new LinkedList<Habitaciones>();
 		for (Object object : l) {
 			Object[] datos = (Object[]) object;

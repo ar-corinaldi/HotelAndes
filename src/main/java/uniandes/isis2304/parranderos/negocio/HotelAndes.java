@@ -286,8 +286,8 @@ public class HotelAndes
 		return conv;
 	}
 
-	public List<Habitaciones> verificarHabitacionesDisponibles(long tipo, int cantidad) {
-		List<Habitaciones> l = pp.verificarHabitacionesDisponibles(tipo, cantidad);
+	public List<Habitaciones> verificarHabitacionesDisponibles(long tipo, int cantidad, Timestamp entrada, Timestamp salida) {
+		List<Habitaciones> l = pp.verificarHabitacionesDisponibles(tipo, cantidad, entrada, salida);
 		return l;
 	}
 
@@ -368,17 +368,17 @@ public class HotelAndes
 				adicionarReserva( 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
 			}
 			else if( r.getCheck_in() != null && r.getCheck_out() == null ){
-				moverUsuario( h );
+				moverUsuario( h, entrada, salida );
 				adicionarReserva( 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
 			}
 		}
 	}
 
-	public void moverUsuario( Habitaciones h ) throws Exception{
-		List<Habitaciones> list = verificarHabitacionesDisponibles(h.getTipo_habitacion(), 1);
+	public void moverUsuario( Habitaciones h, Timestamp entrada, Timestamp salida ) throws Exception{
+		List<Habitaciones> list = verificarHabitacionesDisponibles(h.getTipo_habitacion(), 1, entrada, salida);
 		long i = h.getTipo_habitacion();
 		while( list.isEmpty() && i > 1 ){
-			list = verificarHabitacionesDisponibles(i--, 1);
+			list = verificarHabitacionesDisponibles(i--, 1, entrada, salida);
 		}
 		if( i==1 )
 			throw new Exception("No hay habitaciones disponibles");

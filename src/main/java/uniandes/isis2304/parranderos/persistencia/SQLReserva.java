@@ -74,7 +74,7 @@ public class SQLReserva {
 				+ id_habitacion+", "
 				+ id_plan_consumo+")";
 		System.out.println(sql);
-
+		
 		boolean r = verificarReservaExistente( pm,entradaTS, salidaTS,  id_habitacion);
 		if( r )	{
 			Query q = pm.newQuery(SQL, sql);
@@ -87,7 +87,7 @@ public class SQLReserva {
 
 	private boolean verificarReservaExistente(PersistenceManager pm, String entradaTS, String salidaTS, long idHab) {
 		String sql = "SELECT RESERVAS.ID FROM RESERVAS ";
-		sql += "WHERE RESERVAS.ENTRADA BETWEEN "+ entradaTS+" AND "+ salidaTS + " AND ";
+		sql += "WHERE RESERVAS.ENTRADA BETWEEN "+ entradaTS +" AND "+ salidaTS + " AND ";
 		sql += "RESERVAS.SALIDA BETWEEN "+ entradaTS + " AND " + salidaTS + " AND ";
 		sql += "ID_HABITACION = "+idHab;
 

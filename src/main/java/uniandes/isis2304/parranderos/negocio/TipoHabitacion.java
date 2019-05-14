@@ -1,5 +1,7 @@
 package uniandes.isis2304.parranderos.negocio;
 
+import java.math.BigDecimal;
+
 public class TipoHabitacion {
 
 	/******************************************************************************
@@ -28,9 +30,10 @@ public class TipoHabitacion {
 		super();
 		this.id = id;
 		this.nombre = nombre;
-		this.setCosto(costo);
+		this.costo_noche = costo;
+		this.capacidad = capacidad;
 	}
-
+	
 	/******************************************************************************
 	 * METODOS
 	 ******************************************************************************/
