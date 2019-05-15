@@ -63,7 +63,7 @@ public class SQLReserva {
 		if( checkIn != null ) checkInTS = "TO_TIMESTAMP('"+checkIn.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 		String checkOutTS = null;
 		if( checkOut != null ) checkOutTS = "TO_TIMESTAMP('"+checkOut.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
-		String sql = "INSERT INTO " + "RESERVAS" + "(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion, id_plan_consumo) values ("+id +", "
+		String sql = "INSERT INTO RESERVAS " + "(id, num_personas, entrada, salida, check_in, check_out, id_usuario, tipo_documento_usuario, id_habitacion, id_plan_consumo) values ("+id +", "
 				+ numPersonas+", "
 				+ entradaTS+", "
 				+ salidaTS+", "
@@ -77,8 +77,12 @@ public class SQLReserva {
 
 		boolean r = verificarReservaExistente( pm,entradaTS, salidaTS,  id_habitacion);
 		if( r )	{
+			System.err.println("PING");
 			Query q = pm.newQuery(SQL, sql);
-			return (long) q.executeUnique();
+			System.err.println("PING2");
+			long var = (long) q.executeUnique();
+			System.err.println("PING3");
+			return var;
 		} 
 		else
 			throw new Exception("No hay habitaciones del tipo solicitado para la fecha");

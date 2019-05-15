@@ -1055,7 +1055,6 @@ public class PersistenciaHotelAndes
 			long newId = sqlReserva.darUltimoId(pm);
 			sqlReserva.adicionarReserva(pm, newId, numPersonas, entrada, salida, checkIn, checkOut, user.getNum_identidad(), user.getTipo_documento(), hab.getNum_hab(), idPlanCons);
 			TipoHabitacion th = sqlTipoHabitacion.darTipoHabitacionPorId(pm, hab.getTipo_habitacion());
-			
 			int cap = th.getCapacidad();
 			if(cap < numPersonas){
 				throw new Exception("Demasiadas personas para el tipo de habitacion: "+numPersonas + "\nSolo caben "+ cap);
@@ -1067,7 +1066,7 @@ public class PersistenciaHotelAndes
 		}
 		catch (Exception e)
 		{
-//			        	e.printStackTrace();
+		        	e.printStackTrace();
 			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
 			throw new Exception( e.getMessage() );
 		}
@@ -1295,6 +1294,7 @@ public class PersistenciaHotelAndes
 	public List<Habitaciones> verificarHabitacionesDisponibles(long tipo, int cantidad, Timestamp entrada, Timestamp salida) {
 		List<Object> l = sqlHabitacion.darHabitacionesDisponibles(pmf.getPersistenceManager(), tipo, cantidad, entrada, salida);
 		LinkedList<Habitaciones> h = new LinkedList<Habitaciones>();
+		System.out.println(l);
 		for (Object object : l) {
 			Object[] datos = (Object[]) object;
 			long numHab = ((BigDecimal) datos [0]).longValue ();

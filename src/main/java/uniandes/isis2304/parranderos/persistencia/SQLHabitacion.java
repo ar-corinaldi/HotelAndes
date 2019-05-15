@@ -109,10 +109,10 @@ public class SQLHabitacion
 		//		RESERVAS.SALIDA BETWEEN TO_TIMESTAMP('2019-09-16 06:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('2019-09-23 12:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') )
 		//		FETCH FIRST 10 ROWS ONLY;
 		
-		System.err.println("QUERRY CALIENTE!!");
+		System.out.println("QUERRY CALIENTE!!");
 		
 		String sql = "SELECT hab.num_hab, hab.cuenta_habitacion, hab.tipo_habitacion ";
-		sql += "FROM HABITACIONES hab, Reservas res ";
+		sql += "FROM HABITACIONES hab LEFT JOIN Reservas res ON hab.num_hab = res.ID_HABITACION ";
 		sql += "WHERE hab.tipo_habitacion = " +tipo+ " AND ";
 		sql += "hab.num_hab NOT IN (SELECT id_habitacion FROM RESERVAS ";
 		sql += "WHERE RESERVAS.ENTRADA BETWEEN " + entradaTS + " AND " + salidaTS + " AND ";
