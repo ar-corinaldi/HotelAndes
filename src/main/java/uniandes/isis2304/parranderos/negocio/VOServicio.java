@@ -14,14 +14,11 @@ public interface VOServicio {
 	
 	public long getId();
 	
-	public List<Object []> getProductos();
+	public int getCargado_habitacion();
 	
-	public boolean isCargadoHab();
 	
-	public Date getHoraReserva();
-	
-	public boolean isReservado();
-	
+	public long getTipo_servicios();
+		
 	@Override
 	public String toString();
 	

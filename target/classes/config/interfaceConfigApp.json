@@ -1,23 +1,23 @@
-{
-	"title": "Aplicación transaccional de Parranderos Uniandes",
+﻿{
+	"title": "Aplicación transaccional de HotelAndes",
 	"frameH": 600,
-	"frameW": 800,
+	"frameW": 900,
 	"bannerPath": "./src/main/resources/config/logo.png",
 	"menuBar":
 	[
-		{ "menuTitle": "TipoBebida",
+		{ "menuTitle": "Usuario",
 		  "options":
 			[
 				{
 					"label": "Adicionar",
-					"event": "adicionarTipoBebida"
+					"event": "adicionarUsuario"
 				},
 				{
-					"label": "Listar",
+					"label": "Ver Tipo de Usuarios",
 					"event": "listarTipoBebida"
 				},
 				{
-					"label": "Borrar por Id",
+					"label": "Adicionar Tipo Usuario",
 					"event": "eliminarTipoBebidaPorId"
 				},
 				{
@@ -26,6 +26,89 @@
 				}
 			]
 		},
+		{ "menuTitle": "Cliente",
+		  "options":
+			[
+				{
+					"label": "Registrar Reserva",
+					"event": "adicionarReserva"
+				},
+				{
+					"label": "Registrar Servicio",
+					"event": "adicionarServicio"
+				}
+			]
+		},
+		{ "menuTitle": "Recepcionista",
+		  "options": 
+			[
+				{
+					"label": "Registrar Llegada",
+					"event": "registrarLlegadaCliente"
+				},
+				{
+					"label": "Registrar Salida",
+					"event": "registrarSalidaCliente"
+				}
+			]
+		},
+		{ "menuTitle": "Empleado",
+		  "options":
+			[
+				{
+					"label": "Registrar Consumo",
+					"event": "adicionarConsumo"
+				}
+			]
+			
+		},	
+		{ "menuTitle": "Organizador",
+		  "options":
+			[
+				{
+					"label": "Registrar Convencion",
+					"event": "registrarConvencion"
+				},
+				{
+					"label": "Cancelar Reservas",
+					"event": "cancelarReservaConvencion"
+				},
+				{
+					"label": "Registrar Llegada Convencion",
+					"event": "registrarLlegadaConvencion"
+				},
+				{
+					"label": "Registrar Salida",
+					"event": "registrarSalidaConvencion"
+				}
+			]
+		},
+		{ "menuTitle": "Administrador",
+		  "options":
+			[
+				{
+					"label": "Hacer mantenimiento",
+					"event": "crearMantenimiento"
+				},
+				{
+					"label": "Terminar mantenimiento",
+					"event": "terminarMantenimiento"
+				}
+			]
+		},
+		{ "menuTitle": "Requerimientos de consulta",
+		  "options":
+			[		
+				{
+					"label": "Analizar la operacion de Hotel Andes",
+					"event": "analizarOperacionesDeHoteles"
+				},
+				{
+					"label": "Terminar mantenimiento",
+					"event": "terminarMantenimiento"
+				}
+			]
+		},		
 		{ "menuTitle": "Mantenimiento",
 		  "options":
 			[

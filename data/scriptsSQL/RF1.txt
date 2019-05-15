@@ -1,0 +1,45 @@
+INSERT INTO TIPO_USUARIOS
+VALUES (1, 'gerente');
+
+INSERT INTO TIPO_USUARIOS
+VALUES (2, 'administrador');
+
+INSERT INTO TIPO_USUARIOS
+VALUES (3, 'recepcionista');
+
+INSERT INTO TIPO_USUARIOS
+VALUES (4, 'empleado');
+
+INSERT INTO TIPO_USUARIOS
+VALUES (5, 'cliente');
+
+INSERT INTO TIPO_USUARIOS
+VALUES (6, 'organizador');
+
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (1435, 'cedula', 'Stephannie', 'Kinner', 1, null);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (22342, 'pasaporte', 'Heida', 'Galbraeth', 2, null);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (3343, 'cedula', 'Perle', 'Shyram', 3, null);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (422, 'cedula', 'Mercy', 'Buckberry', 3, null);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (5978, 'cedula', 'Guido', 'Jilliss', 4, null);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (6467, 'cedula', 'Marie', 'Branno',  4, null);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (7578, 'cedula', 'Magdalen', 'Lethby', 4, null);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (8894, 'pasaporte', 'Melony', 'Gurnee', 4, null);
+INSERT INTO USUARIOS (num_identidad, tipo_documento, nombre, apellido, tipo_usuario, id_convencion) values (57012, 'pasaporte', 'Santi', 'Taverna', 6, null);
+
+INSERT INTO TIPO_PLANES_DE_CONSUMO
+VALUES (0, 'No Plan Consumo');
+
+INSERT INTO TIPO_PLANES_DE_CONSUMO
+VALUES (1, 'Convencion 1');
+
+INSERT INTO PLANES_DE_CONSUMO
+VALUES (1, 'Convencion 1', 120, null, null);
+
+INSERT INTO PLANES_DE_CONSUMO
+VALUES (0, 'No Plan Consumo', 0, null, null);
+
+INSERT INTO CONVENCIONES
+VALUES (1, 'Convencion 1', 30, 0, 3343, 'cedula');
+
+INSERT INTO CONVENCIONES
+VALUES (0, 'No Convencion', 0, 0, 3343, 'cedula');

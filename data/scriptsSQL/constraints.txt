@@ -1,0 +1,197 @@
+--///////////////////////////////////////////--
+--//////////////////PK///////////////////////--
+--///////////////////////////////////////////--
+
+ALTER TABLE CONSUMOS
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE CONVENCIONES
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE HABITACIONES
+ADD PRIMARY KEY (NUM_HAB);
+
+ALTER TABLE HOTELES
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE PLANES_DE_CONSUMO
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE PRODUCTOS
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE RESERVAS
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE RESERVAS_SERVICIOS
+ADD PRIMARY KEY(ID);
+
+ALTER TABLE SERVICIOS
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE TIPO_HABITACIONES
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE TIPO_PLANES_DE_CONSUMO
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE TIPO_SERVICIOS
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE TIPO_USUARIOS
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE USUARIOS
+ADD PRIMARY KEY (NUM_IDENTIDAD, TIPO_DOCUMENTO);
+
+--///////////////////////////////////////////--
+--//////////////////FK///////////////////////--
+--///////////////////////////////////////////--
+
+--//////////////////CONSUMOS////////////////////--
+
+ALTER TABLE CONSUMOS
+ADD CONSTRAINT fk_consumos_habitacion
+  FOREIGN KEY (id_habitacion)
+  REFERENCES HABITACIONES(NUM_HAB);
+
+ALTER TABLE CONSUMOS
+ADD CONSTRAINT fk_consumos_producto
+  FOREIGN KEY (ID_PRODUCTO)
+  REFERENCES PRODUCTOS(ID);
+
+ALTER TABLE CONSUMOS
+ADD CONSTRAINT fk_consumos_usuario
+  FOREIGN KEY (ID_USUARIO, TIPO_DOCUMENTO_USUARIO)
+  REFERENCES USUARIOS(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+
+--//////////////////CONVENCION////////////////////--
+
+ALTER TABLE CONVENCIONES
+ADD CONSTRAINT fk_convencion_usuario
+  FOREIGN KEY (ID_USUARIO, TIPO_DOCUMENTO_USUARIO)
+  REFERENCES USUARIOS(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+
+ALTER TABLE CONVENCIONES
+ADD CONSTRAINT fk_convencion_plan
+  FOREIGN KEY (ID_PLAN_CONSUMO)
+  REFERENCES PLANES_DE_CONSUMO(ID);
+
+--//////////////////HABITACIONES////////////////////--
+
+ALTER TABLE HABITACIONES
+ADD CONSTRAINT fk_habitaciones_tipo_hab
+  FOREIGN KEY (TIPO_HABITACION)
+  REFERENCES TIPO_HABITACIONES(ID);
+
+--//////////////////HOTELES////////////////////--
+
+--NADA
+
+--//////////////////PLANES_DE_CONSUMO////////////////////--
+
+ALTER TABLE PLANES_DE_CONSUMO
+ADD CONSTRAINT fk_planes_consumo_tipo_plan
+  FOREIGN KEY (TIPO_PLAN_CONSUMO)
+  REFERENCES TIPO_PLANES_DE_CONSUMO(ID);
+
+--//////////////////PRODUCTOS////////////////////--
+
+ALTER TABLE PRODUCTOS
+ADD CONSTRAINT fk_productos_servicio
+  FOREIGN KEY (ID_SERVICIO)
+  REFERENCES SERVICIOS(ID);
+
+--//////////////////RESERVAS////////////////////--
+
+ALTER TABLE RESERVAS
+ADD CONSTRAINT fk_reservas_usuario
+  FOREIGN KEY (ID_USUARIO, TIPO_DOCUMENTO_USUARIO)
+  REFERENCES USUARIOS(NUM_IDENTIDAD, TIPO_DOCUMENTO);
+
+ALTER TABLE RESERVAS
+ADD CONSTRAINT fk_reservas_plan_cons
+  FOREIGN KEY (ID_PLAN_CONSUMO)
+  REFERENCES PLANES_DE_CONSUMO(ID);
+
+--//////////////////RESERVAS_SERVICIOS////////////////////--
+
+ALTER TABLE RESERVAS_SERVICIOS
+ADD CONSTRAINT fk_resSer_servicio
+  FOREIGN KEY (ID_SERVICIO)
+  REFERENCES SERVICIOS(ID);
+
+--//////////////////SERVICIOS////////////////////--
+
+ALTER TABLE SERVICIOS
+ADD CONSTRAINT fk_servicios_tipo_serv
+  FOREIGN KEY (TIPO_SERVICIOS)
+  REFERENCES TIPO_SERVICIOS(ID);
+
+--//////////////////USUARIOS////////////////////--
+
+ALTER TABLE USUARIOS
+ADD CONSTRAINT fk_usuarios_tipo_usuario
+  FOREIGN KEY (TIPO_USUARIO)
+  REFERENCES TIPO_USUARIOS(ID);
+
+ALTER TABLE USUARIOS
+ADD CONSTRAINT fk_usuarios_convencion
+  FOREIGN KEY(ID_CONVENCION)
+  REFERENCES CONVENCIONES(ID);
+
+--///////////////////////////////////////////--
+--//////////////////CK///////////////////////--
+--///////////////////////////////////////////--
+
+--//////////////////HABITACIONES////////////////////--
+
+ALTER TABLE HABITACIONES
+ADD CONSTRAINT ck_habitacion
+  CHECK (NUM_HAB > 0);
+
+ALTER TABLE HABITACIONES
+ADD CONSTRAINT ck_habitacion_5
+  CHECK(CUENTA_HABITACION>=0);
+
+
+--//////////////////PLANES DE CONSUMO////////////////////--
+ALTER TABLE PLANES_DE_CONSUMO
+ADD CONSTRAINT ck_plan
+  CHECK (DESCUENTO >= 0);
+  
+--//////////////////PRODUCTOS////////////////////--
+ALTER TABLE PRODUCTOS
+ADD CONSTRAINT ck_productos
+  CHECK (PRECIO >= 0);
+
+--//////////////////RESERVAS////////////////////--
+
+ALTER TABLE RESERVAS
+ADD CONSTRAINT ck_reserva
+  CHECK (NUM_PERSONAS > 0);
+
+--//////////////////RESERVAS_SERVICIOS////////////////////--
+
+
+
+--//////////////////SERVICIOS////////////////////--
+
+ALTER TABLE SERVICIOS
+ADD CONSTRAINT ck_servicio
+  CHECK (COSTO >= 0);
+  
+ALTER TABLE SERVICIOS
+ADD CONSTRAINT ck_servicio_2
+  CHECK(CARGADO_HABITACION IN(0,1));
+  
+ALTER TABLE SERVICIOS
+ADD CONSTRAINT ck_servicio_3
+  CHECK(CAPACIDAD>=0);
+  
+
+
+--//////////////////USUARIOS////////////////////--
+ALTER TABLE USUARIOS
+ADD CONSTRAINT ck_usuarios
+  CHECK(TIPO_DOCUMENTO IN ('pasaporte', 'cedula'));

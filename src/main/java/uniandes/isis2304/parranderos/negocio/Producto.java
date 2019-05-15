@@ -9,6 +9,7 @@ public class Producto implements VOProducto{
 	 * ATRIBUTOS
 	 ******************************************************************************/
 	
+	
 	private long id;
 	
 	private String nombre;
@@ -17,7 +18,9 @@ public class Producto implements VOProducto{
 	
 	private String descripcion;
 	
-	private List<Servicio> servicios;
+	private long id_servicio;
+	
+	private Servicios servicio;
 	
 	/******************************************************************************
 	 * CONSTRUCTORES
@@ -28,15 +31,15 @@ public class Producto implements VOProducto{
 		nombre = "";
 		costo = 0.0;
 		descripcion = "";
-		servicios = new ArrayList<>();
+		servicio = null;
 	}
 	
-	public Producto(long id, String nombre, double costo, String descripcion) {
+	public Producto(long id, String nombre,  String descripcion, double costo, long idServ) {
 		this.id = id;
 		this.nombre = nombre;
 		this.costo = costo;
 		this.descripcion = descripcion;
-		servicios = new ArrayList<>();
+		setId_servicio(idServ);
 	}
 	
 	/******************************************************************************
@@ -75,19 +78,27 @@ public class Producto implements VOProducto{
 		this.descripcion = descripcion;
 	}
 	
-	public List<Servicio> getServicio() {
-		return servicios;
+	public Servicios getServicio() {
+		return servicio;
 	}
 
-	public void setServicio(List<Servicio> servicios) {
-		this.servicios = servicios;
+	public void setServicio(Servicios servicio) {
+		this.servicio = servicio;
 	}
 
 	@Override
 	public String toString() {
 		return "Producto [id=" + id + ", nombre=" + nombre + ", costo=" + costo
-				+ ", descripcion=" + descripcion + ", servicios=" + servicios
+				+ ", descripcion=" + descripcion + ", servicios=" + servicio
 				+ "]";
+	}
+
+	public long getId_servicio() {
+		return id_servicio;
+	}
+
+	public void setId_servicio(long id_servicio) {
+		this.id_servicio = id_servicio;
 	}
 
 }

@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import com.google.gson.JsonObject;
 
+import oracle.net.aso.i;
 import uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes;
 
 /**
@@ -41,7 +42,7 @@ public class HotelAndes
 	 * Logger para escribir la traza de la ejecución
 	 */
 	private static Logger log = Logger.getLogger(HotelAndes.class.getName());
-	
+
 	/* ****************************************************************
 	 * 			Atributos
 	 *****************************************************************/
@@ -58,14 +59,14 @@ public class HotelAndes
 
 	private String ciudad;
 
-	private List<Usuario> usuarios;
+	private List<Usuarios> usuarios;
 
-	private List<Habitacion> habitaciones;
+	private List<Habitaciones> habitaciones;
 
 	private List<PlanConsumo> planesConsumo;
 
-	private List<Servicio> servicios;
-	
+	private List<Servicios> servicios;
+
 	/* ****************************************************************
 	 * 			Métodos
 	 *****************************************************************/
@@ -76,7 +77,7 @@ public class HotelAndes
 	{
 		pp = PersistenciaHotelAndes.getInstance ();
 	}
-	
+
 	/**
 	 * El constructor qye recibe los nombres de las tablas en tableConfig
 	 * @param tableConfig - Objeto Json con los nombres de las tablas y de la unidad de persistencia
@@ -85,7 +86,7 @@ public class HotelAndes
 	{
 		pp = PersistenciaHotelAndes.getInstance (tableConfig);
 	}
-	
+
 	/**
 	 * Cierra la conexión con la base de datos (Unidad de persistencia)
 	 */
@@ -93,7 +94,7 @@ public class HotelAndes
 	{
 		pp.cerrarUnidadPersistencia ();
 	}
-	
+
 	/******************************************************************************
 	 * METODOS
 	 ******************************************************************************/
@@ -130,19 +131,19 @@ public class HotelAndes
 		this.ciudad = ciudad;
 	}
 
-	public List<Usuario> getUsuarios() {
+	public List<Usuarios> getUsuarios() {
 		return usuarios;
 	}
 
-	public void setUsuarios(List<Usuario> usuarios) {
+	public void setUsuarios(List<Usuarios> usuarios) {
 		this.usuarios = usuarios;
 	}
 
-	public List<Habitacion> getHabitaciones() {
+	public List<Habitaciones> getHabitaciones() {
 		return habitaciones;
 	}
 
-	public void setHabitaciones(List<Habitacion> habitaciones) {
+	public void setHabitaciones(List<Habitaciones> habitaciones) {
 		this.habitaciones = habitaciones;
 	}
 
@@ -154,11 +155,11 @@ public class HotelAndes
 		this.planesConsumo = planesConsumo;
 	}
 
-	public List<Servicio> getServicios() {
+	public List<Servicios> getServicios() {
 		return servicios;
 	}
 
-	public void setServicios(List<Servicio> servicios) {
+	public void setServicios(List<Servicios> servicios) {
 		this.servicios = servicios;
 	}
 
@@ -171,24 +172,44 @@ public class HotelAndes
 				+ servicios + "]";
 	}
 
-	public Consumo adicionarConsumo(long id, Timestamp fecha, long id_usuario, String tipo_documento_usuario, long id_servicio, long id_habitacion) throws Exception
+	/* ****************************************************************
+	 * 			RESERVA
+	 *****************************************************************/
+	public Reservas adicionarReserva(int numPersonas, Timestamp entrada, Timestamp salida, Timestamp checkIn, Timestamp checkOut, long idUsuario, String tipoDoc, long numHab, Usuarios user, long idPlanCons) throws Exception{
+		Habitaciones habitacion = pp.darHabitacionPorId(numHab);
+		Reservas reserva = pp.adicionarReserva(numPersonas, entrada, salida, checkIn, checkOut, user, habitacion, idPlanCons);
+		return reserva;
+	}
+
+	/* ****************************************************************
+	 * 			Atributos
+	 *****************************************************************/
+	
+	public Consumo adicionarConsumo( Timestamp fecha, long id_usuario, String tipo_documento_usuario, long idProd, long id_habitacion, Usuarios user) throws Exception
 	{
-		Consumo con = pp.adicionarConsumo(id, fecha, id_usuario, tipo_documento_usuario, id_servicio, id_habitacion);
-		Usuario user = pp.darUsuarioPorId(id_habitacion,tipo_documento_usuario);
-		Servicio ser = pp.darServicioPorId(id_servicio);
-		if( user != null && ser.isReservado() ){
-			user.getConsumos().add(con);
+		Producto prod = pp.darProductoPorId(idProd);
+		Consumo con = null;
+		System.out.println(prod);
+		if( prod!= null ){
+			Habitaciones hab = pp.darHabitacionPorId(id_habitacion);
+			double nuevaCuenta = hab.getCuenta_habitacion() + prod.getCosto();
+			con = pp.adicionarConsumo( fecha, id_usuario, tipo_documento_usuario, idProd, id_habitacion, nuevaCuenta);
+			System.out.println(con);
+			System.out.println("Cambio de la cuenta de la hab: "+hab.getNum_hab() + " cuenta: "+hab.getCuenta_habitacion());
 		}
 		else{
-			throw new Exception( "O el usuario no existe, o el id del consumo es nulo, o ya estaba reservado el servicio." );
-			//excepcion 
+			throw new Exception("Producto "+ idProd +" no existe");
 		}
-		
 		return con;
 	}
-	
-	public Usuario darUsuario(long id, String tipoDoc){
-		return pp.darUsuarioPorId(id, tipoDoc);
+
+	public Usuarios darUsuario(long id, String tipoDoc) throws Exception{
+		System.out.println(tipoDoc);
+		if( !(tipoDoc.equals( Usuarios.CEDULA ) || tipoDoc.equals(Usuarios.PASAPORTE)) ){
+			throw new Exception("No existe tal tipo de documento "+tipoDoc);
+		}
+		Usuarios usuario = pp.darUsuarioPorId(id, tipoDoc);
+		return usuario;
 	}
 
 	/**
@@ -197,53 +218,27 @@ public class HotelAndes
 	 * @param nombre - El nombre del tipo de bebida
 	 * @return El objeto TipoBebida adicionado. null si ocurre alguna Excepci�n
 	 */
-	public Usuario adicionarUsuario(long num_identidad, String tipo_documento, String nombre, String apellido, String correo, long tipo_usuario, long id_reserva, long id_hotel)
+	public Usuarios adicionarUsuario(Usuarios user)
 	{
-		Usuario usuario = pp.adicionarUsuario(num_identidad, tipo_documento, nombre, apellido, correo, tipo_usuario, id_reserva, id_hotel);		
-		//        pp.adicionarReserva(id_reserva, 1, new Timestamp(0), new Timestamp(0), pc, h);
-		return usuario;
+		Usuarios userDB = pp.adicionarUsuario(user.getNum_identidad(), user.getTipo_documento(), user.getNombre(), user.getApellido(), user.getTipo_usuario(), user.getId_convencion());
+		System.out.println("Adiciona usuario: "+userDB.getNum_identidad());
+		return userDB;
 	}
 
-	public Reserva adicionarReserva(long id, int numPersonas, Timestamp entrada, Timestamp salida, PlanConsumo pc, Habitacion h){
-		Reserva reserva = pp.adicionarReserva(id, numPersonas, entrada, salida, pc, h);		
-		return reserva;
-	}
 
-	public Habitacion adicionarHabitacion(long id, double cuenta_habitacion, long tipo_habitacion, long id_hotel){
-		Habitacion h = pp.adicionarHabitacion(id, cuenta_habitacion, tipo_habitacion, id_hotel);		
+
+	public Habitaciones adicionarHabitacion(int numHab ,  double cuenta_habitacion, long tipo_habitacion){
+		Habitaciones h = pp.adicionarHabitacion(numHab,  tipo_habitacion, cuenta_habitacion);		
 		return h;
 	}
 
 	public TipoHabitacion adicionarTipoHabitacion(long id, String nombre, double costo, int capacidad){
 		return pp.adicionarTipoHabitacion(id, nombre, costo, capacidad);		
 	}
-	
-	public Check adicionarCheck(long idCliente, String tipoDocumentoCliente,long idRecepcion, String tipoDocumentoRecepcion, boolean entrada) throws Exception
-	{
-		Check retornable = null;
-		Usuario recepcionista = pp.darUsuarioPorId(idRecepcion, tipoDocumentoRecepcion);
-		Usuario cliente = pp.darUsuarioPorId(idCliente, tipoDocumentoCliente);
-		Timestamp fechaActual = Timestamp.valueOf(LocalDateTime.now());
-		Reserva reserva = cliente.getReserva();
-	
 
-		if(pp.darReservaPorId(reserva.getId())==null)
-				throw new Exception("No se encuentra reserva del cliente"); 
-		if(!(fechaActual.after(reserva.getEntrada())&& fechaActual.before(reserva.getSalida())))
-				throw new Exception("la reserva Termino");
-		
-		retornable =recepcionista.crearCheck(idCliente, tipoDocumentoCliente, fechaActual, entrada, reserva.getHabitacion().getId());
-		int ingreso =1;
-		if(!retornable.isIngreso())
-			ingreso = 0;
-		pp.adicionarCheck(retornable.getId(), retornable.getFecha(), ingreso, retornable.getIdUsuario(), retornable.getTipoDocumentoUsuario(), retornable.getIdHabitacion());
-		
-		return retornable;
-		
-	}
 
 	public TipoHabitacion darTipoHabitacion(long tipoHabitacion) {
-		
+
 		return pp.darTipoHabitacion(tipoHabitacion);
 	}
 
@@ -252,9 +247,10 @@ public class HotelAndes
 		return pp.darConsumos();
 	}
 
-	public Servicio darServicio(long idServicio) {
+	public Servicios darServicio(long idServicio) {
 		return pp.darServicioPorId(idServicio);
 	}
+
 
 	/* ****************************************************************
 	 * 			Métodos para administración
@@ -267,9 +263,159 @@ public class HotelAndes
 	 */
 	public long [] limpiarParranderos ()
 	{
-        log.info ("Limpiando la BD de Parranderos");
-        long [] borrrados = pp.limpiarParranderos();	
-        log.info ("Limpiando la BD de Parranderos: Listo!");
-        return borrrados;
+		log.info ("Limpiando la BD de Parranderos");
+		long [] borrrados = pp.limpiarParranderos();	
+		log.info ("Limpiando la BD de Parranderos: Listo!");
+		return borrrados;
+	}
+
+	public ReservaServicio adicionarReservaServicio( Timestamp fecha_inicial, 
+			Timestamp fecha_final, Long num_identidad,
+			String tipo_documento, long idServicio) throws Exception {
+		ReservaServicio rs = pp.adicionarReservaServicio(fecha_inicial, fecha_final, num_identidad, tipo_documento, idServicio);
+		System.out.println(rs);
+		return rs;
+	}
+
+	public Convencion adicionarConvencion( String nombre2,
+			int cantidadPersonas, long idPlanCons, Long num_identidad, String tipo_documento
+			) {
+		Convencion conv = pp.adicionarConvencion( nombre2, cantidadPersonas, idPlanCons, num_identidad,  tipo_documento);
+		System.out.println(conv);
+		return conv;
+	}
+
+	public List<Habitaciones> verificarHabitacionesDisponibles(long tipo, int cantidad, Timestamp entrada, Timestamp salida) {
+		List<Habitaciones> l = pp.verificarHabitacionesDisponibles(tipo, cantidad, entrada, salida);
+		return l;
+	}
+
+	public boolean verificarServiciosDisponibles(long tipo, int cantidad, Timestamp entrada, Timestamp salida) {
+		return pp.verificarServiciosDisponibles(tipo, cantidad, entrada, salida);
+	}
+
+	public Object darConvencion(long idConvencion) {
+		Object conv = pp.darConvencion(idConvencion);
+		return  conv;
+
+	}
+
+	public void eliminarReserva(long NumDocumento, String TipoDocumento) {
+		pp.eliminarReservas(NumDocumento, TipoDocumento);
+	}
+
+	public List<Usuarios> darUsuariosConvencion(long idConvencion) {
+		return pp.darUsuariosConvencion(idConvencion);
+	}
+
+	public void cancelarReservasServicios(long numIdentidad, String tipoDocumento) {
+
+		pp.cancelarReservasServicios(numIdentidad, tipoDocumento);		
+	}
+
+	public void reservarServicios(List<ReservaServicio> lrs, long idServ) {
+		pp.reservarServicioPorId(lrs, idServ);
+	}
+
+	public List<Usuarios> registrarSalidaConvencion(long idConv) {
+		List<Usuarios> listU = pp.darUsuariosConvencion(idConv);
+		registrarSalidaUsuarios(listU);
+		return listU;
+	}
+	
+	public void registrarSalidaUsuarios(List<Usuarios> lu){
+		pp.registrarSalidaUsuarios(lu);
+	}
+	
+	public void eliminarUsuario(Long numIdentidad, String tipoDoc) {
+
+		pp.eliminarUsuarioPorId(numIdentidad, tipoDoc);		
+	}
+
+	public List<Habitaciones> darHabitacionesDisponibles(int cantidad, long tipoHab, Timestamp entrada, Timestamp salida){
+		return pp.darHabitacionesDisponibles(cantidad, tipoHab, entrada, salida);
+	}
+
+	public long indiceUltimoUsuario() {
+		return pp.indiceUltimoUsuario();
+	}
+
+	public void cancelarConvencion(Long idConvencion) {
+		pp.cancelarConvencion(idConvencion);
+	}
+
+	public void crearMantenimiento(int num, Usuarios admin, Timestamp entrada,
+			Timestamp salida, long id) throws Exception {
+		if( num==1 ){
+			Servicios s = pp.darServicioPorId(id);
+			ReservaServicio rs = pp.darReservaServicioXFechasYidSer(entrada, salida, id);
+			if( rs==null ){
+				adicionarReservaServicio( entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id);
+			}
+			else{
+			}
+		}
+		else if( num==2 ){
+			Habitaciones h = pp.darHabitacionPorId(id);
+			Reservas r = pp.darReservaXFechasYNumHab(entrada, salida, id);
+			System.out.println("Reserva: "+r);
+			if( r==null ){
+				adicionarReserva( 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
+			}
+			else if( r.getCheck_in() == null ){
+				System.out.println(indiceUltimoUsuario());
+				adicionarReserva( 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
+			}
+			else if( r.getCheck_in() != null && r.getCheck_out() == null ){
+				moverUsuario( h, entrada, salida );
+				adicionarReserva( 1, entrada, salida, entrada, salida, admin.getNum_identidad(), admin.getTipo_documento(), id, admin, 0);
+			}
+		}
+	}
+
+	public void moverUsuario( Habitaciones h, Timestamp entrada, Timestamp salida ) throws Exception{
+		List<Habitaciones> list = verificarHabitacionesDisponibles(h.getTipo_habitacion(), 1, entrada, salida);
+		long i = h.getTipo_habitacion();
+		while( list.isEmpty() && i > 1 ){
+			list = verificarHabitacionesDisponibles(i--, 1, entrada, salida);
+		}
+		if( i==1 )
+			throw new Exception("No hay habitaciones disponibles");
+		else{
+			Habitaciones nueva = list.get(0);
+			System.out.println(nueva);
+			pp.moverUsuario(nueva, h);
+			System.out.println("Su habitacion nueva "+ nueva.getNum_hab());
+		}
+	}
+
+	public void registrarLlegadaReserva(long idUser, String tipoDoc,Timestamp ingreso, long idRes) {
+		pp.registrarLlegadaReserva(idUser, tipoDoc, ingreso, idRes);
+	}
+
+	public void registrarSalidaReserva(Long num_identidad,
+			String tipo_documento, Timestamp salida, long idRes) throws Exception {
+		pp.registrarSalidaReserva(num_identidad, tipo_documento, salida, idRes);
+
+	}
+
+	public void terminarMantenimientoHab(Long num_identidad, String tipo_documento, int numHab) {
+
+		pp.terminarMantenimientoHab(num_identidad, tipo_documento, numHab);
+	}
+
+	public void terminarMantenimientoServ(Long num_identidad, String tipo_documento, int idServ) {
+
+		pp.terminarMantenimientoServ(num_identidad, tipo_documento, idServ);
+
+	}
+
+	public List<Object> buscarBuenosClientesPorConsumo() {
+		return  pp.buscarBuenosClientesPorConsumo();
+		
+	}
+
+	public Object[] reqFC6(int tipoHab, long idServicio, String tipoTiempo) throws Exception {
+		return pp.reqFC6(tipoHab, idServicio, tipoTiempo);
 	}
 }

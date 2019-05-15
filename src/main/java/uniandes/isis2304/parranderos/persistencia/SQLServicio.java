@@ -7,7 +7,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import uniandes.isis2304.parranderos.negocio.Servicio;
+import uniandes.isis2304.parranderos.negocio.Servicios;
 
 
 public class SQLServicio {
@@ -58,12 +58,18 @@ public class SQLServicio {
 	 * @param tipoServicio - El tipo del Servicio
 	 * @return El n�mero de tuplas insertadas
 	 */
-	public long adicionarServicio (PersistenceManager pm, long id, String nombre, String descripcion, 
-			double costo, int cargadoHabitacion,  int capacidad, int reservado, Timestamp fechaInicial,
-			Timestamp fechaFinal, long idHotel, long tipoServicio) 
+	public long adicionarServicio (PersistenceManager pm, long id, String nombre, String descripcion, double costo, int cargado_habitacion,	 int capacidad, long id_tipo_servicios) 
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaServicio() + "(id, nombre, descripcion, costo, cargadoHabitacion, capacidad, reservado, fecha_inicial, fecha_final, id_hotel, tipoServicio) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		q.setParameters(id, nombre, descripcion, costo, cargadoHabitacion, capacidad, reservado, fechaInicial, fechaFinal, idHotel, tipoServicio );
+		
+		Query q = pm.newQuery(SQL, "INSERT INTO " + "SERVICIOS"+ "(id, nombre, descripcion, costo, cargado_habitacion, capacidad, id_tipo_servicios) "
+				+ "values ("
+				+ id +", '"
+				+ nombre +"', '"
+				+ descripcion +"',"
+				+ costo +","
+				+ cargado_habitacion +","
+				+ capacidad +","
+				+ id_tipo_servicios +")");
 		return (long) q.executeUnique();
 	}
 
@@ -76,8 +82,7 @@ public class SQLServicio {
 	 */
 	public long eliminarServicioPorId (PersistenceManager pm, long idServicio)
 	{
-		Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaServicio() + " WHERE id = ?");
-		q.setParameters(idServicio);
+		Query q = pm.newQuery(SQL, "DELETE FROM " + "SERVICIOS" + " WHERE id = "+idServicio);
 		return (long) q.executeUnique();
 	}
 
@@ -88,19 +93,30 @@ public class SQLServicio {
 	 * @param idServicio - El identificador del Servicio
 	 * @return El objeto Hotel que tiene el identificador dado
 	 */
-	public Servicio darServicioPorId (PersistenceManager pm, long idServicio) 
+	public Object darServicioPorId (PersistenceManager pm, long idServicio) 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaServicio () + " WHERE id = ?");
-		q.setResultClass(Servicio.class);
-		q.setParameters(idServicio);
-		return (Servicio) q.executeUnique();
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "SERVICIOS" + " WHERE id = "+idServicio);
+		return (Object) q.executeUnique();
 	}
 
 
-	public List<Servicio> darServicios(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaServicio());
-		q.setResultClass(Servicio.class);
-		return (List<Servicio>) q.executeList();
+	public List<Servicios> darServicios(PersistenceManager pm){
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "SERVICIOS");
+		q.setResultClass(Servicios.class);
+		return (List<Servicios>) q.executeList();
+	}
+
+
+	public Object darServiciosDisponibles(
+			PersistenceManager pm, long tipo, int cantidad) {
+		//		SELECT *
+		//		FROM HABITACIONES 
+		//		WHERE tipo_habitacion = 5 AND ocupada=0
+		//		FETCH FIRST 30 ROWS ONLY;
+		String sql = "SELECT * FROM SERVICIOS WHERE TIPO_SERVICIOS = "+ tipo +" FETCH FIRST "+cantidad+ " ROWS ONLY";
+		Query q = pm.newQuery(SQL, sql);
+		
+		return (Object) q.executeUnique();
 	}
 
 }

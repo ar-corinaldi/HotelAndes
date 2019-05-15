@@ -1,5 +1,6 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -30,7 +31,7 @@ public class SQLTipoHabitacion {
 	/* ****************************************************************
 	 * 			M�todos
 	 *****************************************************************/
-	
+
 	/**
 	 * Constructor
 	 * @param pp - El Manejador de persistencia de la aplicaci�n
@@ -39,8 +40,8 @@ public class SQLTipoHabitacion {
 	{
 		this.ph = ph;
 	}
-	
-	
+
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para adicionar un tipo de Habitacion a la base de datos de HotelAndes
 	 * @param pm - El manejador de persistencia
@@ -50,14 +51,18 @@ public class SQLTipoHabitacion {
 	 * @param capacidad - La capacidad del tipo de Habitacion
 	 * @return El n�mero de tuplas insertadas
 	 */
-	public long adicionarTipoHabitacion (PersistenceManager pm, long id, String nombre, double costo, int capacidad) 
+	public long adicionarTipoHabitacion (PersistenceManager pm, long id, double costo_noche, String nombre,  int capacidad) 
 	{
-        Query q = pm.newQuery(SQL, "INSERT INTO " + ph.darTablaTipoHabitacion() + "(id, nombre, costo, capacidad) values (?, ?, ?, ?)");
-        q.setParameters(id, nombre, costo, capacidad);
-        return (long) q.executeUnique();
+		Query q = pm.newQuery(SQL, "INSERT INTO " + "TIPO_HABITACIONES" + "(id, costo_noche, nombre,  capacidad) "
+				+ "values ("
+				+ id+ ", "
+				+ costo_noche+ ", "
+				+ "'"+ nombre+"', "
+				+ capacidad + ")");
+		return (long) q.executeUnique();
 	}
-	
-	
+
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para eliminar un tipo de Habitacion de la base de datos de HotelAndes, por su identificador
 	 * @param pm - El manejador de persistencia
@@ -66,29 +71,38 @@ public class SQLTipoHabitacion {
 	 */
 	public long eliminarTipoHabitacionPorId (PersistenceManager pm, long id)
 	{
-       Query q = pm.newQuery(SQL, "DELETE FROM " + ph.darTablaTipoHabitacion() + " WHERE id = ?");
-       q.setParameters(id);
-       return (long) q.executeUnique();
+		Query q = pm.newQuery(SQL, "DELETE FROM " + "TIPO_HABITACIONES"+ " WHERE id = " + id);
+		return (long) q.executeUnique();
 	}
-	
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para encontrar la informaci�n de UN Tipo de Habitacion de la 
 	 * base de datos de HotelAndes, por su identificador
 	 * @param pm - El manejador de persistencia
 	 * @param id - El identificador del Tipo de Habitacion
 	 * @return El objeto Tipo de Habitacion que tiene el identificador dado
+	 * @throws Exception 
 	 */
-	public TipoHabitacion darTipoHabitacionPorId (PersistenceManager pm, long id) 
+	public TipoHabitacion darTipoHabitacionPorId (PersistenceManager pm, long id) throws Exception 
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaTipoHabitacion () + " WHERE id = ?");
-		q.setResultClass(TipoHabitacion.class);
-		q.setParameters(id);
-		return (TipoHabitacion) q.executeUnique();
+		try{
+			Query q = pm.newQuery(SQL, "SELECT * FROM " + "TIPO_HABITACIONES" + " WHERE id = "+id);
+			Object o = q.executeUnique();
+			Object[] datos = (Object[]) o;
+			long newId = ((BigDecimal) datos[0]).longValue();
+			String nombre = datos[1].toString();
+			double costo = ((BigDecimal) datos[2]).doubleValue();
+			int capacidad = ((BigDecimal) datos[3]).intValue();
+			return new TipoHabitacion(newId, nombre, costo, capacidad);
+		}
+		catch( Exception e ){
+			throw new Exception("No existe el tipo de habitacion");
+		}
 	}
 
 
 	public List<TipoHabitacion> darTiposHabitacion(PersistenceManager pm){
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + ph.darTablaTipoHabitacion());
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + "TIPO_HABITACIONES");
 		q.setResultClass(TipoHabitacion.class);
 		return (List<TipoHabitacion>) q.executeList();
 	}

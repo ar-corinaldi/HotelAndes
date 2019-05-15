@@ -3,14 +3,10 @@ package uniandes.isis2304.parranderos.negocio;
 public interface VOHabitacion {
 	
 	
-	public double getCuentaHab();
+	public double getCuenta_habitacion();
+
+	public long getTipo_habitacion();
 	
-		
-	public long getTipoHabitacion();
+	public long getNum_hab();
 	
-	public long getId();
-	
-	public Consumo getConsumo();
-	
-	public Reserva getReserva();
 }

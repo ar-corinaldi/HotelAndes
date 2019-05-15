@@ -1,16 +1,17 @@
 package uniandes.isis2304.parranderos.negocio;
 
+import java.math.BigDecimal;
+
 public class TipoHabitacion {
 
 	/******************************************************************************
 	 * ATRIBUTOS
 	 ******************************************************************************/
-
 	private long id;
 
 	private String nombre;
 	
-	private double costo;
+	private double costo_noche;
 	
 	private int capacidad;
 
@@ -29,9 +30,10 @@ public class TipoHabitacion {
 		super();
 		this.id = id;
 		this.nombre = nombre;
-		this.setCosto(costo);
+		this.costo_noche = costo;
+		this.capacidad = capacidad;
 	}
-
+	
 	/******************************************************************************
 	 * METODOS
 	 ******************************************************************************/
@@ -54,15 +56,15 @@ public class TipoHabitacion {
 
 	@Override
 	public String toString() {
-		return "TipoHabitacion [id=" + id + ", nombre=" + nombre + ", costo="+ costo+ ", capacidad="+ capacidad +"]";
+		return "TipoHabitacion [id=" + id + ", nombre=" + nombre + ", costo="+ costo_noche+ ", capacidad="+ capacidad +"]";
 	}
 
 	public double getCosto() {
-		return costo;
+		return costo_noche;
 	}
 
 	public void setCosto(double costo) {
-		this.costo = costo;
+		this.costo_noche = costo;
 	}
 
 	public int getCapacidad() {

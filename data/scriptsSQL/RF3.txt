@@ -1,0 +1,5 @@
+INSERT INTO TIPO_HABITACIONES (id, nombre, costo_noche, capacidad) VALUES (1, 'suite presidencial', 1000, 10);
+INSERT INTO TIPO_HABITACIONES (id, nombre, costo_noche, capacidad) VALUES (2, 'familiar', 500, 4);
+INSERT INTO TIPO_HABITACIONES (id, nombre, costo_noche, capacidad) VALUES (3, 'doble', 200, 2);
+INSERT INTO TIPO_HABITACIONES (id, nombre, costo_noche, capacidad) VALUES (4, 'sencilla', 100, 1);
+INSERT INTO TIPO_HABITACIONES (id, nombre, costo_noche, capacidad) VALUES (5, 'suite', 750, 8);

@@ -1,0 +1,159 @@
+drop table "ISIS2304B101910"."CONSUMOS" cascade constraints ;
+DROP TABLE CONVENCIONES cascade constraints ;
+DROP TABLE HABITACIONES cascade constraints ;
+DROP TABLE HOTELES cascade constraints ;
+DROP TABLE PLANES_DE_CONSUMO cascade constraints ;
+DROP TABLE PRODUCTOS cascade constraints ;
+DROP TABLE RESERVAS cascade constraints ;
+DROP TABLE RESERVAS_SERVICIOS cascade constraints ;
+DROP TABLE SERVICIOS cascade constraints ;
+DROP TABLE TIPO_HABITACIONES cascade constraints ;
+DROP TABLE TIPO_PLANES_DE_CONSUMO cascade constraints ;
+DROP TABLE TIPO_SERVICIOS cascade constraints ;
+DROP TABLE TIPO_USUARIOS cascade constraints ;
+DROP TABLE USUARIOS cascade constraints ;
+
+CREATE TABLE CONSUMOS
+( 
+  id NUMBER NOT NULL,
+  fecha TIMESTAMP NOT NULL,
+  id_usuario NUMBER NOT NULL,
+  tipo_documento_usuario VARCHAR(50) NOT NULL,
+  id_producto NUMBER NOT NULL,
+  id_habitacion NUMBER NOT NULL
+);
+
+CREATE TABLE CONVENCIONES
+( 
+  id NUMBER NOT NULL,
+  nombre VARCHAR(50),
+  cantidad_personas NUMBER NOT NULL,
+  id_plan_consumo NUMBER NOT NULL,
+  id_usuario NUMBER NOT NULL,
+  tipo_documento_usuario VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE HABITACIONES
+( 
+  num_hab NUMBER NOT NULL,
+  cuenta_habitacion NUMBER NOT NULL,
+  tipo_habitacion NUMBER NOT NULL
+);
+
+CREATE TABLE HOTELES
+( 
+  id NUMBER NOT NULL,
+  nombre VARCHAR(50) NOT NULL,
+  pais VARCHAR(50),
+  ciudad VARCHAR(50),
+  capacidad NUMBER NOT NULL
+);
+
+
+CREATE TABLE PLANES_DE_CONSUMO
+( 
+  id NUMBER NOT NULL,
+  descripcion VARCHAR2(500),
+  descuento NUMBER NOT NULL,
+  fecha_inicio TIMESTAMP,
+  fecha_final TIMESTAMP
+);
+
+CREATE TABLE PRODUCTOS
+( 
+  id NUMBER NOT NULL,
+  nombre VARCHAR2(50) NOT NULL,
+  descripcion varchar2(500),
+  precio NUMBER NOT NULL,
+  id_servicio NUMBER NOT NULL
+);
+
+CREATE TABLE RESERVAS
+( 
+  id NUMBER NOT NULL,
+  num_personas NUMBER NOT NULL,
+  entrada TIMESTAMP NOT NULL,
+  salida TIMESTAMP NOT NULL,
+  check_in TIMESTAMP,
+  check_out TIMESTAMP,
+  id_usuario NUMBER NOT NULL,
+  tipo_documento_usuario VARCHAR(50) NOT NULL,
+  id_habitacion NUMBER NOT NULL,
+  id_plan_consumo NUMBER
+);
+
+CREATE TABLE RESERVAS_SERVICIOS
+( 
+  id NUMBER NOT NULL,
+  fecha_inicial TIMESTAMP NOT NULL,
+  fecha_final TIMESTAMP NOT NULL,
+  id_usuario NUMBER NOT NULL,
+  tipo_documento_usuario VARCHAR(50) NOT NULL,
+  id_servicio NUMBER NOT NULL
+);
+
+CREATE TABLE SERVICIOS
+( 
+  id NUMBER NOT NULL,
+  nombre VARCHAR2(50) NOT NULL,
+  descripcion VARCHAR2(500),
+  costo NUMBER NOT NULL,
+  cargado_habitacion NUMBER NOT NULL,
+  capacidad NUMBER NOT NULL,
+  tipo_servicios NUMBER NOT NULL
+);
+
+CREATE TABLE TIPO_HABITACIONES
+( 
+  id NUMBER NOT NULL,
+  nombre VARCHAR2(50) NOT NULL,
+  costo_noche DECIMAL NOT NULL,
+  capacidad INTEGER NOT NULL
+);
+
+
+CREATE TABLE TIPO_SERVICIOS
+( 
+  id NUMBER NOT NULL,
+  nombre VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE TIPO_USUARIOS
+( 
+  id NUMBER NOT NULL,
+  nombre VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE USUARIOS
+( 
+  num_identidad NUMBER NOT NULL,
+  tipo_documento VARCHAR2(50) NOT NULL,
+  nombre VARCHAR2(50) NOT NULL,
+  apellido VARCHAR2(50) NOT NULL,
+  tipo_usuario NUMBER NOT NULL,
+  id_convencion NUMBER
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE TIPO_PLANES_DE_CONSUMO
+( 
+  id NUMBEsR NOT NULL,
+  nombre VARCHAR(50) NOT NULL
+);
