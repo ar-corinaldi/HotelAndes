@@ -1597,5 +1597,34 @@ public class PersistenciaHotelAndes
 		//TODO Metodo no terminado falta hacer eso con servicios todo lo demas que me piden
 		return sqlReserva.fechasMayorDemanda(pmf.getPersistenceManager(), tipoHab, tipoTiempo );
 	}
+
+	public List<Usuarios> reqFC9(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
+			boolean[] tipoOrdenamiento) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			sqlUsuario.reqFC9( servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento );
+			tx.commit();
+			System.out.println("Se registra con exito la salida de todos los usuarios");
+
+			return null;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
 }
 

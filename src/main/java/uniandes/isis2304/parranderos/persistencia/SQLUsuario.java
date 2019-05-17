@@ -155,4 +155,17 @@ public class SQLUsuario {
 			
 			return o;
 		}
+
+		public void reqFC9(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
+				boolean[] tipoOrdenamiento) {
+			
+			String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+			String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+			
+			
+			String sql = "SELECT * ";
+			sql += "FROM Servicios s, Productos p, Consumos c ";
+			sql += "WHERE s.id = p.id_servicio AND p.id = c.id_producto AND s.tipo_servicios = "+ servicio + " AND ";
+			sql += "entrada BETWEEN " + entradaTS + " AND " + salidaTS;
+		}
 }

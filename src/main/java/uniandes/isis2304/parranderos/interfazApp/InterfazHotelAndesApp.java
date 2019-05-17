@@ -799,14 +799,21 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 				Object[] params = {message, cb1, cb2, cb3};
 				n = JOptionPane.showConfirmDialog(this, params, "Co0nsultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
 			}
+			boolean[] tipoClasificacion = {cbAgrup.isSelected(), cbOrden.isSelected() };
+			boolean[] tipoOrdenamiento = {cb1.isSelected(), cb2.isSelected(), cb3.isSelected()};
 			
-			
+			List<Usuarios> clientes = parranderos.reqCF9( servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento );
+			resultado += "---------------------------------------";
+			resultado += "--------------Clientes-----------------";
+			for (Usuarios usuario : clientes) {
+				resultado += "-  " + usuario + "                  -";
+			}
 		}
 		catch( Exception e ){
 			resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();
 			panelDatos.actualizarInterfaz(resultado);
 			JOptionPane.showMessageDialog(this, "Hubo un error en el sistema", "Error", JOptionPane.WARNING_MESSAGE);
-
+			
 			//				e.printStackTrace();
 		}
 

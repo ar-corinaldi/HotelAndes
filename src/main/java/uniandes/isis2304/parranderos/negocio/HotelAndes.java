@@ -16,15 +16,12 @@
 package uniandes.isis2304.parranderos.negocio;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.google.gson.JsonObject;
 
-import oracle.net.aso.i;
 import uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes;
 
 /**
@@ -417,5 +414,12 @@ public class HotelAndes
 
 	public Object[] reqFC6(int tipoHab, long idServicio, String tipoTiempo) throws Exception {
 		return pp.reqFC6(tipoHab, idServicio, tipoTiempo);
+	}
+
+	public List<Usuarios> reqCF9(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
+			boolean[] tipoOrdenamiento) {
+		List<Usuarios> usuarios = null;
+		usuarios = pp.reqFC9(servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento);
+		return usuarios;
 	}
 }
