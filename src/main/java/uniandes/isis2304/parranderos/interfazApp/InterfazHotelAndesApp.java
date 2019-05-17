@@ -37,12 +37,14 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.jdo.JDODataStoreException;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
@@ -100,6 +102,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 
 	public static final long ORGANIZADOR = 6;
 
+	public static final long GERENTE = 1;
 
 	/* ****************************************************************
 	 * 			Atributos
@@ -282,11 +285,11 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 					null,  // null para icono defecto
 					new String[] { "cedula", "pasaporte" }, 
 					"cedula");			
-			
+
 			String nombre = JOptionPane.showInputDialog (this, "Nombre?", "Adicionar usuario", JOptionPane.QUESTION_MESSAGE);
-			
+
 			String apellido = JOptionPane.showInputDialog (this, "Apellido?", "AAdicionar usuario", JOptionPane.QUESTION_MESSAGE);
-			
+
 			String id_convencion = JOptionPane.showInputDialog(this, "Convencion? (0)", "Adicionar cliente", JOptionPane.QUESTION_MESSAGE);
 			if (num_identidad != null)
 			{
@@ -316,30 +319,29 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		try {
 			Usuarios cliente = verificarUsuario(CLIENTE);
 
+			int numPersonas = Integer.valueOf(JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION));
+
+
 			int mes1 = ThreadLocalRandom.current().nextInt(1, 6 + 1);
 			int dia1 = ThreadLocalRandom.current().nextInt(1, 15 + 1);
 
 			int mes2 = ThreadLocalRandom.current().nextInt(mes1, 12 + 1);
 			int dia2 = ThreadLocalRandom.current().nextInt(dia1, 28 + 1);
 
-			int numPersonas = Integer.valueOf(JOptionPane.showInputDialog (this, "Cantidad personas?", "Adicionar reserva", JOptionPane.OK_OPTION));
 			String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-"+mes1+"-"+dia1+")", "Adicionar reserva", JOptionPane.OK_OPTION);
 			String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?\n(Ejm: 2019-"+mes2+"-"+dia2+")", "Adicionar reserva", JOptionPane.OK_OPTION);
-			
-			String nombre = JOptionPane.showInputDialog (this, "Nombre?", "Adicionar usuario", JOptionPane.QUESTION_MESSAGE);
-			String apellido = JOptionPane.showInputDialog (this, "Apellido?", "Adicionar usuario", JOptionPane.QUESTION_MESSAGE);
+
 			String tipoStr = (String) JOptionPane.showInputDialog(this,
-					   "Seleccione el tipo de habitacion",
-					   "Adicionar reserva",
-					   JOptionPane.QUESTION_MESSAGE,
-					   null,  // null para icono defecto
-					   new String[] { "1. suite presidencial (capacidad: 10)", "2. familiar (capacidad: 4)", "3. doble (capacidad: 2)", 
-					"4. (capacidad: 1)", "5. suite (capacidad: 8)" }, 
-					   "1. suite presidencial (capacidad: 10)");
+					"Seleccione el tipo de habitacion",
+					"Adicionar reserva",
+					JOptionPane.QUESTION_MESSAGE,
+					null,  // null para icono defecto
+					new String[] { "1. suite presidencial (capacidad: 10)", "2. familiar (capacidad: 4)", "3. doble (capacidad: 2)", 
+							"4. sencilla (capacidad: 1)", "5. suite (capacidad: 8)" }, 
+					"1. suite presidencial (capacidad: 10)");
 			tipoStr = tipoStr.split(". ")[0];
+
 			long tipo = Long.valueOf(tipoStr);
-			
-			
 			long idPlanCons = Long.valueOf(JOptionPane.showInputDialog (this, "plan consumo id?(0 si no tiene)", "Adicionar reserva", JOptionPane.OK_OPTION));
 
 			Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 06:00:00.00");
@@ -611,6 +613,31 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		}
 	}
 
+	public Usuarios verificarUsuario( long tipoUsuario, long tipoUsuario2, long tipoUsuario3 ) throws NumberFormatException, Exception{
+		try{
+			Usuarios user =null;
+
+			String numIden = JOptionPane.showInputDialog (this, "numero identificacion?", "Verificacion Usuario", JOptionPane.QUESTION_MESSAGE);
+			String tipoDoc = (String) JOptionPane.showInputDialog(this,
+					"Seleccione la unidad de tiempo",
+					"Analizar la operacion de Hotel Andes",
+					JOptionPane.QUESTION_MESSAGE,
+					null,  // null para icono defecto
+					new String[] { "cedula", "pasaporte" }, 
+					"cedula");
+
+			user = parranderos.darUsuario(Long.valueOf(numIden), tipoDoc);
+
+			if( user.getTipo_usuario() == tipoUsuario || user.getTipo_usuario() == tipoUsuario2 || user.getTipo_usuario() == tipoUsuario3 ){
+				return user;
+			} 
+			else throw new Exception("El usuario no es del tipo "+tipoUsuario );
+		}
+		catch( Exception e ){
+			throw new Exception(e.getMessage());
+		}
+	}
+
 	public void crearMantenimiento() throws Exception {
 
 		Usuarios admin = verificarUsuario(ADMINISTRADOR);
@@ -706,6 +733,8 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();
 			panelDatos.actualizarInterfaz(resultado);
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Hubo un error registrando le llegada del cliente", "Error", JOptionPane.WARNING_MESSAGE);
+
 			//				e.printStackTrace();
 		}
 
@@ -729,6 +758,59 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		}catch (Exception e) {
 			//			e.printStackTrace();
 		}
+	}
+
+	public void consultarConsumoEnHotelAndes(){
+
+		String resultado = "";
+		try{
+
+			verificarUsuario(GERENTE, ORGANIZADOR, RECEPCIONISTA);
+
+			String servicio = (String) JOptionPane.showInputDialog(this, "Seleccione el servicio", "Consultar consumo en Hotel Andes", JOptionPane.QUESTION_MESSAGE, null,  // null para icono defecto
+					new String[] { "1. Piscina", "2. Gimnasio", 
+							"3. Internet", "4. Bar", "5. Restaurante", "6. Supermercad", "7. Tienda", "8. Spa",
+							"9. Lavado", "10. Utensilio", "11. Salon reunion", "12. Salon conferencia", "13. Planchado", "14. Embolada"}, 
+					"1. Piscina");
+
+			int mes1 = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+			int dia1 = ThreadLocalRandom.current().nextInt(1, 15 + 1);
+
+			int mes2 = ThreadLocalRandom.current().nextInt(mes1, 12 + 1);
+			int dia2 = ThreadLocalRandom.current().nextInt(dia1, 28 + 1);
+
+			String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-"+mes1+"-"+dia1+")", "Consultar consumo en Hotel Andes", JOptionPane.OK_OPTION);
+			String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?\n(Ejm: 2019-"+mes2+"-"+dia2+")", "Consultar consumo en Hotel Andes", JOptionPane.OK_OPTION);
+
+			Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 00:00:00.00");
+			Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 23:59:59.00");
+
+			JCheckBox cbAgrup = new JCheckBox("Agrupamiento"); 
+			JCheckBox cbOrden = new JCheckBox("Ordenamiento");
+			String message = "Citerio de ordenamiento (se puede seleccionar mas de uno)";
+			Object[] params1 = {message, cbAgrup, cbOrden};
+			int n = JOptionPane.showConfirmDialog(this, params1, "Consultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
+
+			JCheckBox cb1 = new JCheckBox("Datos del cliente"); 
+			JCheckBox cb2 = new JCheckBox("Fecha");
+			JCheckBox cb3 = new JCheckBox("Numero de veces que usa el servicio");
+			if( cbOrden.isSelected() ){
+				message = "Citerio de ordenamiento (se puede seleccionar mas de uno)";
+				Object[] params = {message, cb1, cb2, cb3};
+				n = JOptionPane.showConfirmDialog(this, params, "Co0nsultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
+			}
+			
+			
+		}
+		catch( Exception e ){
+			resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();
+			panelDatos.actualizarInterfaz(resultado);
+			JOptionPane.showMessageDialog(this, "Hubo un error en el sistema", "Error", JOptionPane.WARNING_MESSAGE);
+
+			//				e.printStackTrace();
+		}
+
+
 	}
 
 	/* ****************************************************************
