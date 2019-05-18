@@ -830,9 +830,53 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		try {
 			verificarUsuario(GERENTE);
 			Object[] listaO = parranderos.reqCF11();
-
-
-
+			
+			resultado += "CANTIDAD MAXIMOS HABITACIONES SOLICITADAS POR SEMANA\n";
+			resultado += "Semana-cantidad de consumos-numero de la habitacion\n";
+			//Max
+			List<Object> habitacionSolicitadas = (List<Object>)listaO[0];
+			for (Object o : habitacionSolicitadas) {
+				Object[] datos = (Object[]) o;
+				resultado += datos[0].toString() + " - ";
+				resultado += datos[1].toString() + " - ";
+				resultado += datos[2].toString() + "\n\n";
+			}
+			
+			resultado += "CANTIDAD MINIMA HABITACIONES SOLICITADAS POR SEMANA\n";
+			resultado += "Semana-cantidad de consumos-numero de la habitacion\n";
+			//Max
+			habitacionSolicitadas = (List<Object>)listaO[1];
+			for (Object o : habitacionSolicitadas) {
+				Object[] datos = (Object[]) o;
+				resultado += datos[0].toString() + " - ";
+				resultado += datos[1].toString() + " - ";
+				resultado += datos[2].toString() + "\n\n";
+			}
+			
+			resultado += "CANTIDAD MAXIMOS CONSUMOS POR SEMANA\n";
+			resultado += "Semana-cantidad de consumos-id del servicio\n";
+			//Max
+			List<Object> cons = (List<Object>)listaO[2];
+			for (Object o : cons) {
+				Object[] datos = (Object[]) o;
+				resultado += datos[0].toString() + " - ";
+				resultado += datos[1].toString() + " - ";
+				resultado += datos[2].toString() + "\n\n";
+			}
+			
+			resultado += "CANTIDAD MINIMOS CONSUMOS POR SEMANA\n";
+			resultado += "Semana-cantidad de consumos-id del servicio\n";
+			//Min
+			cons = (List<Object>)listaO[3];
+			for (Object o : cons) {
+				Object[] datos = (Object[]) o;
+				resultado += datos[0].toString() + " - ";
+				resultado += datos[1].toString() + " - ";
+				resultado += datos[2].toString() + "\n\n";
+			}
+			
+			panelDatos.actualizarInterfaz(resultado);
+			
 		} catch (Exception e) {
 
 			resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();

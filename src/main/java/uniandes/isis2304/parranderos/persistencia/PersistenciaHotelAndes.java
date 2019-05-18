@@ -1634,16 +1634,16 @@ public class PersistenciaHotelAndes
 		try
 		{
 			tx.begin();
-			List<Reservas> reservasMas = sqlReserva.reqFC11( pm, "MAX" );
-			List<Reservas> reservasMenos = sqlReserva.reqFC11(pm, "MIN");
+			List<Object> reservasMas = sqlReserva.reqFC11( pm, "MAX" );
+			List<Object> reservasMenos = sqlReserva.reqFC11(pm, "MIN");
 			
-//			List<Consumo> consumosMas = sqlConsumo.reqFC11Mas( pm );
-//			List<Consumo> consumosMenos = sqlConsumo.reqFC11Menos( pm );
+			List<Object> consumosMas = sqlConsumo.reqFC11( pm, "MAX" );
+			List<Object> consumosMenos = sqlConsumo.reqFC11( pm, "MIN" );
 			
 			o[0] = reservasMas;
 			o[1] = reservasMenos;
-//			o[2] = consumosMas;
-//			o[3] = consumosMenos;
+			o[2] = consumosMas;
+			o[3] = consumosMenos;
 
 			tx.commit();
 

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAmount;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -150,13 +151,63 @@ public class SQLConsumo {
 		}
 	}
 
-	public List<Consumo> reqFC11Mas(PersistenceManager pm) {
+
+	public List<Object> reqFC11(PersistenceManager pm, String maxOMin) throws Exception {
+		String sql = darSQLReqFC11(maxOMin);
+		System.out.println(sql);
+		List<Object> listObject = new LinkedList<Object>();
+		try{
+			Query q = pm.newQuery(SQL, sql);
+			listObject = q.executeList();
+		}
+		catch( Exception e ){
+			throw new Exception("Error al cargar las reservas "+maxOMin);
+		}
+		
+		return listObject;
+	}
+	
+	private String darSQLReqFC11(String maxOMin){
+//		SELECT *
+//		FROM (SELECT DISTINCT x.semana , x.habitaciones_mas_solicitadas, y.numero_habitacion as num_hab_mayor
+//				FROM (
+//				        SELECT A.semana, MAX(A.cantidad_habitacion) as habitaciones_mas_solicitadas
+//				        FROM (
+//				                SELECT to_char(entrada,'ww') as semana, COUNT(h.num_hab) as cantidad_habitacion, h.num_hab as numero_habitacion
+//				                FROM reservas r INNER JOIN habitaciones h ON r.id_habitacion = h.num_hab
+//				                WHERE r.entrada BETWEEN to_date('20190101', 'YYYYMMDD') AND to_date('20191231', 'YYYYMMDD') 
+//				                GROUP BY to_char(entrada,'ww'), h.num_hab
+//				            ) A
+//				        GROUP BY A.semana
+//				        ) X
+//				INNER JOIN (
+//				                SELECT to_char(entrada,'ww') as semana, COUNT(h.num_hab) as cantidad_habitacion, h.num_hab as numero_habitacion
+//				                FROM reservas r INNER JOIN habitaciones h ON r.id_habitacion = h.num_hab
+//				                WHERE r.entrada BETWEEN to_date('20190101', 'YYYYMMDD') AND to_date('20191231', 'YYYYMMDD') 
+//				                GROUP BY to_char(entrada,'ww'), h.num_hab
+//				            ) Y 
+//				ON X.habitaciones_mas_solicitadas = Y.cantidad_habitacion) Z LEFT JOIN HABITACIONES H ON z.num_hab_mayor = H.NUM_HAB;
 		
 		
-		return null;
+		String sql = "SELECT x.semana , x.servicio_"+ maxOMin +"_consumido, y.servicio as id_servicio_"+maxOMin+" ";
+        sql += "FROM ( ";
+        sql += "        SELECT A.semana, "+ maxOMin +"(A.cantidad_servicio) as servicio_" + maxOMin + "_consumido ";
+        sql += "FROM ( ";
+        sql += "SELECT to_char(fecha,'ww') as semana, COUNT(p.id_servicio) as cantidad_servicio, p.id_servicio as servicio ";
+        sql += "FROM consumos c INNER JOIN productos p ON c.id_producto = p.id ";
+        sql += "WHERE fecha BETWEEN to_date('20190101', 'YYYYMMDD') AND to_date('20191231', 'YYYYMMDD') ";
+        sql += "GROUP BY to_char(fecha,'ww'), p.id_servicio ";
+        sql += ") A "; 
+        sql += "GROUP BY A.semana ";
+        sql += ") X ";
+        sql += "INNER JOIN ( ";
+        sql += "SELECT to_char(fecha,'ww') as semana, COUNT(p.id_servicio) as cantidad_servicio, p.id_servicio as servicio ";
+        sql += "FROM consumos c INNER JOIN productos p ON c.id_producto = p.id ";
+        sql += "WHERE fecha BETWEEN to_date('20190101', 'YYYYMMDD') AND to_date('20191231', 'YYYYMMDD') ";
+        sql += "GROUP BY to_char(fecha,'ww'), p.id_servicio ) Y ON X.SERVICIO_"+ maxOMin +"_CONSUMIDO = Y.cantidad_servicio ";
+        sql += "ORDER BY x.semana asc";
+		
+		return sql;
 	}
 
-	public List<Consumo> reqFC11Menos(PersistenceManager pm) {
-		return null;
-	}
 }

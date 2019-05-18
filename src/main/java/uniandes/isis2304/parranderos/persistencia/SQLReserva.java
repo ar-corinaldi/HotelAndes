@@ -322,29 +322,15 @@ public class SQLReserva {
 		}
 	}
 
-	public List<Reservas> reqFC11(PersistenceManager pm, String maxOMin) throws Exception {
+	public List<Object> reqFC11(PersistenceManager pm, String maxOMin) throws Exception {
 
 		String sql = darSQLReqFC11(maxOMin);
 		System.out.println(sql);
 		
-		List<Reservas> list = new LinkedList<Reservas>();
+		List<Object> list = new LinkedList<Object>();
 		try{
-			System.out.println("Sirve");
 			Query q = pm.newQuery(SQL, sql);
-			System.out.println("No sirve");
-			List<Object> listObject = q.executeList();
-			System.out.println("Sirve");
-			for (Object o : listObject) {
-				Object[] datos = (Object[]) o;
-				String semana = datos[0].toString();
-				String tipoDoc = (String) datos[1];
-				String numHabMayor = (String) datos[2];
-				long numHab = ((BigDecimal)datos[3]).longValue();
-				double cuentaHab = ((BigDecimal)datos[4]).doubleValue();
-				long tipoHab = ((BigDecimal)datos[5]).longValue();
-				//TODO	revisar sql para que de reserva
-//				list.add( new Reserva);
-			}
+			list = q.executeList();
 		}
 		catch( Exception e ){
 			e.printStackTrace();
@@ -376,8 +362,7 @@ public class SQLReserva {
 //				ON X.habitaciones_mas_solicitadas = Y.cantidad_habitacion) Z LEFT JOIN HABITACIONES H ON z.num_hab_mayor = H.NUM_HAB;
 		
 		
-		String sql = "SELECT * ";
-		sql += "FROM (SELECT DISTINCT x.semana , x.habitaciones_mas_solicitadas, y.numero_habitacion as num_hab_mayor ";
+		String sql = "SELECT DISTINCT x.semana , x.habitaciones_mas_solicitadas, y.numero_habitacion as num_hab_mayor ";
         sql += "FROM ( ";
         sql += "SELECT A.semana, MAX(A.cantidad_habitacion) as habitaciones_mas_solicitadas ";
         sql += "FROM ( ";
@@ -394,8 +379,8 @@ public class SQLReserva {
         sql += "WHERE r.entrada BETWEEN to_date('20190101', 'YYYYMMDD') AND to_date('20191231', 'YYYYMMDD') ";
         sql += "GROUP BY to_char(entrada,'ww'), h.num_hab ";
         sql += ") Y "; 
-        sql += "ON X.habitaciones_mas_solicitadas = Y.cantidad_habitacion) Z LEFT JOIN HABITACIONES H ON z.num_hab_mayor = H.NUM_HAB " ;
-		
+        sql += "ON X.habitaciones_mas_solicitadas = Y.cantidad_habitacion " ;
+		sql += "ORDER BY x.semana asc";
 		return sql;
 	}
 }
