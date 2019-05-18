@@ -162,10 +162,21 @@ public class SQLUsuario {
 			String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 			String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 			
+//			SELECT u.*
+//			FROM (SELECT c.ID_USUARIO, c.TIPO_DOCUMENTO_USUARIO
+//			FROM Servicios s, Productos p, Consumos c
+//			WHERE s.id = p.id_servicio AND p.id = c.id_producto AND s.tipo_servicios = 4 AND 
+//			c.fecha BETWEEN TO_TIMESTAMP('2019-03-15 00:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('2019-05-18 23:59:59.0', 'YYYY-MM-DD HH24:MI:SS.FF') ) A 
+//			INNER JOIN Usuarios u ON A.ID_USUARIO = u.NUM_IDENTIDAD AND A.TIPO_DOCUMENTO_USUARIO = u.TIPO_DOCUMENTO
 			
-			String sql = "SELECT * ";
-			sql += "FROM Servicios s, Productos p, Consumos c ";
-			sql += "WHERE s.id = p.id_servicio AND p.id = c.id_producto AND s.tipo_servicios = "+ servicio + " AND ";
-			sql += "entrada BETWEEN " + entradaTS + " AND " + salidaTS;
+			String sql = "SELECT u.* ";
+			sql += "FROM 	(SELECT c.ID_USUARIO, c.TIPO_DOCUMENTO_USUARIO ";
+			sql += 			"FROM Servicios s, Productos p, Consumos c ";
+			sql += 			"WHERE s.id = p.id_servicio AND p.id = c.id_producto AND s.tipo_servicios = " + servicio + " AND ";
+			sql += 			"c.fecha BETWEEN " + entradaTS + " AND " + salidaTS +" ) A ";
+			sql += "INNER JOIN Usuarios u ON A.ID_USUARIO = u.NUM_IDENTIDAD AND A.TIPO_DOCUMENTO_USUARIO = u.TIPO_DOCUMENTO";
+			
+			
+			System.out.println(sql);
 		}
 }

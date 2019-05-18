@@ -772,6 +772,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 							"3. Internet", "4. Bar", "5. Restaurante", "6. Supermercad", "7. Tienda", "8. Spa",
 							"9. Lavado", "10. Utensilio", "11. Salon reunion", "12. Salon conferencia", "13. Planchado", "14. Embolada"}, 
 					"1. Piscina");
+			servicio = servicio.split(". ")[0];
 
 			int mes1 = ThreadLocalRandom.current().nextInt(1, 6 + 1);
 			int dia1 = ThreadLocalRandom.current().nextInt(1, 15 + 1);
@@ -805,9 +806,9 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			List<Usuarios> clientes = parranderos.reqCF9( servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento );
 			resultado += "---------------------------------------";
 			resultado += "--------------Clientes-----------------";
-			for (Usuarios usuario : clientes) {
-				resultado += "-  " + usuario + "                  -";
-			}
+//			for (Usuarios usuario : clientes) {
+//				resultado += "-  " + usuario + "                  -";
+//			}
 		}
 		catch( Exception e ){
 			resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();

@@ -1601,6 +1601,7 @@ public class PersistenciaHotelAndes
 	public List<Usuarios> reqFC9(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
 			boolean[] tipoOrdenamiento) {
 		PersistenceManager pm = pmf.getPersistenceManager();
+		sqlUsuario.reqFC9(servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento);
 		Transaction tx=pm.currentTransaction();
 		try
 		{
