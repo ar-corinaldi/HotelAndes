@@ -1066,7 +1066,7 @@ public class PersistenciaHotelAndes
 		}
 		catch (Exception e)
 		{
-		        	e.printStackTrace();
+			e.printStackTrace();
 			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
 			throw new Exception( e.getMessage() );
 		}
@@ -1138,7 +1138,7 @@ public class PersistenciaHotelAndes
 
 		return sqlReserva.darReservaXFechasYNumHab(pmf.getPersistenceManager(), entrada, salida, numHab);
 	}
-	
+
 	public ReservaServicio darReservaServicioXFechasYidSer(Timestamp entrada,
 			Timestamp salida, long id) {
 		return sqlReservaServicio.darReservaServicioXFechasYidSer(pmf.getPersistenceManager(), entrada, salida, id);
@@ -1269,7 +1269,7 @@ public class PersistenciaHotelAndes
 			tx.begin();     
 			long id = sqlConvencion.darUltimoId(pm);
 			sqlConvencion.adicionarConvencion(pm, id, nombre2, cantidadPersonas, idPlanCons, idUsuario, tipo_documento);
-			
+
 			tx.commit();
 			Convencion con = new Convencion(id, nombre2, cantidadPersonas, idPlanCons, idUsuario, tipo_documento);
 			return con;
@@ -1384,7 +1384,7 @@ public class PersistenciaHotelAndes
 	}
 
 	public void cancelarConvencion(Long idConvencion) {
-		
+
 		sqlConvencion.eliminaConvencionPorId(pmf.getPersistenceManager(), idConvencion);
 	}
 
@@ -1455,7 +1455,7 @@ public class PersistenciaHotelAndes
 			tx.begin();
 			sqlReserva.registrarSalidaReserva(pm, num_identidad, tipo_documento, salida, idRes);
 			Reservas res = sqlReserva.darReservaPorId(pm, idRes);
-			
+
 			System.out.println("Reserva con id: "+idRes+" ha sido editada");
 			sqlHabitacion.agregarConsumoHabitacion(pm, res.getId_habitacion(), 0);
 
@@ -1599,24 +1599,22 @@ public class PersistenciaHotelAndes
 	}
 
 	public List<Usuarios> reqFC9(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
-			boolean[] tipoOrdenamiento) {
+			boolean[] tipoOrdenamiento) throws Exception {
 		PersistenceManager pm = pmf.getPersistenceManager();
-		sqlUsuario.reqFC9(servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento);
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();
-			sqlUsuario.reqFC9( servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento );
+			List<Usuarios> users = sqlUsuario.reqFC9( pm, servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento );
 			tx.commit();
-			System.out.println("Se registra con exito la salida de todos los usuarios");
 
-			return null;
+			return users;
 		}
 		catch (Exception e)
 		{
-			//        	e.printStackTrace();
+			e.printStackTrace();
 			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-			return null;
+			throw new Exception(e.getMessage());
 		}
 		finally
 		{

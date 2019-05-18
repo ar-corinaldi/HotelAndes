@@ -156,12 +156,25 @@ public class SQLUsuario {
 			return o;
 		}
 
-		public void reqFC9(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
-				boolean[] tipoOrdenamiento) {
+		public List<Usuarios> reqFC9(PersistenceManager pm, String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
+				boolean[] tipoOrdenamiento) throws Exception {
 			
 			String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 			String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
+			String orderBy = "";
 			
+			if(tipoClasificacion[1] && (tipoOrdenamiento[0] || tipoOrdenamiento[1] || tipoOrdenamiento[2]) ){
+				orderBy = "ORDER BY ";
+				if( tipoOrdenamiento[0] ){
+					orderBy += "u.num_identidad asc ";
+				}
+				if( tipoOrdenamiento[1] ){
+					orderBy += "";
+				}
+				if( tipoOrdenamiento[2] ){
+					orderBy += "";
+				}
+			}
 //			SELECT u.*
 //			FROM (SELECT c.ID_USUARIO, c.TIPO_DOCUMENTO_USUARIO
 //			FROM Servicios s, Productos p, Consumos c
@@ -174,9 +187,33 @@ public class SQLUsuario {
 			sql += 			"FROM Servicios s, Productos p, Consumos c ";
 			sql += 			"WHERE s.id = p.id_servicio AND p.id = c.id_producto AND s.tipo_servicios = " + servicio + " AND ";
 			sql += 			"c.fecha BETWEEN " + entradaTS + " AND " + salidaTS +" ) A ";
-			sql += "INNER JOIN Usuarios u ON A.ID_USUARIO = u.NUM_IDENTIDAD AND A.TIPO_DOCUMENTO_USUARIO = u.TIPO_DOCUMENTO";
-			
+			sql += "INNER JOIN Usuarios u ON A.ID_USUARIO = u.NUM_IDENTIDAD AND A.TIPO_DOCUMENTO_USUARIO = u.TIPO_DOCUMENTO ";
+			sql += orderBy;
 			
 			System.out.println(sql);
+			
+			List<Usuarios> list = new LinkedList<Usuarios>();
+			try{
+				Query q = pm.newQuery(SQL, sql);
+				List<Object> listObject = q.executeList();
+				for (Object o : listObject) {
+					Object[] datos = (Object[]) o;
+					String numIden = datos[0].toString();
+					String tipoDoc = (String) datos[1];
+					String nombre = (String) datos[2];
+					String apellido = (String) datos[3];
+					String tipoUsuario = datos[4].toString();
+					String tipoConvencion = datos[5].toString();
+					list.add( new Usuarios(numIden, tipoDoc, nombre, apellido, tipoUsuario, tipoConvencion));
+				}
+			}
+			catch( Exception e ){
+				e.printStackTrace();
+				throw new Exception("Error en el SQL\n" + e.getMessage());
+			}
+			
+			
+			
+			return list;
 		}
 }

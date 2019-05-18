@@ -201,7 +201,6 @@ public class HotelAndes
 	}
 
 	public Usuarios darUsuario(long id, String tipoDoc) throws Exception{
-		System.out.println(tipoDoc);
 		if( !(tipoDoc.equals( Usuarios.CEDULA ) || tipoDoc.equals(Usuarios.PASAPORTE)) ){
 			throw new Exception("No existe tal tipo de documento "+tipoDoc);
 		}
@@ -417,7 +416,7 @@ public class HotelAndes
 	}
 
 	public List<Usuarios> reqCF9(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
-			boolean[] tipoOrdenamiento) {
+			boolean[] tipoOrdenamiento) throws Exception {
 		List<Usuarios> usuarios = null;
 		usuarios = pp.reqFC9(servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento);
 		return usuarios;

@@ -790,32 +790,35 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			JCheckBox cbOrden = new JCheckBox("Ordenamiento");
 			String message = "Citerio de ordenamiento (se puede seleccionar mas de uno)";
 			Object[] params1 = {message, cbAgrup, cbOrden};
-			int n = JOptionPane.showConfirmDialog(this, params1, "Consultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
-
-			JCheckBox cb1 = new JCheckBox("Datos del cliente"); 
-			JCheckBox cb2 = new JCheckBox("Fecha");
-			JCheckBox cb3 = new JCheckBox("Numero de veces que usa el servicio");
+			JOptionPane.showConfirmDialog(this, params1, "Consultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
+			
+			JCheckBox cb1 = new JCheckBox("Datos del cliente", false); 
+			JCheckBox cb2 = new JCheckBox("Fecha", false);
+			JCheckBox cb3 = new JCheckBox("Numero de veces que usa el servicio", false);
+			
 			if( cbOrden.isSelected() ){
 				message = "Citerio de ordenamiento (se puede seleccionar mas de uno)";
 				Object[] params = {message, cb1, cb2, cb3};
-				n = JOptionPane.showConfirmDialog(this, params, "Co0nsultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
+				JOptionPane.showConfirmDialog(this, params, "Co0nsultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
 			}
+			
 			boolean[] tipoClasificacion = {cbAgrup.isSelected(), cbOrden.isSelected() };
 			boolean[] tipoOrdenamiento = {cb1.isSelected(), cb2.isSelected(), cb3.isSelected()};
-			
 			List<Usuarios> clientes = parranderos.reqCF9( servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento );
-			resultado += "---------------------------------------";
-			resultado += "--------------Clientes-----------------";
-//			for (Usuarios usuario : clientes) {
-//				resultado += "-  " + usuario + "                  -";
-//			}
+			resultado += "Servicio = "+servicio + "\n";
+			resultado += "---------------------------------------\n";
+			resultado += "--------------Clientes-----------------\n";
+			for (Usuarios usuario : clientes) {
+				resultado += "-  " + usuario + "\n\n";
+			}
+			panelDatos.actualizarInterfaz(resultado);
 		}
 		catch( Exception e ){
 			resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();
 			panelDatos.actualizarInterfaz(resultado);
 			JOptionPane.showMessageDialog(this, "Hubo un error en el sistema", "Error", JOptionPane.WARNING_MESSAGE);
 			
-			//				e.printStackTrace();
+//							e.printStackTrace();
 		}
 
 
