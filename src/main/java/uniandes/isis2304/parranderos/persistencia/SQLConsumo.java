@@ -149,4 +149,14 @@ public class SQLConsumo {
 			return 1;
 		}
 	}
+
+	public List<Consumo> reqFC11Mas(PersistenceManager pm) {
+		
+		
+		return null;
+	}
+
+	public List<Consumo> reqFC11Menos(PersistenceManager pm) {
+		return null;
+	}
 }

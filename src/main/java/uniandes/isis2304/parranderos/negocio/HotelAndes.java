@@ -421,4 +421,9 @@ public class HotelAndes
 		usuarios = pp.reqFC9(servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento);
 		return usuarios;
 	}
+
+	public Object[] reqCF11() throws Exception {
+		
+		return pp.reqFC11();
+	}
 }

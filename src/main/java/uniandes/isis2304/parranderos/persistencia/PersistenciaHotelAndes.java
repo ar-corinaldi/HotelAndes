@@ -1625,5 +1625,44 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 	}
+
+	public Object[] reqFC11() throws Exception {
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		Object[] o = new Object[4];
+		try
+		{
+			tx.begin();
+			List<Reservas> reservasMas = sqlReserva.reqFC11( pm, "MAX" );
+			List<Reservas> reservasMenos = sqlReserva.reqFC11(pm, "MIN");
+			
+//			List<Consumo> consumosMas = sqlConsumo.reqFC11Mas( pm );
+//			List<Consumo> consumosMenos = sqlConsumo.reqFC11Menos( pm );
+			
+			o[0] = reservasMas;
+			o[1] = reservasMenos;
+//			o[2] = consumosMas;
+//			o[3] = consumosMenos;
+
+			tx.commit();
+
+			return o;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			throw new Exception(e.getMessage());
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
 }
 

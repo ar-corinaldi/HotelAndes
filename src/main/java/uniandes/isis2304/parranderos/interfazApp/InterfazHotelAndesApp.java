@@ -791,17 +791,17 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			String message = "Citerio de ordenamiento (se puede seleccionar mas de uno)";
 			Object[] params1 = {message, cbAgrup, cbOrden};
 			JOptionPane.showConfirmDialog(this, params1, "Consultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
-			
+
 			JCheckBox cb1 = new JCheckBox("Datos del cliente", false); 
 			JCheckBox cb2 = new JCheckBox("Fecha", false);
 			JCheckBox cb3 = new JCheckBox("Numero de veces que usa el servicio", false);
-			
+
 			if( cbOrden.isSelected() ){
 				message = "Citerio de ordenamiento (se puede seleccionar mas de uno)";
 				Object[] params = {message, cb1, cb2, cb3};
 				JOptionPane.showConfirmDialog(this, params, "Co0nsultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
 			}
-			
+
 			boolean[] tipoClasificacion = {cbAgrup.isSelected(), cbOrden.isSelected() };
 			boolean[] tipoOrdenamiento = {cb1.isSelected(), cb2.isSelected(), cb3.isSelected()};
 			List<Usuarios> clientes = parranderos.reqCF9( servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento );
@@ -817,8 +817,29 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();
 			panelDatos.actualizarInterfaz(resultado);
 			JOptionPane.showMessageDialog(this, "Hubo un error en el sistema", "Error", JOptionPane.WARNING_MESSAGE);
-			
-//							e.printStackTrace();
+
+			//							e.printStackTrace();
+		}
+
+
+	}
+
+	public void consultarFuncionamiento(){
+		String resultado = "";
+
+		try {
+			verificarUsuario(GERENTE);
+			Object[] listaO = parranderos.reqCF11();
+
+
+
+		} catch (Exception e) {
+
+			resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();
+			panelDatos.actualizarInterfaz(resultado);
+			JOptionPane.showMessageDialog(this, "Hubo un error en el sistema", "Error", JOptionPane.WARNING_MESSAGE);
+
+			//			e.printStackTrace();
 		}
 
 

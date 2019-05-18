@@ -1,4 +1,4 @@
-﻿{
+{
 	"title": "Aplicación transaccional de HotelAndes",
 	"frameH": 600,
 	"frameW": 900,
@@ -110,6 +110,10 @@
 				{
 					"label": "Consultar consumo en Hotel Andes",
 					"event": "consultarConsumoEnHotelAndes"
+				},
+				{
+					"label": "Consultar funcionamieno en Hotel Andes",
+					"event": "consultarFuncionamiento"
 				}
 			]
 		},		

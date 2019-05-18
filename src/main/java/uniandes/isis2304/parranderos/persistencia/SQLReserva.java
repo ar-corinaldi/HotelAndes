@@ -2,12 +2,14 @@ package uniandes.isis2304.parranderos.persistencia;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import uniandes.isis2304.parranderos.negocio.Reservas;
+import uniandes.isis2304.parranderos.negocio.Usuarios;
 
 
 public class SQLReserva {
@@ -291,14 +293,14 @@ public class SQLReserva {
 		//		SELECT COUNT(to_number(to_char(entrada,'WW'))) as contador, entrada as Semanas_Mayor_Demanda, to_number(to_char(entrada,'WW')) as Semana
 		//		FROM RESERVAS
 		//		GROUP BY to_number(to_char(entrada,'WW')), entrada;
-		
+
 		//TODO hacer lo mismo con el mes
 		//TODO hacer lo mismo con el mes
 		//TODO hacer lo mismo con el mes
-		
+
 		String sql = "SELECT COUNT(to_number(to_char(entrada,'" + tipoTiempo + "'))) as contador, entrada as Semanas_Mayor_Demanda, to_number(to_char(entrada,'" + tipoTiempo + "')) as Semana ";
 		sql += "FROM RESERVAS ";
-//		sql += "WHERE ";
+		//		sql += "WHERE ";
 		sql += "GROUP BY to_number(to_char(entrada,'" + tipoTiempo + "')), entrada";
 		System.out.println(sql);
 
@@ -318,5 +320,82 @@ public class SQLReserva {
 		catch( Exception e ) {
 			throw new Exception(e.getMessage());
 		}
+	}
+
+	public List<Reservas> reqFC11(PersistenceManager pm, String maxOMin) throws Exception {
+
+		String sql = darSQLReqFC11(maxOMin);
+		System.out.println(sql);
+		
+		List<Reservas> list = new LinkedList<Reservas>();
+		try{
+			System.out.println("Sirve");
+			Query q = pm.newQuery(SQL, sql);
+			System.out.println("No sirve");
+			List<Object> listObject = q.executeList();
+			System.out.println("Sirve");
+			for (Object o : listObject) {
+				Object[] datos = (Object[]) o;
+				String semana = datos[0].toString();
+				String tipoDoc = (String) datos[1];
+				String numHabMayor = (String) datos[2];
+				long numHab = ((BigDecimal)datos[3]).longValue();
+				double cuentaHab = ((BigDecimal)datos[4]).doubleValue();
+				long tipoHab = ((BigDecimal)datos[5]).longValue();
+				//TODO	revisar sql para que de reserva
+//				list.add( new Reserva);
+			}
+		}
+		catch( Exception e ){
+			e.printStackTrace();
+			throw new Exception("Error en el SQL\n" + e.getMessage());
+		}
+
+		return list;
+	}
+	
+	private String darSQLReqFC11(String maxOMin){
+//		SELECT *
+//		FROM (SELECT DISTINCT x.semana , x.habitaciones_mas_solicitadas, y.numero_habitacion as num_hab_mayor
+//				FROM (
+//				        SELECT A.semana, MAX(A.cantidad_habitacion) as habitaciones_mas_solicitadas
+//				        FROM (
+//				                SELECT to_char(entrada,'ww') as semana, COUNT(h.num_hab) as cantidad_habitacion, h.num_hab as numero_habitacion
+//				                FROM reservas r INNER JOIN habitaciones h ON r.id_habitacion = h.num_hab
+//				                WHERE r.entrada BETWEEN to_date('20190101', 'YYYYMMDD') AND to_date('20191231', 'YYYYMMDD') 
+//				                GROUP BY to_char(entrada,'ww'), h.num_hab
+//				            ) A
+//				        GROUP BY A.semana
+//				        ) X
+//				INNER JOIN (
+//				                SELECT to_char(entrada,'ww') as semana, COUNT(h.num_hab) as cantidad_habitacion, h.num_hab as numero_habitacion
+//				                FROM reservas r INNER JOIN habitaciones h ON r.id_habitacion = h.num_hab
+//				                WHERE r.entrada BETWEEN to_date('20190101', 'YYYYMMDD') AND to_date('20191231', 'YYYYMMDD') 
+//				                GROUP BY to_char(entrada,'ww'), h.num_hab
+//				            ) Y 
+//				ON X.habitaciones_mas_solicitadas = Y.cantidad_habitacion) Z LEFT JOIN HABITACIONES H ON z.num_hab_mayor = H.NUM_HAB;
+		
+		
+		String sql = "SELECT * ";
+		sql += "FROM (SELECT DISTINCT x.semana , x.habitaciones_mas_solicitadas, y.numero_habitacion as num_hab_mayor ";
+        sql += "FROM ( ";
+        sql += "SELECT A.semana, MAX(A.cantidad_habitacion) as habitaciones_mas_solicitadas ";
+        sql += "FROM ( ";
+        sql += "SELECT to_char(entrada,'ww') as semana, COUNT(h.num_hab) as cantidad_habitacion, h.num_hab as numero_habitacion ";
+        sql += "FROM reservas r INNER JOIN habitaciones h ON r.id_habitacion = h.num_hab ";
+        sql += "WHERE r.entrada BETWEEN to_date('20190101', 'YYYYMMDD') AND to_date('20191231', 'YYYYMMDD') ";
+        sql += "GROUP BY to_char(entrada,'ww'), h.num_hab";
+        sql += ") A "; 
+        sql += "GROUP BY A.semana ";
+        sql += ") X ";
+        sql += "INNER JOIN ( ";
+        sql += "SELECT to_char(entrada,'ww') as semana, COUNT(h.num_hab) as cantidad_habitacion, h.num_hab as numero_habitacion ";
+        sql += "FROM reservas r INNER JOIN habitaciones h ON r.id_habitacion = h.num_hab ";
+        sql += "WHERE r.entrada BETWEEN to_date('20190101', 'YYYYMMDD') AND to_date('20191231', 'YYYYMMDD') ";
+        sql += "GROUP BY to_char(entrada,'ww'), h.num_hab ";
+        sql += ") Y "; 
+        sql += "ON X.habitaciones_mas_solicitadas = Y.cantidad_habitacion) Z LEFT JOIN HABITACIONES H ON z.num_hab_mayor = H.NUM_HAB " ;
+		
+		return sql;
 	}
 }

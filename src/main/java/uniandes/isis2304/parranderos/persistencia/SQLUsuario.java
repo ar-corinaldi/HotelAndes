@@ -212,8 +212,6 @@ public class SQLUsuario {
 				throw new Exception("Error en el SQL\n" + e.getMessage());
 			}
 			
-			
-			
 			return list;
 		}
 }
