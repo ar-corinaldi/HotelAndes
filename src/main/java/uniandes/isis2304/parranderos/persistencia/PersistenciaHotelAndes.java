@@ -1664,5 +1664,60 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}
 	}
+
+	public void reqFC10(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
+			boolean[] tipoOrdenamiento) {
+		List<Usuarios> users = new LinkedList<Usuarios>();
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			int i=0;
+			tx.begin();
+			List<Object> numeros = sqlUsuario.reqFC10(pm, servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento );
+			
+			for (Object numero : numeros) {
+				Object o = sqlUsuario.darUsuarioPorId(pm, ((BigDecimal) numero).longValue(), "cedula");
+				Object[] datos = (Object[]) o;
+				Usuarios user= null;
+				if( o!=null ){
+					long numIden = ((BigDecimal) datos[0]).longValue();
+					String tipoDoc = datos[1].toString();
+					String nombre= datos[2].toString();
+					String apellido = datos[3].toString();
+
+					long tipoUsuario= ((BigDecimal) datos[4]).longValue();
+					Long idConve = (long) 0;
+					if(datos[5]!=null)
+						idConve= ((BigDecimal) datos[5]).longValue();
+					 
+					
+					user = new Usuarios(numIden, tipoDoc, nombre, apellido, tipoUsuario, idConve);
+					System.out.println(user);
+					users.add(user);
+					if(i == 20)
+						break;
+					i++;
+				}
+
+			}
+			tx.commit();
+			System.out.println("Se consulto con exito consumos");
+
+		}
+		catch (Exception e)
+		{
+			     	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}		
+	}
 }
 

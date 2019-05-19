@@ -813,6 +813,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			}
 			panelDatos.actualizarInterfaz(resultado);
 		}
+	
 		catch( Exception e ){
 			resultado = "Hubo un error registrando le llegada del cliente\n" + e.getMessage();
 			panelDatos.actualizarInterfaz(resultado);
@@ -887,6 +888,57 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 		}
 
 
+	}
+	
+	public void consultarNoConsumoHotelandes(){
+		try {
+			verificarUsuario(GERENTE, ORGANIZADOR, RECEPCIONISTA);
+		
+
+		String servicio = (String) JOptionPane.showInputDialog(this, "Seleccione el servicio", "Consultar consumo en Hotel Andes", JOptionPane.QUESTION_MESSAGE, null,  // null para icono defecto
+				new String[] { "1. Piscina", "2. Gimnasio", 
+						"3. Internet", "4. Bar", "5. Restaurante", "6. Supermercad", "7. Tienda", "8. Spa",
+						"9. Lavado", "10. Utensilio", "11. Salon reunion", "12. Salon conferencia", "13. Planchado", "14. Embolada"}, 
+				"1. Piscina");
+		servicio = servicio.split(". ")[0];
+		
+
+		int mes1 = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+		int dia1 = ThreadLocalRandom.current().nextInt(1, 15 + 1);
+
+		int mes2 = ThreadLocalRandom.current().nextInt(mes1, 12 + 1);
+		int dia2 = ThreadLocalRandom.current().nextInt(dia1, 28 + 1);
+
+		String entradaStr = JOptionPane.showInputDialog (this, "fecha entrada?\n(Ejm: 2019-"+mes1+"-"+dia1+")", "Consultar consumo en Hotel Andes", JOptionPane.OK_OPTION);
+		String salidaStr = JOptionPane.showInputDialog (this, "fecha salida?\n(Ejm: 2019-"+mes2+"-"+dia2+")", "Consultar consumo en Hotel Andes", JOptionPane.OK_OPTION);
+
+		Timestamp entrada = Timestamp.valueOf(entradaStr.trim() + " 00:00:00.00");
+		Timestamp salida = Timestamp.valueOf(salidaStr.trim() + " 23:59:59.00");
+
+		JCheckBox cbAgrup = new JCheckBox("Agrupamiento"); 
+		JCheckBox cbOrden = new JCheckBox("Ordenamiento");
+		String message = "Citerio de ordenamiento (se puede seleccionar mas de uno)";
+		Object[] params1 = {message, cbAgrup, cbOrden};
+		int n = JOptionPane.showConfirmDialog(this, params1, "Consultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
+
+		JCheckBox cb1 = new JCheckBox("Datos del cliente"); 
+		JCheckBox cb2 = new JCheckBox("Fecha");
+		if( cbOrden.isSelected() ){
+			message = "Citerio de ordenamiento (se puede seleccionar mas de uno)";
+			Object[] params = {message, cb1, cb2};
+			n = JOptionPane.showConfirmDialog(this, params, "Co0nsultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
+		}
+		boolean[] tipoClasificacion = {cbAgrup.isSelected(), cbOrden.isSelected() };
+		boolean[] tipoOrdenamiento = {cb1.isSelected(), cb2.isSelected()};
+		 parranderos.reqCF10( servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento );
+		
+		
+		
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/* ****************************************************************
