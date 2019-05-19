@@ -112,6 +112,10 @@
 					"event": "consultarConsumoEnHotelAndes"
 				},
 				{
+					"label": "Consultar NO consumo en Hotel Andes",
+					"event": "consultarNoConsumoHotelandes"
+				},
+				{
 					"label": "Consultar funcionamieno en Hotel Andes",
 					"event": "consultarFuncionamiento"
 				}

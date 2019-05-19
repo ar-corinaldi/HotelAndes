@@ -422,6 +422,12 @@ public class HotelAndes
 		return usuarios;
 	}
 
+	public void reqCF10(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
+			boolean[] tipoOrdenamiento) {
+		pp.reqFC10(servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento);
+		
+	}
+
 	public Object[] reqCF11() throws Exception {
 		
 		return pp.reqFC11();
