@@ -792,11 +792,11 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			Object[] params1 = {message, cbAgrup, cbOrden};
 			JOptionPane.showConfirmDialog(this, params1, "Consultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
 
-			JCheckBox cb1 = new JCheckBox("Datos del cliente", false); 
-			JCheckBox cb2 = new JCheckBox("Fecha", false);
-			JCheckBox cb3 = new JCheckBox("Numero de veces que usa el servicio", false);
+			JCheckBox cb1 = new JCheckBox("Numero de identificacion", false); 
+			JCheckBox cb2 = new JCheckBox("Nombre", false);
+			JCheckBox cb3 = new JCheckBox("Apellido", false);
 
-			if( cbOrden.isSelected() ){
+			if( cbOrden.isSelected() || cbAgrup.isSelected() ){
 				message = "Citerio de ordenamiento (se puede seleccionar mas de uno)";
 				Object[] params = {message, cb1, cb2, cb3};
 				JOptionPane.showConfirmDialog(this, params, "Co0nsultar consumo en Hotel Andes", JOptionPane.YES_NO_OPTION);
@@ -811,6 +811,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
 			for (Usuarios usuario : clientes) {
 				resultado += "-  " + usuario + "\n\n";
 			}
+			System.out.println("Termina");
 			panelDatos.actualizarInterfaz(resultado);
 		}
 	

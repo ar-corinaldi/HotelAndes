@@ -676,3 +676,39 @@ ORA-00904: "US"."NUMIDENTIDAD": identificador no válido
 01:04:28,947 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
 01:04:28,991 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
 >>>>>>> REQ10...
+15:52:57,479 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+15:52:57,484 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+15:52:57,499 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+15:53:23,297 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error en el SQL
+Error executing SQL query "SELECT u.* FROM  (SELECT c.ID_USUARIO, c.TIPO_DOCUMENTO_USUARIO FROM Servicios s, Productos p, Consumos c WHERE s.id = p.id_servicio AND p.id = c.id_producto AND s.tipo_servicios = 3 AND c.fecha BETWEEN TO_TIMESTAMP('2019-06-11 00:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('2019-09-15 23:59:59.0', 'YYYY-MM-DD HH24:MI:SS.FF') ) A INNER JOIN Usuarios u ON A.ID_USUARIO = u.NUM_IDENTIDAD AND A.TIPO_DOCUMENTO_USUARIO = u.TIPO_DOCUMENTO GROUP BY u.num_identidad asc u.nombre asc".
+
+15:54:18,377 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+15:54:18,378 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+15:54:18,393 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+15:54:47,265 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+15:54:47,266 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+15:54:47,281 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+15:55:21,794 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error en el SQL
+Error executing SQL query "SELECT u.* FROM  (SELECT c.ID_USUARIO, c.TIPO_DOCUMENTO_USUARIO FROM Servicios s, Productos p, Consumos c WHERE s.id = p.id_servicio AND p.id = c.id_producto AND s.tipo_servicios = 3 AND c.fecha BETWEEN TO_TIMESTAMP('2019-05-09 00:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('2019-11-09 23:59:59.0', 'YYYY-MM-DD HH24:MI:SS.FF') ) A INNER JOIN Usuarios u ON A.ID_USUARIO = u.NUM_IDENTIDAD AND A.TIPO_DOCUMENTO_USUARIO = u.TIPO_DOCUMENTO GROUP BY u.num_identidad asc u.nombre asc".
+
+15:57:01,831 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+15:57:01,832 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+15:57:01,849 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+15:57:50,934 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+15:57:50,935 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+15:57:50,950 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+15:58:15,799 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error en el SQL
+Error executing SQL query "SELECT u.* FROM  (SELECT c.ID_USUARIO, c.TIPO_DOCUMENTO_USUARIO FROM Servicios s, Productos p, Consumos c WHERE s.id = p.id_servicio AND p.id = c.id_producto AND s.tipo_servicios = 2 AND c.fecha BETWEEN TO_TIMESTAMP('2019-06-12 00:00:00.0', 'YYYY-MM-DD HH24:MI:SS.FF') AND TO_TIMESTAMP('2019-08-12 23:59:59.0', 'YYYY-MM-DD HH24:MI:SS.FF') ) A INNER JOIN Usuarios u ON A.ID_USUARIO = u.NUM_IDENTIDAD AND A.TIPO_DOCUMENTO_USUARIO = u.TIPO_DOCUMENTO GROUP BY u.nombre".
+
+16:00:11,205 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+16:00:11,206 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+16:00:11,221 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+17:43:34,325 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+17:43:34,325 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+17:43:34,340 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+19:41:16,476 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Interfaz
+19:41:16,478 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se aplica configuración indicada en el archivo de configuración
+19:41:16,504 (main) INFO  [uniandes.isis2304.parranderos.interfazApp.InterfazHotelAndesApp] - Se encontró un archivo de configuración válido: Tablas BD
+19:41:48,790 (AWT-EventQueue-0) ERROR [uniandes.isis2304.parranderos.persistencia.PersistenciaHotelAndes] - Exception : Error en el SQL
+java.math.BigDecimal cannot be cast to [Ljava.lang.Object;
+

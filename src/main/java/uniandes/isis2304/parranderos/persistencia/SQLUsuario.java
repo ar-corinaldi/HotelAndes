@@ -162,18 +162,27 @@ public class SQLUsuario {
 			String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 			String salidaTS = "TO_TIMESTAMP('"+salida.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 			String orderBy = "";
-			
+			String groupBy = "";
+//			if( tipoClasificacion[0] && (tipoOrdenamiento[0] || tipoOrdenamiento[1] || tipoOrdenamiento[2]) ){
+//				groupBy = "GROUP BY ";
+//				if( tipoOrdenamiento[0] && (tipoOrdenamiento[1] || tipoOrdenamiento[2])) orderBy += "u.num_identidad, ";
+//				else if(tipoOrdenamiento[0]) groupBy += "u.num_identidad ";
+//			
+//				if( tipoOrdenamiento[1] && tipoOrdenamiento[2] ) groupBy += "u.nombre, ";
+//				else if(tipoOrdenamiento[1]) groupBy += "u.nombre ";
+//				
+//				if( tipoOrdenamiento[2] ) groupBy += "u.apellido ";
+//				
+//			}
 			if(tipoClasificacion[1] && (tipoOrdenamiento[0] || tipoOrdenamiento[1] || tipoOrdenamiento[2]) ){
 				orderBy = "ORDER BY ";
-				if( tipoOrdenamiento[0] ){
-					orderBy += "u.num_identidad asc ";
-				}
-				if( tipoOrdenamiento[1] ){
-					orderBy += "";
-				}
-				if( tipoOrdenamiento[2] ){
-					orderBy += "";
-				}
+				if( tipoOrdenamiento[0] && (tipoOrdenamiento[1] || tipoOrdenamiento[2])) orderBy += "u.num_identidad asc, ";
+				else if(tipoOrdenamiento[0]) orderBy += "u.num_identidad asc ";
+			
+				if( tipoOrdenamiento[1] && tipoOrdenamiento[2] ) orderBy += "u.nombre asc, ";
+				else if(tipoOrdenamiento[1]) orderBy += "u.nombre asc ";
+				
+				if( tipoOrdenamiento[2] )orderBy += "u.apellido asc ";
 			}
 //			SELECT u.*
 //			FROM (SELECT c.ID_USUARIO, c.TIPO_DOCUMENTO_USUARIO
@@ -188,7 +197,9 @@ public class SQLUsuario {
 			sql += 			"WHERE s.id = p.id_servicio AND p.id = c.id_producto AND s.tipo_servicios = " + servicio + " AND ";
 			sql += 			"c.fecha BETWEEN " + entradaTS + " AND " + salidaTS +" ) A ";
 			sql += "INNER JOIN Usuarios u ON A.ID_USUARIO = u.NUM_IDENTIDAD AND A.TIPO_DOCUMENTO_USUARIO = u.TIPO_DOCUMENTO ";
+			sql += groupBy;
 			sql += orderBy;
+			
 			
 			System.out.println(sql);
 			
@@ -206,13 +217,13 @@ public class SQLUsuario {
 					String tipoConvencion = datos[5].toString();
 					list.add( new Usuarios(numIden, tipoDoc, nombre, apellido, tipoUsuario, tipoConvencion));
 				}
+				return list;
 			}
 			catch( Exception e ){
 				e.printStackTrace();
 				throw new Exception("Error en el SQL\n" + e.getMessage());
 			}
 			
-			return list;
 		}
 
 		public List<Object> reqFC10(PersistenceManager pm, String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
