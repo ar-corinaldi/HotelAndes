@@ -118,6 +118,10 @@
 				{
 					"label": "Consultar funcionamieno en Hotel Andes",
 					"event": "consultarFuncionamiento"
+				},
+				{
+					"label": "Consultar Buenos clientes",
+					"event": "buenosClientes"
 				}
 			]
 		},		
@@ -187,4 +191,3 @@
 		
 	]
 }
-	
