@@ -1581,14 +1581,13 @@ public class PersistenciaHotelAndes
 		List<Object> buenos = sqlConsumo.buscarBuenosClientes(pmf.getPersistenceManager());
 		LinkedList<Object> clientes = new LinkedList<Object>();
 		for (Object object : buenos) {
-			Object[] cliente = (Object[]) object;
-			if(((BigDecimal) cliente [1]).intValue() >= 15000000)
-			{
-				long id = ((BigDecimal) cliente [1]).longValue();
-				String tipoDoc = ((String) cliente [2]) ;
+			
+			
+				long id = ((BigDecimal) object ).longValue();
+				String tipoDoc = "cedula" ;
 				Object[] rest = {id,tipoDoc};
 				clientes.add(rest);
-			}
+			
 		}
 		return clientes;	
 	}
@@ -1665,8 +1664,7 @@ public class PersistenciaHotelAndes
 		}
 	}
 
-	public void reqFC10(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
-			boolean[] tipoOrdenamiento) {
+	public void reqFC10(String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion) {
 		List<Usuarios> users = new LinkedList<Usuarios>();
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
@@ -1674,7 +1672,7 @@ public class PersistenciaHotelAndes
 		{
 			int i=0;
 			tx.begin();
-			List<Object> numeros = sqlUsuario.reqFC10(pm, servicio, entrada, salida, tipoClasificacion, tipoOrdenamiento );
+			List<Object> numeros = sqlUsuario.reqFC10(pm, servicio, entrada, salida, tipoClasificacion);
 			
 			for (Object numero : numeros) {
 				Object o = sqlUsuario.darUsuarioPorId(pm, ((BigDecimal) numero).longValue(), "cedula");
@@ -1719,5 +1717,40 @@ public class PersistenciaHotelAndes
 			pm.close();
 		}		
 	}
+
+	public List<Object> buscarBuenosClientesPorReservasServicio() {
+
+		LinkedList<Object> clientes = new LinkedList<Object>();
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			int i=0;
+			tx.begin();
+			List<Object> buenos = sqlConsumo.buscarBuenosClientesPorReservasServicio(pm);
+			
+			
+			
+				
+			tx.commit();
+			System.out.println("Se consulto con exito consumos");
+			return buenos;
+
+		}
+		catch (Exception e)
+		{
+			     	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+		return null;
+		}
 }
 

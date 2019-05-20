@@ -121,19 +121,17 @@ public class SQLConsumo {
 
 	public List<Object> buscarBuenosClientes(PersistenceManager pm) {
 
-		String fecha = LocalDate.now().minusYears(1).toString();
-		String fechaTS = "TO_TIMESTAMP('"+fecha+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
 
 
-		String sql = "Select sum(precio) as suma, cons.id_usuario, cons.tipo_documento_usuario"
-				+ " from consumos cons inner join productos  prod "
-				+ " on prod.id = cons.id_producto"
-				+ " where cons.fecha > "+fechaTS 
-				+ " group by cons.id_usuario, cons.tipo_documento_usuario ";
+		String sql = "Select cons.id_usuario "
+				+ "from consumos cons inner join productos  prod  on prod.id = cons.id_producto "
+				+ "where prod.precio >97000 "
+				+ "group by cons.id_usuario";
 
 		Query q = pm.newQuery(SQL, sql);
-
-		return q.executeList();
+		System.out.println(sql);
+		List<Object> list= (List<Object>) q.executeList();
+		return list;
 
 	}
 
@@ -208,6 +206,20 @@ public class SQLConsumo {
         sql += "ORDER BY x.semana asc";
 		
 		return sql;
+	}
+
+	public List<Object> buscarBuenosClientesPorReservasServicio(PersistenceManager pm) {
+		// TODO Auto-generated method stub
+		String sql = "Select resser.id_usuario "
+				+ "from servicios ser "
+				+ "inner join reservas_Servicios resser "
+				+ "on ser.id= resser.id_servicio "
+				+ "where  (extract (hour from (resser.fecha_inicial - resser.fecha_final)))*-1 >4 "
+				+ "and ser.tipo_servicios= 8 or ser.tipo_servicios=11";
+		Query q = pm.newQuery(SQL, sql);
+		System.out.println(sql);
+		List<Object> list= (List<Object>) q.executeList();
+		return list;
 	}
 
 }

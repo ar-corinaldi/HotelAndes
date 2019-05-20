@@ -226,8 +226,7 @@ public class SQLUsuario {
 			
 		}
 
-		public List<Object> reqFC10(PersistenceManager pm, String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion,
-				boolean[] tipoOrdenamiento) {
+		public List<Object> reqFC10(PersistenceManager pm, String servicio, Timestamp entrada, Timestamp salida, boolean[] tipoClasificacion) {
 			
 
 			String entradaTS = "TO_TIMESTAMP('"+entrada.toString()+"', 'YYYY-MM-DD HH24:MI:SS.FF')";
@@ -237,10 +236,14 @@ public class SQLUsuario {
 					+ " from usuarios us "
 					+ "full outer join  (Select * "
 					+ "from consumos con "
-					+ "inner join productos pro on "
-					+ "pro.id = con.id_producto "
-					+ "where pro.id_servicio = "+ servicio
-					+ " and con.fecha BETWEEN "+ entradaTS 
+					+ "inner join "
+					+ "(Select prod.id as prodid "
+					+ " from servicios ser "
+					+ "inner join productos prod "
+					+ "on ser.id = prod.id_servicio "
+					+ "where ser.tipo_servicios = "+ servicio+ " ) pro on "
+					+ "pro.prodid = con.id_producto "
+					+ "where  con.fecha BETWEEN "+ entradaTS 
 					+ " AND "+ salidaTS +")prods "
 					+ "on prods.id_Usuario = us.num_identidad "
 					+ "where  prods.id_Habitacion is null ";	
@@ -258,4 +261,6 @@ public class SQLUsuario {
 			List<Object> list= (List<Object>) q.executeList();
 			return list;
 		}
+
+		
 }
